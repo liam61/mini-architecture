@@ -1,0 +1,7 @@
+{
+  "name": "components",
+  "short_name": "components",
+  "description": "base components for mini app",
+  "start_url": "/",
+  "display": "standalone"
+}

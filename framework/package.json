@@ -1,0 +1,13 @@
+{
+  "name": "framework",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "serve": "polymer serve --npm",
+    "build": "polymer build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
