@@ -1,0 +1,20 @@
+{
+  "name": "mini-architecture",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "pack": "node pack.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lawler61/mini-architecture.git"
+  },
+  "author": "lawler61",
+  "license": "ISC",
+  "homepage": "https://github.com/lawler61/mini-architecture#readme",
+  "devDependencies": {
+    "archiver": "^4.0.1",
+    "fs-extra": "^9.0.1"
+  }
+}

@@ -4,5 +4,6 @@
     "rules": [
       "polymer-3"
     ]
-  }
+  },
+  "entrypoint": "comp.html"
 }

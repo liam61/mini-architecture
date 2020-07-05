@@ -1,0 +1,33 @@
+{
+  "extends": [
+    "plugin:prettier/recommended"
+  ],
+  "plugins": [
+    "prettier"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "globals": {
+    "ns": true
+  },
+  "rules": {
+    "no-unused-vars": [
+      "warn"
+    ],
+    "no-empty": "warn",
+    "no-restricted-globals": "off",
+    "no-dupe-class-members": "off",
+    "prefer-spread": "warn",
+    "prefer-rest-params": "warn",
+    "guard-for-in": "off",
+    "require-await": "off",
+    "promise/param-names": "off",
+    "lines-between-class-members": "off",
+    "promise/no-return-wrap": "off",
+    "prefer-promise-reject-errors": "off",
+    "prettier/prettier": "warn",
+    "byted-internationalization/t-string": "off"
+  }
+}
