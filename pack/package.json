@@ -1,0 +1,28 @@
+{
+  "name": "pack",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "pack": "cross-env NODE_ENV=production node ./index.js"
+  },
+  "author": "lawler61",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.10.4",
+    "@babel/generator": "^7.10.4",
+    "@babel/parser": "^7.10.4",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-react": "^7.10.4",
+    "@babel/traverse": "^7.10.4",
+    "@babel/types": "^7.10.4",
+    "archiver": "^4.0.1",
+    "babel-preset-minify": "^0.5.1",
+    "concat-with-sourcemaps": "^1.1.0",
+    "cross-env": "^7.0.2",
+    "ejs": "^3.1.3",
+    "fs-extra": "^9.0.1",
+    "glob": "^7.1.6",
+    "html-minifier": "^4.0.0"
+  }
+}
