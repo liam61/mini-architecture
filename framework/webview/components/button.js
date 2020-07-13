@@ -30,9 +30,9 @@ class MyButton extends PolymerElement {
         }
 
         :host(.tap) {
-          color: rgba(34, 34, 34, 0.6);
+          color: rgba(68, 68, 68, 0.8);
+          background-color: rgba(215, 224, 218, 0.1);
           border: 0.5px solid rgba(0, 0, 0, 0.1);
-          background-color: transparent;
         }
       </style>
       <slot></slot>
@@ -58,7 +58,7 @@ class MyButton extends PolymerElement {
     super.ready()
 
     this.hManager = new Hammer.Manager(this)
-    this.hManager.add(new Hammer.Press({ event: TAP, time: 150 }))
+    this.hManager.add(new Hammer.Press({ event: TAP, time: 50 }))
     this.pan = new Hammer.Pan({ enable: false })
     this.hManager.add(this.pan)
 
@@ -66,7 +66,7 @@ class MyButton extends PolymerElement {
     this.hManager.on(TAP, this._onTap.bind(this))
     this.hManager.on(TAP_UP, this._onTapped.bind(this))
     // 移动后再放开
-    this.hManager.on('panend pancancel', this._onTapped.bind(this))
+    this.hManager.on('panend', this._onTapped.bind(this))
   }
 
   _onTap(ev) {
@@ -79,14 +79,14 @@ class MyButton extends PolymerElement {
   _onTapped(ev) {
     if (!this.classList.contains('tap')) return
 
-    const { type, target, timeStamp, center = {}, srcEvent = {} } = ev
+    const { type, target, timeStamp, center = {}, srcEvent = {}, additionalEvent } = ev
     const event = {
-      type: type,
+      type: 'tap',
       detail: center,
-      target: target,
+      // target: target,
       timeStamp: timeStamp,
-      preventDefault: () => ev.preventDefault(),
-      stopPropagation: () => ev.stopPropagation(),
+      // preventDefault: () => ev.preventDefault(),
+      // stopPropagation: () => ev.stopPropagation(),
     }
     let shouldTrigger = false
 

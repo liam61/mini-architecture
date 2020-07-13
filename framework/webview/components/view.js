@@ -16,6 +16,12 @@ class MyView extends PolymerElement {
       <slot></slot>
     `
   }
+
+  static get properties() {
+    return {
+      test: String,
+    }
+  }
 }
 
 window.customElements.define(MyView.is, MyView)

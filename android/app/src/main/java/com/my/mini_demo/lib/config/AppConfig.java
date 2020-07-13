@@ -3,11 +3,13 @@ package com.my.mini_demo.lib.config;
 import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.my.mini_demo.lib.utils.FileUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONStringer;
 
 import java.io.File;
 
@@ -37,9 +39,11 @@ public class AppConfig {
      */
     public void initConfig(String config) {
         try {
-            mConfig = new JSONObject(config);
+            JSONObject obj = new JSONObject(config);
+            String paramStr = obj.optString("config");
+            mConfig = new JSONObject(paramStr);
         } catch(JSONException e) {
-            System.err.print("config is not JSON format" + config);
+            e.printStackTrace();
         }
 
         JSONObject windowJson = mConfig.optJSONObject("window");
@@ -51,7 +55,7 @@ public class AppConfig {
     }
 
     public String getMiniAppSourcePath(Context context) {
-        return FileUtil.getMiniAppSourceDir(context, mAppId).getAbsolutePath() + File.separator;
+        return FileUtil.getMiniSourceDir(context, mAppId).getAbsolutePath() + File.separator;
     }
 
     public String getPageTitle(String url) {
@@ -96,6 +100,7 @@ public class AppConfig {
             return "";
         }
 
+        // 打包时注入
         String root = mConfig.optString("root");
         return TextUtils.isEmpty(root) ? "" : root + ".html";
     }

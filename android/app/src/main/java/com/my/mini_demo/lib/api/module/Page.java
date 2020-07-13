@@ -22,7 +22,7 @@ public class Page extends BaseApi {
 
     @Override
     public String[] apis() {
-        return new String[]{"navigateTo", "redirectTo", "reLaunch", "navigateBack", "setNavigationBarTitle"};
+        return new String[]{"navigateTo", "navigateBack", "redirectTo", "reLaunch", "setNavigationBarTitle"};
     }
 
     @Override

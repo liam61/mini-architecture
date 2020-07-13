@@ -1,67 +1,78 @@
-import { noop, nextTick } from '../common/utils'
+import { serviceApi } from './api'
+import { _Page } from './_page'
 
-function batchStateChange(instance, newState, callback = noop) {
-  const pState = instance._pendingState
-  // state
-  if (!pState) {
-    instance._pendingState = newState
-  } else {
-    for (const key in newState) {
-      pState[key] = newState[key]
+const pageOptionsMap = {}
+const pageStack = []
+let currentPage = null
+
+function Page(options) {
+  // 打包时注进来
+  pageOptionsMap[window.__path__] = options || {}
+}
+
+window.Page = Page
+
+function createPage(route, webviewId, query) {
+  route = route.slice(0, -5) // 去掉 .html
+  const options = pageOptionsMap[route]
+  const page = new _Page(options, webviewId, route)
+
+  currentPage = {
+    page,
+    webviewId,
+    route,
+  }
+  pageStack.push(currentPage)
+
+  serviceApi.setAppData(
+    {
+      data: page.data,
+      path: route,
+    },
+    [webviewId],
+  )
+}
+
+function recoverPage(route, webviewId) {
+  for (let i = pageStack.length - 1; i >= 0; i -= 1) {
+    const p = pageStack[i]
+
+    if (p.webviewId === webviewId) {
+      currentPage = p
+      pageStack.splice(i, pageStack.length)
+
+      serviceApi.setAppData(
+        {
+          data: p.data,
+          path: route,
+        },
+        [webviewId],
+      )
+      break
     }
   }
-
-  // callback
-  let cbs = instance._callbacks
-  callback = callback.bind(instance)
-  if (!cbs) {
-    instance._callbacks = [callback]
-  } else {
-    cbs.push(callback)
-  }
-
-  if (!isBatching) {
-    isBatching = true
-    nextTick(doSyncData)
-  }
 }
 
-function doSyncData(instance) {
-  const { _pendingState: nextState, _callbacks: cbs, _webviewId_: wvId } = instance
-  instance._pendingState = null
-  instance._callbacks = null
-  isBatching = false
-
-  invokeWebviewMethod(
-    {
-      name: 'appDataChange',
-      args: {
-        data: nextState,
-        complete() {
-          cbs.forEach(cb.bind(instance))
-        },
-      },
-    },
-    wvId,
-  )
+export function getCurrentPages() {
+  return [...pageStack]
 }
 
-function invokeWebviewMethod(params) {
-  const { name, args = {}, webviewIds } = params
+serviceApi.getCurrentPages = getCurrentPages
 
-  serviceCallbackMap[++callbackId] = {
-    success: args.success || noop,
-    fail: args.fail || noop,
-    complete: args.complete || noop,
+serviceApi.onAppRoute((params) => {
+  const { webviewId, path, query, openType } = params
+
+  switch (openType) {
+    case 'appLaunch':
+    case 'navigateTo':
+      createPage(path, webviewId, query)
+      break
+    case 'navigateBack':
+      recoverPage(path, webviewId)
+      break
+    case 'redirectTo':
+      break
+    case 'reLaunch':
+      break
   }
-
-  publish(
-    'invokeWebviewMethod',
-    {
-      name,
-      args,
-      callbackId,
-    },
-    webviewIds,
-  )
-}
+})

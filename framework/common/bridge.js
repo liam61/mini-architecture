@@ -1,7 +1,8 @@
-import global from './global'
+import _global from './global'
+import { safeExec, noop } from './utils'
 
-// const ua = global.navigator.userAgent.toLowerCase()
-const isWebview = global.webkit
+// const ua = _global.navigator.userAgent.toLowerCase()
+const isWebview = _global.webkit
 const EVENT_PREFIX = 'custom_event_'
 
 const callbackMap = {}
@@ -13,67 +14,83 @@ const eventMap = {}
 // custom event
 const customEventMap = {}
 
-function invoke(event, params = {}, callback) {
-  const paramStr = JSON.stringify(params)
+function invoke(event, params, callback = noop) {
+  const paramStr = JSON.stringify(params || {})
   callbackMap[++callbackIndex] = callback
 
   if (isWebview) {
-    global.webkit.messageHandlers.invoke.postMessage({
+    _global.webkit.messageHandlers.invoke.postMessage({
       event,
       paramsString: paramStr,
-      callbackId,
+      callbackIndex,
     })
   } else {
-    let result = global.jsCore.invoke(event, params, callbackId)
+    let result = _global.jsCore.invoke(event, paramStr, callbackIndex)
+    const cb = callbackMap[callbackIndex]
 
-    if (result && typeof callbackMap[callbackId] === 'function') {
+    if (result && typeof cb === 'function') {
       try {
         result = JSON.parse(result)
       } catch (error) {
         result = {}
       }
-      callbackMap[callbackId](result)
-      delete callbackMap[callbackId]
+      cb(result)
+      delete callbackMap[callbackIndex]
     }
   }
 }
 
-function on(event, handler) {
+function callbackHandler(callbackId, params) {
+  const cb = callbackMap[callbackId]
+  typeof cb === 'function' && cb(params || {})
+}
+
+function on(event, handler = noop) {
   eventMap[event] = handler
 }
 
-function subscribe(event, handler) {
+function subscribe(event, handler = noop) {
   customEventMap[EVENT_PREFIX + event] = handler
 }
 
-function subscribeHandler(event, data, webviewId, reportParams) {
+function subscribeHandler(event, params, webviewId) {
   const handler = event.startsWith(EVENT_PREFIX) ? customEventMap[event] : eventMap[event]
-
-  typeof handler === 'function' && handler(data, webviewId, reportParams)
+  typeof handler === 'function' && handler(params, webviewId)
 }
 
 function publish(event, params, webviewIds = []) {
-  const paramStr = JSON.stringify(params)
+  const paramStr = JSON.stringify(params || {})
   event = EVENT_PREFIX + event
   webviewIds = JSON.stringify(webviewIds)
 
   if (isWebview) {
-    global.webkit.messageHandlers.publish.postMessage({
+    _global.webkit.messageHandlers.publish.postMessage({
       event: event,
       paramsString: paramStr,
       webviewIds: webviewIds,
     })
   } else {
-    global.jsCore.publish(event, paramsString, webviewIds)
+    _global.jsCore.publish(event, paramStr, webviewIds)
   }
 }
 
 const jsBridge = {
-  invoke,
-  on,
-  publish,
-  subscribe,
+  invoke(...args) {
+    safeExec(invoke.bind(jsBridge, ...args))
+  },
+  on(...args) {
+    safeExec(on.bind(jsBridge, ...args))
+  },
+  publish(...args) {
+    safeExec(publish.bind(jsBridge, ...args))
+  },
+  subscribe(...args) {
+    safeExec(subscribe.bind(jsBridge, ...args))
+  },
   subscribeHandler,
+  callbackHandler,
 }
 
 export default jsBridge
+
+_global.jsBridge = jsBridge

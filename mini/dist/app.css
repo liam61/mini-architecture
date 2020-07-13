@@ -1,0 +1,16 @@
+.page {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.title {
+  margin: 15px 0;
+  font-size: 24px;
+}
+
+.btn {
+  width: 240px;
+  padding: 12px 0;
+  margin: 10px auto 0;
+}

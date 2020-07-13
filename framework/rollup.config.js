@@ -34,7 +34,7 @@ const plugins = [
   }),
   replace({
     __INSERT_TEXT__: JSON.stringify(
-      fs.readFileSync(__dirname + '/webview/components/reset.css', 'utf-8'), // webview only
+      fs.readFileSync(__dirname + '/webview/components/reset.css', 'utf-8'),
     ),
     __VERSION__: config.version,
   }),

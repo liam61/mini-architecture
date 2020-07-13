@@ -17,8 +17,14 @@ class DemoApp extends PolymerElement {
           text-align: center;
         }
       </style>
-      <h2>Hello [[title]]!</h2>
-      <my-view style="width: 200px; margin: 0 auto;">
+      <h2>Hello {{ title}}!</h2>
+      <my-view
+        class$="h-{{ cls}}"
+        test="a{{cls}}"
+        titlea$=" b{{cls }}"
+        style="width: 200px; margin: 0 auto;"
+      >
+        {{title}}
         <my-button bindtap="[[handleClick]]">click me</my-button>
       </my-view>
     `
@@ -30,7 +36,6 @@ class DemoApp extends PolymerElement {
       title: {
         type: String,
         value: 'demo-app',
-        reflectToAttribute: true,
       },
     }
   }
@@ -42,6 +47,8 @@ class DemoApp extends PolymerElement {
 
   ready() {
     super.ready()
+
+    this.cls = 'test'
   }
 }
 

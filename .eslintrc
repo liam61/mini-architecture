@@ -27,7 +27,6 @@
     "lines-between-class-members": "off",
     "promise/no-return-wrap": "off",
     "prefer-promise-reject-errors": "off",
-    "prettier/prettier": "warn",
-    "byted-internationalization/t-string": "off"
+    "prettier/prettier": "warn"
   }
 }

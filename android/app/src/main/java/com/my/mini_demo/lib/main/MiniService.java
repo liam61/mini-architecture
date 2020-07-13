@@ -30,7 +30,7 @@ public class MiniService extends Service {
         FileUtil.loadFramework(context);
 
         Intent intent = new Intent(context, MiniService.class);
-        context.startService(intent);
+         context.startService(intent);
     }
 
     public static void launchHome(Context context, String userId, String appId, String appPath) {

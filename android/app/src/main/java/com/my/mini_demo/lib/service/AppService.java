@@ -2,6 +2,7 @@ package com.my.mini_demo.lib.service;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.widget.LinearLayout;
 
 import com.my.mini_demo.lib.api.ApiManager;
@@ -33,36 +34,29 @@ public class AppService extends LinearLayout implements IBridge {
         mServiceWebView = new MyWebView(context, this);
 
         // 现在也是利用了 webview 提供的 js 运行环境
-        // TODO: v8 + Thread
+        // TODO: v8 worker + Thread
         addView(mServiceWebView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
     }
 
-    private void onServiceReady(String params) {
-        mAppConfig.initConfig(params);
-
-        if (mListener != null) {
-            mListener.onServiceReady();
-        }
-    }
-
-    private void onAppDataChange(String event, String params, String viewIds) {
-        if (mListener != null) {
-            mListener.notifyPageSubscribers(event, params, JsonUtil.parse2IntArray(viewIds));
-        }
-    }
-
     public void subscribeHandler(String event, String params, int viewId) {
-        String jsFun = String.format("javascript:ServiceJSBridge.subscribeHandler('%s', %s, %s)",
+        String jsFun = String.format("javascript:jsBridge.subscribeHandler('%s', %s, %s)",
                 event, params, viewId);
         mServiceWebView.loadUrl(jsFun);
     }
 
     @Override
     public void publish(String event, String params, String viewIds) {
+        // prefix 在 framework 中拼接
         if ("custom_event_serviceReady".equals(event)) {
-            onServiceReady(params);
+            mAppConfig.initConfig(params);
+
+            if (mListener != null) {
+                mListener.onServiceReady();
+            }
         } else if ("custom_event_appDataChange".equals(event)) {
-            onAppDataChange(event, params, viewIds);
+            if (mListener != null) {
+                mListener.notifyPageSubscribers(event, params, JsonUtil.parse2IntArray(viewIds));
+            }
         }
     }
 
@@ -74,7 +68,7 @@ public class AppService extends LinearLayout implements IBridge {
 
     @Override
     public void callback(String cbId, String result) {
-        mServiceWebView.loadUrl(String.format("javascript:ServiceJSBridge.invokeCallbackHandler(%s, %s)",
+        mServiceWebView.loadUrl(String.format("javascript:jsBridge.callbackHandler(%s, %s)",
                 cbId, result));
     }
 

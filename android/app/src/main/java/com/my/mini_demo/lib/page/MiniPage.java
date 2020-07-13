@@ -3,6 +3,7 @@ package com.my.mini_demo.lib.page;
 import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
@@ -25,11 +26,6 @@ import java.util.Set;
  * 小程序 View 层，加载相应的 xxxPage.html
  */
 public class MiniPage extends LinearLayout implements IBridge {
-
-    public static final String APP_LAUNCH = "appLaunch";
-    public static final String NAVIGATE_TO = "navigateTo";
-    public static final String NAVIGATE_BACK = "navigateBack";
-    public static final String REDIRECT_TO = "redirectTo";
 
     private Context mContext;
     private AppConfig mAppConfig;
@@ -62,8 +58,9 @@ public class MiniPage extends LinearLayout implements IBridge {
         MyWebView webView = new MyWebView(mContext, this);
         // 控制 webview 中的网页跳转依然在 webview 中打开
         webView.setWebViewClient(new MyWebViewClient(mAppConfig));
+        // webView.setWebChromeClient();
         mCurWebView = webView;
-        // 正式添加 webview
+
         mWebLayout.addView(webView, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.MATCH_PARENT));
     }
@@ -73,18 +70,18 @@ public class MiniPage extends LinearLayout implements IBridge {
     }
 
     public boolean onLaunchHome(String url) {
-        return loadUrl(url, APP_LAUNCH);
+        return loadUrl(url, "appLaunch");
     }
 
     public boolean onNavigateTo(String url) {
-        return loadUrl(url, NAVIGATE_TO);
+        return loadUrl(url, "navigateTo");
     }
 
     /**
      * 导航回到此界面
      */
     public boolean onNavigateBack() {
-        mOpenType = NAVIGATE_BACK;
+        mOpenType = "navigateBack";
         return onDomContentLoaded();
     }
 
@@ -117,13 +114,17 @@ public class MiniPage extends LinearLayout implements IBridge {
 
                 mNavBar.setTitle(mAppConfig.getPageTitle(mPagePath));
 
-                String sourceDir = mAppConfig.getMiniAppSourcePath(getContext());
-                String baseUrl = Uri.fromFile(new File(sourceDir)).toString();
-                // 加载 xxxPage.html
-                String content = FileUtil.readString(new File(sourceDir, path));
+//                String sourceDir = mAppConfig.getMiniAppSourcePath(getContext());
+//                String baseUrl = Uri.fromFile(new File(sourceDir)).toString();
+                // 加载 pages/**/xxx.html
+//                String content = FileUtil.readString(new File(sourceDir, path));
 
-                mCurWebView.loadDataWithBaseURL(baseUrl, content,
-                        "text/html", "UTF-8", null);
+//                mCurWebView.loadDataWithBaseURL(baseUrl, content,
+//                        "text/html", "utf-8", null);
+
+                File serviceFile = new File(mAppConfig.getMiniAppSourcePath(getContext()), mPagePath);
+                String servicePath = Uri.fromFile(serviceFile).toString();
+                mCurWebView.loadUrl(servicePath);
             }
         });
     }
@@ -148,22 +149,16 @@ public class MiniPage extends LinearLayout implements IBridge {
                 if (!TextUtils.isEmpty(mPagePath)) {
                     Uri uri = Uri.parse(mPagePath);
                     json.put("path", uri.getPath());
-                    Set<String> keys = uri.getQueryParameterNames();
-
-                    if (keys != null && keys.size() > 0) {
-                        JSONObject queryJson = new JSONObject();
-                        for (String key: keys) {
-                            String value = uri.getQueryParameter(key);
-                            queryJson.put(key, value);
-                        }
-                        json.put("query", queryJson);
-                    }
+                    // Set<String> keys = uri.getQueryParameterNames(); // foreach
                 }
+
+
+                Log.d("MiniDemo", String.valueOf(json));
                 eventParams = json.toString();
                 mListener.notifyServiceSubscribers(eventName, eventParams, getViewId());
                 return true;
             } catch (JSONException e) {
-                System.err.print("onDomContentLoaded assembly params exception");
+                Log.d("MiniDemo", "onDomContentLoaded assembly params exception");
             }
         }
         return false;
@@ -180,7 +175,7 @@ public class MiniPage extends LinearLayout implements IBridge {
 
             for (int viewId : viewIds) {
                 if (viewId == webView.getViewId()) {
-                    String jsFun = String.format("javascript:HeraJSBridge.subscribeHandler('%s', %s)",
+                    String jsFun = String.format("javascript:jsBridge.subscribeHandler('%s', %s)",
                             event, params);
                     webView.loadUrl(jsFun);
                     break;

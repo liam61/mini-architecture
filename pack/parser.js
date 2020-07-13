@@ -85,12 +85,12 @@ function parse(params) {
     })
 
     const { code } = generator(ast, { minified: !isDev, comments: isDev })
-    const jsCode = genJsCode(dynamicMap[page].data, dynamicMap[page].event)
+    const jsCode = genJsCode(dynamicMap[page].event)
     // why you end with ";"
     result = { code: code.slice(0, -1), js: jsCode }
   } else {
     const source = babel.transform(output, {
-      presets: ['@babel/preset-env', 'minify'], // isJsx && ['@babel/preset-react', { pragma: '_l' }]
+      presets: ['@babel/preset-env', !isDev && 'minify'], // isJsx && ['@babel/preset-react', { pragma: '_l' }]
       plugins: [],
       sourceMaps: isDev,
       sourceRoot: process.cwd(),
@@ -127,16 +127,16 @@ function addDynamicValue(page, type, value) {
   dynamicMap[page][type].add(value)
 }
 
-function genJsCode(data, events) {
-  return [...data, ...events].reduce((tpl, name) => {
-    return (tpl += `${
-      name.startsWith(PREFIX_EVENT)
-        ? `_binder["${name}"] = function ${name}(ev) {
-            window.ns.publishPageEvent("${name}", ev)
-          };`
-        : ''
-    }`)
-  }, `;window._binder = document.getElementById("_binder");Object.assign(_binder, window.ns.data);`)
+function genJsCode(events) {
+  return [...events].reduce((tpl, name, i, arr) => {
+    tpl += `_binder["${name}"] = function(ev) {
+      window.ns.publishPageEvent("${name.slice(PREFIX_EVENT.length)}", ev)
+    };`
+    if (i === arr.length - 1) {
+      tpl += `Object.assign(_binder, window.ns.data || {});}`
+    }
+    return tpl
+  }, `;window._binder = document.getElementById("_binder"); function _bindData() {`)
 }
 
 // parse({

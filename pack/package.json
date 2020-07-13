@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "pack": "cross-env NODE_ENV=production node ./index.js"
+    "dev": "cross-env NODE_ENV=develop node index.js",
+    "build": "cross-env NODE_ENV=production node index.js"
   },
   "author": "lawler61",
   "license": "ISC",

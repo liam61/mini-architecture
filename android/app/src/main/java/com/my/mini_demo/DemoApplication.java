@@ -16,7 +16,7 @@ public class DemoApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        // 如果已经打开 demo app 则预加载
+        // 如果已经打开 demoApp 则预加载
         if (isMainProcess(this)) {
             MiniConfig config = new MiniConfig.Builder()
                     .loadExtendsApi(new OpenLink(getApplicationContext()))

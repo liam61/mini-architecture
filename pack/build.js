@@ -6,6 +6,7 @@ const parse = require('./parser')
 const Concat = require('concat-with-sourcemaps')
 const minify = require('html-minifier').minify
 
+const isDev = process.env.NODE_ENV !== 'production'
 const rootPath = path.join(__dirname, '../')
 const minifyConfig = {
   preserveLineBreaks: true,
@@ -27,14 +28,13 @@ function transformView(source, pages, output) {
   let appCss = fs.existsSync(appCssPath) ? fs.readFileSync(appCssPath, 'utf-8') : ''
   if (appCss) {
     const insertTpl = fs.readFileSync(path.join(rootPath, 'framework/common/insert.js'), 'utf-8')
-    appCss = insertTpl.replace('__INSERT_TEXT__', `\`${appCss}\``)
+    appCss = insertTpl.replace('__INSERT_TEXT__', `'${appCss}'`).replace(/\n/g, '')
   }
 
   pages.forEach((page) => {
     const { code, js } = parse({ fullPath: path.join(source, page + '.html'), page })
     const cssPath = path.join(source, page + '.css')
     const css = fs.existsSync(cssPath) ? fs.readFileSync(cssPath, 'utf-8') : ''
-
     const content = viewTpl({
       __TEMPLATE_HTML__: code,
       __TEMPLATE_JS__: appCss + js,
@@ -44,11 +44,11 @@ function transformView(source, pages, output) {
     // 默认以 /index 结束
     const targetDir = path.join(output, page.slice(0, -6))
     fs.mkdirSync(targetDir, { recursive: true })
-    fs.writeFileSync(targetDir + '/index.html', minify(content, minifyConfig))
+    fs.writeFileSync(targetDir + '/index.html', isDev ? content : minify(content, minifyConfig))
   })
 }
 
-function transformService(source, pages, output) {
+function transformService(source, pages, output, config) {
   const jsFiles = glob.sync(`${source}/**/*.js`, { ignore: [] })
   const serviceTpl = loadTemplate('service')
 
@@ -70,10 +70,17 @@ function transformService(source, pages, output) {
   })
 
   const jsCode = concatFiles(sourceArr)
-  const content = serviceTpl({})
+  config.root = config.root || pages[0]
+
+  const content = serviceTpl({
+    __CONFIG__: `\`${JSON.stringify(config)}\``,
+  })
 
   fs.writeFileSync(path.join(output, 'app-service.js'), jsCode)
-  fs.writeFileSync(path.join(output, 'service.html'), minify(content, minifyConfig))
+  fs.writeFileSync(
+    path.join(output, 'service.html'),
+    isDev ? content : minify(content, minifyConfig),
+  )
 }
 
 function loadTemplate(name) {

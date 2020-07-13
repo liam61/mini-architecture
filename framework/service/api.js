@@ -1,67 +1,58 @@
 import jsBridge from '../common/bridge'
-import { safeExec, noop } from '../common/utils'
+import { noop } from '../common/utils'
 
-function invoke(...args) {
-  safeExec(jsBridge.invoke(args))
+export const appRouteCallbacks = []
+export const callbackMap = {}
+let callbackIndex = 0
+
+const serviceApi = {
+  invoke: jsBridge.invoke,
+  on: jsBridge.on,
+  publish: jsBridge.publish,
+  subscribe: jsBridge.subscribe,
+  navigateTo(params) {
+    if (params.url + '') {
+      params.url = params.url + '.html' // 添上后缀
+      invokeRouteMethod('navigateTo', params)
+    }
+  },
+  navigateBack(params) {
+    if (typeof params.delta !== 'number' || +params.delta < 1) {
+      params.delta = 1
+    }
+    invokeRouteMethod('navigateBack', params)
+  },
+  redirectTo(params) {},
+  reLaunch(params) {},
+  onAppRoute(callback = noop) {
+    appRouteCallbacks.push(callback)
+  },
+  setAppData(params, webviewIds = []) {
+    const { data, path, callback } = params || {}
+    callbackMap[++callbackIndex] = callback
+
+    jsBridge.publish(
+      'appDataChange',
+      {
+        data,
+        callbackId: callbackIndex,
+      },
+      webviewIds,
+    )
+  },
 }
 
-function on(...args) {
-  safeExec(jsBridge.on(args))
-}
+function invokeRouteMethod(event, params) {
+  const { success = noop, fail = noop, complete = noop, ...restParams } = params || {}
 
-function publish(...args) {
-  args[1] = { data: args[1] }
-  safeExec(jsBridge.publish(args))
-}
-
-function subscribe(...args) {
-  safeExec(jsBridge.subscribe(args))
-}
-
-function createPage(route, webviewId, query) {
-  const page = new Page(route, webviewId)
-
-  currentPage = {
-    page,
-    webviewId,
-    route,
-  }
-  pageStack.push(currentPage)
-}
-
-function invokeMethod(event, params) {
-  invoke(event, params, (res) => {
+  jsBridge.invoke(event, restParams, (res) => {
     const { success: isOk } = res
-    const { success = noop, fail = noop, complete = noop } = params
 
     isOk ? success(res) : fail(res)
     complete(res)
   })
 }
 
-const serviceApi = {
-  invoke,
-  on,
-  publish,
-  subscribe,
-  // service
-  navigateTo(params = {}) {
-    if (params.url + '') {
-      invokeMethod('navigateTo', params)
-    }
-  },
-  navigateBack(params = {}) {
-    if (typeof params.delta !== 'number' || +params.delta < 1) {
-      params.delta = 1
-    }
-    invokeMethod('navigateBack', params)
-  },
-  redirectTo(params = {}) {},
-  reLaunch(params = {}) {},
-  // for debug
-  setData(data = {}, webviewIds = []) {
-    publish('appDataChange', data, webviewIds)
-  },
-}
+export { serviceApi }
 
-export default serviceApi
+window.ns = serviceApi

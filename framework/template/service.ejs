@@ -4,12 +4,13 @@
     <meta charset="UTF-8" />
     <meta http-equiv="Content-Type" content="text/html" />
     <title>Service</title>
-    <script src="../../../../framework/dist/service.js"></script>
+    <script src="../../../framework/service.js"></script>
+    <script src="app-service.js"></script>
   </head>
   <body>
     <script>
-      if (typeof jsCore === 'object') {
-        jsCore.publish('serviceReady')
+      if (typeof ns === 'object') {
+        ns.publish('serviceReady', { config: <%- __CONFIG__ %> }, "[]")
       }
     </script>
   </body>

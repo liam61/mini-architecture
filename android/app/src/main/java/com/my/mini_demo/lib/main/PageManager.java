@@ -1,6 +1,7 @@
 package com.my.mini_demo.lib.main;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.FrameLayout;
 
 import com.my.mini_demo.lib.config.AppConfig;
@@ -25,6 +26,10 @@ public class PageManager {
 
     public FrameLayout getContainer() {
         return mContainer;
+    }
+
+    private int getPageCount() {
+        return mContainer.getChildCount();
     }
 
     private MiniPage createPage(String url) {
@@ -99,12 +104,12 @@ public class PageManager {
     public boolean pageEventHandler(String event, String params) {
         if ("navigateTo".equals(event)) {
             return navigateToPage(JsonUtil.getStringValue(params, "url", ""));
+        } else if ("navigateBack".equals(event)) {
+            return navigateBackPage(JsonUtil.getIntValue(params, "delta", 0));
         } else if ("redirectTo".equals(event)) {
             return false;
         } else if ("reLaunch".equals(event)) {
             return false;
-        } else if ("navigateBack".equals(event)) {
-            return navigateBackPage(JsonUtil.getIntValue(params, "delta", 0));
         } else if ("setNavigationBarTitle".equals(event)) {
             return setNavigationBarTitle(JsonUtil.getStringValue(params, "title", ""));
         }
@@ -119,7 +124,7 @@ public class PageManager {
         int count = getPageCount();
 
         if (delta <= 0 || delta >= count) {
-            System.err.print("removePages by delta " + delta + " failed");
+            Log.e("MiniDemo", "removePages by delta " + delta + " failed");
             return false;
         }
 
@@ -127,9 +132,5 @@ public class PageManager {
             mContainer.removeViewAt(i);
         }
         return true;
-    }
-
-    private int getPageCount() {
-        return mContainer.getChildCount();
     }
 }

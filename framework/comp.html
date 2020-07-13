@@ -10,9 +10,28 @@
     <meta name="description" content="base components for mini app" />
     <link rel="stylesheet" href="webview/components/reset.css" />
     <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+    <script
+      type="module"
+      src="node_modules/@polymer/polymer/lib/elements/dom-bind.js"
+      crossorigin
+    ></script>
     <script type="module" src="webview/components/demo-app.js" crossorigin></script>
+    <script type="module" src="webview/components/button.js" crossorigin></script>
   </head>
   <body>
-    <demo-app></demo-app>
+    <!-- https://polymer-library.polymer-project.org/3.0/docs/devguide/templates -->
+    <dom-bind>
+      <template>
+        <demo-app></demo-app>
+        <my-button bindtap="[[myClick]]" attr$="{{  attr}}">my click{{  attr}}</my-button>
+      </template>
+    </dom-bind>
+    <script>
+      const autobind = document.querySelector('dom-bind')
+      autobind.myClick = function () {
+        console.log('click out of polymer element')
+      }
+      autobind.attr = 'attr-test'
+    </script>
   </body>
 </html>

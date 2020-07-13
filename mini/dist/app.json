@@ -4,6 +4,6 @@
     "pages/demo/index"
   ],
   "window": {
-    "navigationBarTitleText": "miniApp"
+    "navigationBarTitleText": "miniDemo"
   }
 }

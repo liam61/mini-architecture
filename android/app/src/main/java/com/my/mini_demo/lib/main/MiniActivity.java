@@ -2,6 +2,7 @@ package com.my.mini_demo.lib.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,7 +38,7 @@ public class MiniActivity extends AppCompatActivity implements OnEventListener {
         String userId = intent.getStringExtra(USER_ID);
         String appPath = intent.getStringExtra(APP_PATH);
 
-        System.out.print(userId + " open " + appId);
+        Log.d("MiniDemo", userId + " open " + appId);
         mAppConfig = new AppConfig(appId, userId);
         mApiManager = new ApiManager(this, this, mAppConfig);
         mApiManager.onCreate();
@@ -69,34 +70,21 @@ public class MiniActivity extends AppCompatActivity implements OnEventListener {
                 ConstraintLayout.LayoutParams.MATCH_PARENT));
     }
 
-//    private MyWebView initWebView(Context context) {
-//        MyWebView webView = new MyWebView(context);
-//
-//        // 控制 webview 中的网页跳转依然在 webview 中打开
-//        webView.setWebViewClient(new MyWebViewClient());
-//
-//        webView.loadUrl("https://www.baidu.com");
-//        webView.loadUrl("file:///android_asset/page-frame.html");
-//
-//        return webView;
-//    }
-
     @Override
     public void onServiceReady() {
-        System.out.print("onServiceReady");
         mPageManager.launchHomePage(mAppConfig.getRootPath());
     }
 
     @Override
     public void notifyPageSubscribers(String event, String params, int[] viewIds) {
-        System.out.print(String.format("notifyPageSubscribers %s, %s, %s",
+        Log.d("MiniDemo", String.format("notifyPageSubscribers %s, %s, %s",
                 event, params, Arrays.toString(viewIds)));
         mPageManager.subscribeHandler(event, params, viewIds);
     }
 
     @Override
     public void notifyServiceSubscribers(String event, String params, int viewId) {
-        System.out.print(String.format("notifyServiceSubscribers %s, %s, %s",
+        Log.d("MiniDemo", String.format("notifyServiceSubscribers %s, %s, %s",
                 event, params, viewId));
         mAppService.subscribeHandler(event, params, viewId);
     }

@@ -4,17 +4,39 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "pack": "node pack.js"
+    "bootstrap": "node run.js --t bootstrap",
+    "dev": "cross-env NODE_ENV=develop node run.js --t build",
+    "build": "cross-env NODE_ENV=production node run.js --t build"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "framework/**/*.js,mini/**/*.js,pack/**/*.js": [
+      "eslint",
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "author": "lawler61",
+  "license": "ISC",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lawler61/mini-architecture.git"
   },
-  "author": "lawler61",
-  "license": "ISC",
   "homepage": "https://github.com/lawler61/mini-architecture#readme",
   "devDependencies": {
-    "archiver": "^4.0.1",
-    "fs-extra": "^9.0.1"
+    "commander": "^5.1.0",
+    "cross-env": "^7.0.2",
+    "eslint": "^7.4.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-standard": "^4.0.1",
+    "fs-extra": "^9.0.1",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.11",
+    "prettier": "^2.0.5"
   }
 }

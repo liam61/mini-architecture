@@ -14,9 +14,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final String appId = "miniapp";
-        final String userId = "lawler";
-        final String appPath = ""; // 不传则使用 appId
+        final String appId = "mini1";
+        final String userId = "lawler61";
+        final String appPath = "miniDemo.zip"; // 不传则使用 appId
 
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override

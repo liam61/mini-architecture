@@ -5,13 +5,10 @@ const { transformView, transformService } = require('./build')
 
 const rootPath = path.join(__dirname, '../')
 const outputDir = path.join(rootPath, 'android/app/src/main/assets')
-const tmpDir = 'pack/_tmp'
 
 pack()
 
 function pack() {
-  fs.removeSync(path.join(rootPath, tmpDir))
-
   packFramework()
   packMini()
 }
@@ -22,6 +19,10 @@ function packFramework() {
 
   zipFiles(source, name, path.join(source, `../__${name}`), (s, output) => {
     const targetPath = path.join(outputDir, name)
+
+    if (fs.existsSync(targetPath)) {
+      fs.removeSync(targetPath)
+    }
     fs.copySync(output, targetPath)
     console.log(`\nsuccess create ${targetPath}...`)
   })
@@ -30,17 +31,21 @@ function packFramework() {
 function packMini() {
   const source = path.join(rootPath, 'mini/dist')
   const name = 'miniDemo.zip'
-  const tmp = path.join(rootPath, tmpDir)
+  const tmp = path.join(rootPath, 'pack/_tmp')
 
-  const config = fs.readFileSync(path.join(source, 'app.json'), 'utf-8')
-  const { pages = [] } = JSON.parse(config)
+  const config = JSON.parse(fs.readFileSync(path.join(source, 'app.json'), 'utf-8'))
+  const { pages = [] } = config
 
   transformView(source, pages, tmp)
-  transformService(source, pages, tmp)
+  transformService(source, pages, tmp, config)
   copyOther(source, tmp)
 
-  zipFiles(tmp, name, path.join(source, `../__${name}`), (s, output) => {
+  zipFiles(tmp, name, path.join(tmp, `../__${name}`), (s, output) => {
     const targetPath = path.join(outputDir, name)
+
+    if (fs.existsSync(targetPath)) {
+      fs.removeSync(targetPath)
+    }
     fs.copySync(output, targetPath)
     console.log(`\nsuccess create ${targetPath}...`)
   })
@@ -51,9 +56,8 @@ function copyOther(source, targetPath) {
 
   fs.copySync(source, targetPath, {
     filter(src) {
-      if (fs.lstatSync(src).isDirectory()) {
-        return true
-      }
+      if (fs.lstatSync(src).isDirectory()) return true
+      if (src.includes('app.json')) return false
       return !exclude.some((ext) => ext === path.extname(src))
     },
   })

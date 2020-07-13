@@ -3,6 +3,7 @@ package com.my.mini_demo.lib.utils;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.my.mini_demo.lib.main.MiniService;
 
@@ -30,7 +31,7 @@ public class FileUtil {
     }
 
     public static File getMiniAppDir(Context context, String appId) {
-        String appPath = getPath(context) + "app/";
+        String appPath = getPath(context) + "/app";
         File appDir = new File(appPath, appId);
 
         if (!appDir.exists() || !appDir.isDirectory()) {
@@ -39,7 +40,7 @@ public class FileUtil {
         return appDir;
     }
 
-    public static File getMiniAppSourceDir(Context context, String appId) {
+    public static File getMiniSourceDir(Context context, String appId) {
         File sourceDir = new File(getMiniAppDir(context, appId), "source");
 
         if (!sourceDir.exists() || !sourceDir.isDirectory()) {
@@ -67,7 +68,7 @@ public class FileUtil {
             fis.read(buffer);
             content = new String(buffer, StandardCharsets.UTF_8);
         } catch (Exception e) {
-            System.err.print(e.toString());
+            e.printStackTrace();
         } finally {
             if (fis != null) {
                 try {
@@ -157,8 +158,14 @@ public class FileUtil {
         @Override
         protected Boolean doInBackground(String... params) {
             String type = params[0]; // app | framework
-            String appId = params[1];
-            String dirPath = params[2];
+            String appId = "";
+            String dirPath = "";
+
+            if (params.length > 1) {
+                appId = params[1];
+                dirPath = params[2];
+            }
+
             String outputPath;
 
             if ("app".equals(type)) {
@@ -166,7 +173,7 @@ public class FileUtil {
                 if (TextUtils.isEmpty(dirPath)) {
                     dirPath = appId + ".zip";
                 }
-                outputPath = FileUtil.getMiniAppSourceDir(mContext, appId).getAbsolutePath();
+                outputPath = FileUtil.getMiniSourceDir(mContext, appId).getAbsolutePath();
             } else {
                 dirPath = MiniService.FRAMEWORK;
                 outputPath = FileUtil.getFrameworkDir(mContext).getAbsolutePath();
