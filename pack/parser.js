@@ -90,7 +90,7 @@ function parse(params) {
     result = { code: code.slice(0, -1), js: jsCode }
   } else {
     const source = babel.transform(output, {
-      presets: ['@babel/preset-env', !isDev && 'minify'], // isJsx && ['@babel/preset-react', { pragma: '_l' }]
+      presets: isDev ? ['@babel/preset-env'] : ['@babel/preset-env', 'minify'], // isJsx && ['@babel/preset-react', { pragma: '_l' }]
       plugins: [],
       sourceMaps: isDev,
       sourceRoot: process.cwd(),
@@ -98,14 +98,14 @@ function parse(params) {
       babelrc: false,
     })
 
-    const concat = new Concat(true, fullPath, '\n')
+    const shortPath = getShortPath(fullPath)
+    const concat = new Concat(true, shortPath, '\n')
     concat.add(
       null,
-      `define("${fullPath}", function(require,module,exports,window,document,frames,self,location,navigator,localStorage,history,Caches,screen,alert,confirm,prompt,fetch,XMLHttpRequest,WebSocket,webkit,jsCore,jSBridge) {`,
+      `define("${shortPath}", function(require,module,exports,window,document,frames,self,location,navigator,localStorage,history,Caches,screen,alert,confirm,prompt,fetch,XMLHttpRequest,WebSocket,webkit,jsCore,jSBridge) {`,
     )
-    concat.add(fullPath, source.code, source.map)
-    // concat.add(null, '});' + (isModule ? '' : `require("${full_path}")`))
-    concat.add(null, '});' + `require("${fullPath}");`)
+    concat.add(shortPath, source.code, source.map)
+    concat.add(null, '});' + `require("${shortPath}");`)
 
     result = {
       code: concat.content,
@@ -137,6 +137,12 @@ function genJsCode(events) {
     }
     return tpl
   }, `;window._binder = document.getElementById("_binder"); function _bindData() {`)
+}
+
+function getShortPath(path) {
+  const arr = path.split('/')
+  const idx = arr.findIndex((dir) => dir === 'mini')
+  return arr.slice(idx).join('/')
 }
 
 // parse({

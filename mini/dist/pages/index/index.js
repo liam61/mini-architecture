@@ -17,9 +17,6 @@ Page({
       this.setData({ hello, loading: false })
     })
   },
-  jsAlert() {
-    ns.alert()
-  },
   goDemoPage() {
     ns.navigateTo({
       url: 'pages/demo/index',
@@ -27,5 +24,8 @@ Page({
         console.log('success navigateTo demo page')
       },
     })
+  },
+  jsAlert() {
+    ns.alert('这是利用 jsAlert 建立的 jsBridge')
   },
 })

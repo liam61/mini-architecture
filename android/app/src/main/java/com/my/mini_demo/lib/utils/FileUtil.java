@@ -3,25 +3,21 @@ package com.my.mini_demo.lib.utils;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.my.mini_demo.lib.main.MiniService;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 /**
  * 文件工具类
  * ../miniDemo/
- * ../miniDemo/app/
- * ../miniDemo/app/$appId/
- * ../miniDemo/app/$appId/source/ 存放当前小程序源码
+ * ../miniDemo/$appId/
+ * ../miniDemo/$appId/source/ 存放当前小程序源码
  * ../miniDemo/framework/  存放小程序框架
  */
 public class FileUtil {
@@ -30,18 +26,14 @@ public class FileUtil {
         return context.getFilesDir() + "/miniDemo";
     }
 
-    public static File getMiniAppDir(Context context, String appId) {
-        String appPath = getPath(context) + "/app";
-        File appDir = new File(appPath, appId);
+    public static File getMiniSourceDir(Context context, String appId) {
+        File appDir = new File(getPath(context), appId);
 
         if (!appDir.exists() || !appDir.isDirectory()) {
             appDir.mkdirs();
         }
-        return appDir;
-    }
 
-    public static File getMiniSourceDir(Context context, String appId) {
-        File sourceDir = new File(getMiniAppDir(context, appId), "source");
+        File sourceDir = new File(appDir, "source");
 
         if (!sourceDir.exists() || !sourceDir.isDirectory()) {
             sourceDir.mkdirs();
@@ -56,30 +48,6 @@ public class FileUtil {
             frameworkDir.mkdirs();
         }
         return frameworkDir;
-    }
-
-    public static String readString(File file) {
-        String content = null;
-        FileInputStream fis = null;
-
-        try {
-            fis = new FileInputStream(file);
-            byte[] buffer = new byte[fis.available()];
-            fis.read(buffer);
-            content = new String(buffer, StandardCharsets.UTF_8);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (fis != null) {
-                try {
-                    fis.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        return content;
     }
 
     public static boolean unzipFile(InputStream in, String dir) {

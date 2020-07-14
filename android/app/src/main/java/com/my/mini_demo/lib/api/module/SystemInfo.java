@@ -54,7 +54,7 @@ public class SystemInfo extends BaseApi {
         this.windowWidth = dm.widthPixels;
         this.windowHeight = dm.heightPixels - statusBarHeight;
         this.language = "zh-CN";
-        this.version = "1.0";
+        this.version = "0.0.1";
         this.system = Build.VERSION.RELEASE;
         this.platform = "android";
         this.SDKVersion = "0.0.1";

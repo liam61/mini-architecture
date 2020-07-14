@@ -13,7 +13,6 @@ function Page(options) {
 window.Page = Page
 
 function createPage(route, webviewId, query) {
-  route = route.slice(0, -5) // 去掉 .html
   const options = pageOptionsMap[route]
   const page = new _Page(options, webviewId, route)
 
@@ -27,7 +26,6 @@ function createPage(route, webviewId, query) {
   serviceApi.setAppData(
     {
       data: page.data,
-      path: route,
     },
     [webviewId],
   )
@@ -39,12 +37,11 @@ function recoverPage(route, webviewId) {
 
     if (p.webviewId === webviewId) {
       currentPage = p
-      pageStack.splice(i, pageStack.length)
+      pageStack.splice(i + 1, pageStack.length)
 
       serviceApi.setAppData(
         {
           data: p.data,
-          path: route,
         },
         [webviewId],
       )
@@ -57,7 +54,13 @@ export function getCurrentPages() {
   return [...pageStack]
 }
 
+export function getCurPageInstance() {
+  const { page } = pageStack[pageStack.length - 1] || {}
+  return page
+}
+
 serviceApi.getCurrentPages = getCurrentPages
+serviceApi.getCurPageInstance = getCurPageInstance
 
 serviceApi.onAppRoute((params) => {
   const { webviewId, path, query, openType } = params

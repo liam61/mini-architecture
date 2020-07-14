@@ -1,8 +1,10 @@
 Page({
   data: {
-    info: {},
+    system: 'unknown',
+    screenWidth: 'unknown',
+    screenHeight: 'unknown',
+    pixelRatio: 'unknown',
   },
-  getSystemInfo() {},
   goBack() {
     ns.navigateBack({
       delta: 1,
@@ -10,5 +12,18 @@ Page({
         console.log('success navigateTo demo page')
       },
     })
+  },
+  getSystemInfo() {
+    ns.getSystemInfo({
+      success(info) {
+        this.setData(info)
+      },
+      fail() {
+        console.log('get systemInfo fail')
+      },
+    })
+  },
+  setPageTitle() {
+    ns.setNavigationBarTitle(`you changed title ${Math.random().toFixed(3)}`)
   },
 })

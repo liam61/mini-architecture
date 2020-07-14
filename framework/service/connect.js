@@ -1,5 +1,4 @@
 import { serviceApi, appRouteCallbacks, callbackMap } from './api'
-import { getCurrentPages } from './page'
 
 serviceApi.subscribe('navigateTo', (params) => {
   serviceApi.navigateTo(params)
@@ -16,10 +15,9 @@ serviceApi.subscribe('invokeMethod', (params) => {
 
 serviceApi.subscribe('pageEvent', (params) => {
   const { eventName, data } = params
-  const curPages = getCurrentPages()
-  const { page } = curPages[curPages.length - 1]
-  const fn = page[eventName]
-  typeof fn === 'function' && fn.apply(page, data)
+  const instance = serviceApi.getCurPageInstance()
+  const fn = instance[eventName]
+  typeof fn === 'function' && fn.apply(instance, data)
 })
 
 serviceApi.on('onAppRoute', (params) => {

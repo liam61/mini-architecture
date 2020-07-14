@@ -12,7 +12,6 @@ const serviceApi = {
   subscribe: jsBridge.subscribe,
   navigateTo(params) {
     if (params.url + '') {
-      params.url = params.url + '.html' // 添上后缀
       invokeRouteMethod('navigateTo', params)
     }
   },
@@ -24,11 +23,21 @@ const serviceApi = {
   },
   redirectTo(params) {},
   reLaunch(params) {},
+  setNavigationBarTitle(title = '') {
+    invokeRouteMethod('setNavigationBarTitle', { title })
+  },
+  getSystemInfo(params) {
+    invokeRouteMethod('getSystemInfo', params)
+  },
+  alert(message) {
+    const instance = serviceApi.getCurPageInstance()
+    jsBridge.publish('nativeAlert', { message }, [instance.webviewId])
+  },
   onAppRoute(callback = noop) {
     appRouteCallbacks.push(callback)
   },
   setAppData(params, webviewIds = []) {
-    const { data, path, callback } = params || {}
+    const { data, callback } = params || {}
     callbackMap[++callbackIndex] = callback
 
     jsBridge.publish(
@@ -42,14 +51,15 @@ const serviceApi = {
   },
 }
 
-function invokeRouteMethod(event, params) {
+function invokeRouteMethod(eventName, params) {
   const { success = noop, fail = noop, complete = noop, ...restParams } = params || {}
 
-  jsBridge.invoke(event, restParams, (res) => {
-    const { success: isOk } = res
+  jsBridge.invoke(eventName, restParams, (res) => {
+    const { success: isOk, status, ...restResult } = res
+    const instance = serviceApi.getCurPageInstance()
 
-    isOk ? success(res) : fail(res)
-    complete(res)
+    isOk ? success.call(instance, restResult) : fail.call(instance, restResult)
+    complete.call(instance, restResult)
   })
 }
 

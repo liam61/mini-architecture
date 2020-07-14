@@ -9,6 +9,11 @@ webviewApi.subscribe('appDataChange', (params) => {
   webviewApi.publish('dataChangeCallback', { callbackId })
 })
 
+webviewApi.subscribe('nativeAlert', (params) => {
+  const { message } = params
+  window.alert(`native::${message}`)
+})
+
 document.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => {
     // first render: trigger onAppRoute and then appservice set data

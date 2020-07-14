@@ -12,7 +12,7 @@ import com.my.mini_demo.lib.config.AppConfig;
 import com.my.mini_demo.lib.interfaces.IBridge;
 import com.my.mini_demo.lib.interfaces.OnEventListener;
 import com.my.mini_demo.lib.page.view.NavigationBar;
-import com.my.mini_demo.lib.utils.FileUtil;
+import com.my.mini_demo.lib.web.MyWebChromeClient;
 import com.my.mini_demo.lib.web.MyWebView;
 import com.my.mini_demo.lib.web.MyWebViewClient;
 
@@ -20,7 +20,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.util.Set;
 
 /**
  * 小程序 View 层，加载相应的 xxxPage.html
@@ -53,12 +52,12 @@ public class MiniPage extends LinearLayout implements IBridge {
         mWebLayout = findViewById(R.id.page_view);
 
         mNavBar = new NavigationBar(mContext);
-        topLayout.addView(mNavBar, new LayoutParams(LayoutParams.MATCH_PARENT, 20));
+        topLayout.addView(mNavBar, new LayoutParams(LayoutParams.MATCH_PARENT, 140));
 
         MyWebView webView = new MyWebView(mContext, this);
         // 控制 webview 中的网页跳转依然在 webview 中打开
         webView.setWebViewClient(new MyWebViewClient(mAppConfig));
-        // webView.setWebChromeClient();
+         webView.setWebChromeClient(new MyWebChromeClient());
         mCurWebView = webView;
 
         mWebLayout.addView(webView, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
@@ -113,18 +112,9 @@ public class MiniPage extends LinearLayout implements IBridge {
                 }
 
                 mNavBar.setTitle(mAppConfig.getPageTitle(mPagePath));
-
-//                String sourceDir = mAppConfig.getMiniAppSourcePath(getContext());
-//                String baseUrl = Uri.fromFile(new File(sourceDir)).toString();
-                // 加载 pages/**/xxx.html
-//                String content = FileUtil.readString(new File(sourceDir, path));
-
-//                mCurWebView.loadDataWithBaseURL(baseUrl, content,
-//                        "text/html", "utf-8", null);
-
-                File serviceFile = new File(mAppConfig.getMiniAppSourcePath(getContext()), mPagePath);
-                String servicePath = Uri.fromFile(serviceFile).toString();
-                mCurWebView.loadUrl(servicePath);
+                File viewFile = new File(mAppConfig.getMiniAppSourcePath(getContext()), mPagePath);
+                String viewPath = Uri.fromFile(viewFile).toString();
+                mCurWebView.loadUrl(viewPath);
             }
         });
     }
@@ -148,17 +138,15 @@ public class MiniPage extends LinearLayout implements IBridge {
 
                 if (!TextUtils.isEmpty(mPagePath)) {
                     Uri uri = Uri.parse(mPagePath);
-                    json.put("path", uri.getPath());
+                    json.put("path", mAppConfig.getPath(uri.getPath()));
                     // Set<String> keys = uri.getQueryParameterNames(); // foreach
                 }
 
-
-                Log.d("MiniDemo", String.valueOf(json));
                 eventParams = json.toString();
                 mListener.notifyServiceSubscribers(eventName, eventParams, getViewId());
                 return true;
             } catch (JSONException e) {
-                Log.d("MiniDemo", "onDomContentLoaded assembly params exception");
+                Log.e("MiniDemo", "onDomContentLoaded assembly params exception");
             }
         }
         return false;

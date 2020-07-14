@@ -58,7 +58,7 @@ public class MyWebView extends WebView {
     @Override
     public void destroy() {
         setWebViewClient(null);
-//        setWebChromeClient(null);
+        setWebChromeClient(null);
         removeJavascriptInterface("jsCore");
         super.destroy();
     }

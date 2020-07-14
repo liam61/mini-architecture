@@ -2,7 +2,6 @@
  "name": "framework",
  "version": "0.0.1",
  "description": "",
- "main": "index.js",
  "scripts": {
   "dev": "rm -rf dist && rollup -cw",
   "build": "rm -rf dist && rollup -c",

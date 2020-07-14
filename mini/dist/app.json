@@ -4,6 +4,10 @@
     "pages/demo/index"
   ],
   "window": {
-    "navigationBarTitleText": "miniDemo"
+    "navigationBarTitleText": "default Title",
+    "pages": {
+      "pages/index/index": "Index Page",
+      "pages/demo/index": "Demo Page"
+    }
   }
 }

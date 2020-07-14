@@ -1,7 +1,6 @@
 import _global from './global'
 import { safeExec, noop } from './utils'
 
-// const ua = _global.navigator.userAgent.toLowerCase()
 const isWebview = _global.webkit
 const EVENT_PREFIX = 'custom_event_'
 
@@ -25,24 +24,16 @@ function invoke(event, params, callback = noop) {
       callbackIndex,
     })
   } else {
-    let result = _global.jsCore.invoke(event, paramStr, callbackIndex)
-    const cb = callbackMap[callbackIndex]
-
-    if (result && typeof cb === 'function') {
-      try {
-        result = JSON.parse(result)
-      } catch (error) {
-        result = {}
-      }
-      cb(result)
-      delete callbackMap[callbackIndex]
-    }
+    _global.jsCore.invoke(event, paramStr, callbackIndex)
   }
 }
 
-function callbackHandler(callbackId, params) {
+function callbackHandler(callbackId, result) {
   const cb = callbackMap[callbackId]
-  typeof cb === 'function' && cb(params || {})
+  if (cb && typeof cb === 'function') {
+    cb(result)
+    delete callbackMap[callbackId]
+  }
 }
 
 function on(event, handler = noop) {

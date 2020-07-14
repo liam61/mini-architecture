@@ -16,6 +16,7 @@ import com.my.mini_demo.lib.service.AppService;
 import com.my.mini_demo.lib.utils.FileUtil;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class MiniActivity extends AppCompatActivity implements OnEventListener {
     public static final String APP_ID = "app_id";
@@ -43,6 +44,7 @@ public class MiniActivity extends AppCompatActivity implements OnEventListener {
         mApiManager = new ApiManager(this, this, mAppConfig);
         mApiManager.onCreate();
 
+        Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_mini);
 
         mLayout = findViewById(R.id.mini);
@@ -106,10 +108,5 @@ public class MiniActivity extends AppCompatActivity implements OnEventListener {
             return;
         }
         super.onBackPressed();
-
-        // 普通代理网页 webview
-//        if (webview.canGoBack()) {
-//            webview.goBack();
-//        }
     }
 }

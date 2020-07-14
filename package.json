@@ -2,7 +2,6 @@
   "name": "mini-architecture",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "bootstrap": "node run.js --t bootstrap",
     "dev": "cross-env NODE_ENV=develop node run.js --t build",

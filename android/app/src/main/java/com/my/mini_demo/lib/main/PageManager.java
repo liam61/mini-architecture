@@ -103,7 +103,8 @@ public class PageManager {
 
     public boolean pageEventHandler(String event, String params) {
         if ("navigateTo".equals(event)) {
-            return navigateToPage(JsonUtil.getStringValue(params, "url", ""));
+            String path = JsonUtil.getStringValue(params, "url", "");
+            return navigateToPage(path + ".html");
         } else if ("navigateBack".equals(event)) {
             return navigateBackPage(JsonUtil.getIntValue(params, "delta", 0));
         } else if ("redirectTo".equals(event)) {

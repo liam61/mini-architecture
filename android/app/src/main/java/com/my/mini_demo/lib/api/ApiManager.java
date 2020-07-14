@@ -1,12 +1,10 @@
 package com.my.mini_demo.lib.api;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
-import android.os.IBinder;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Pair;
 
 import com.my.mini_demo.lib.api.module.Page;
@@ -119,18 +117,24 @@ public class ApiManager {
 
         @Override
         public void onSuccess(JSONObject result) {
+            Log.d("MiniDemo", String.format("call api success! event=%s, result=%s",
+                    event.getName(), assembleResult(result, event.getName(), "ok")));
             CALLING_APIS.remove(event);
 
             if (bridge != null) {
-                bridge.callback(event.getCallbackId(), assembleResult(result, event.getName(), "ok"));
+                bridge.callback(event.getCallbackId(),
+                        assembleResult(result, event.getName(), "ok"));
             }
         }
 
         @Override
         public void onFail() {
+            Log.d("MiniDemo", String.format("call api success! event=%s",
+                    event.getName()));
             CALLING_APIS.remove(event);
             if (bridge != null) {
-                bridge.callback(event.getCallbackId(), assembleResult(null, event.getName(), "fail"));
+                bridge.callback(event.getCallbackId(),
+                        assembleResult(null, event.getName(), "fail"));
             }
         }
 
@@ -138,7 +142,8 @@ public class ApiManager {
         public void onCancel() {
             CALLING_APIS.remove(event);
             if (bridge != null) {
-                bridge.callback(event.getCallbackId(), assembleResult(null, event.getName(), "cancel"));
+                bridge.callback(event.getCallbackId(),
+                        assembleResult(null, event.getName(), "cancel"));
             }
         }
 
@@ -159,7 +164,8 @@ public class ApiManager {
             }
 
             try {
-                data.put("msg", String.format("%s:%s", event, status));
+                data.put("status", event + ", " + status);
+                data.put("success", status.equals("ok"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }

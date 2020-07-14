@@ -25,7 +25,7 @@ class MyButton extends PolymerElement {
         }
 
         :host([disabled]) {
-          background-color: #d7dae0;
+          background-color: rgba(215, 224, 218, 0.8);
           color: #fff;
         }
 
@@ -58,7 +58,7 @@ class MyButton extends PolymerElement {
     super.ready()
 
     this.hManager = new Hammer.Manager(this)
-    this.hManager.add(new Hammer.Press({ event: TAP, time: 50 }))
+    this.hManager.add(new Hammer.Press({ event: TAP, time: 40 }))
     this.pan = new Hammer.Pan({ enable: false })
     this.hManager.add(this.pan)
 

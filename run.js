@@ -6,7 +6,7 @@ const { execSync } = childProcess
 
 program.option('--t [typeName]', '...').parse(process.argv)
 const { t } = program
-const isDev = process.env.NODE_ENV !== 'production'
+const mode = process.env.NODE_ENV !== 'production' ? 'dev' : 'build'
 
 if (t === 'bootstrap') {
   bootstrap()
@@ -23,10 +23,10 @@ function bootstrap() {
 
 function build() {
   try {
-    // execSync(`cd framework && yarn && yarn ${isDev ? 'dev' : 'build'}`)
+    // execSync(`cd framework && yarn && yarn ${mode}`)
     // console.log('\nsuccess build framework...')
 
-    // execSync(`cd pack && yarn && yarn ${isDev ? 'dev' : 'build'}`)
+    // execSync(`cd pack && yarn && yarn ${mode}`)
     // console.log('\nsuccess pack project...')
 
     process.chdir(path.join(__dirname, 'android'))

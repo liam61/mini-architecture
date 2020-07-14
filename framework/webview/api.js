@@ -10,7 +10,7 @@ const webviewApi = {
     // for my-navigator component, but not implement
     jsBridge.publish('invokeMethod', {
       eventName: 'navigateTo',
-      ...(params || {}),
+      ...params,
     })
   },
   publishPageEvent(eventName, ev) {

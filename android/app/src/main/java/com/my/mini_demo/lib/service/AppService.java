@@ -46,17 +46,17 @@ public class AppService extends LinearLayout implements IBridge {
 
     @Override
     public void publish(String event, String params, String viewIds) {
+        if (mListener == null) {
+            return;
+        }
+
         // prefix 在 framework 中拼接
         if ("custom_event_serviceReady".equals(event)) {
             mAppConfig.initConfig(params);
-
-            if (mListener != null) {
-                mListener.onServiceReady();
-            }
-        } else if ("custom_event_appDataChange".equals(event)) {
-            if (mListener != null) {
-                mListener.notifyPageSubscribers(event, params, JsonUtil.parse2IntArray(viewIds));
-            }
+            mListener.onServiceReady();
+        } else {
+            // custom_event_appDataChange | custom_event_nativeAlert
+            mListener.notifyPageSubscribers(event, params, JsonUtil.parse2IntArray(viewIds));
         }
     }
 

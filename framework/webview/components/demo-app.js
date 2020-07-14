@@ -42,12 +42,11 @@ class DemoApp extends PolymerElement {
 
   handleClick() {
     console.log('target click handler')
-    this.title = Math.random().toFixed(3) + ''
+    this.title = Math.random().toFixed(3)
   }
 
   ready() {
     super.ready()
-
     this.cls = 'test'
   }
 }

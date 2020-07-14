@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.my.mini_demo.lib.utils.FileUtil;
+import com.my.mini_demo.lib.utils.JsonUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,19 +39,17 @@ public class AppConfig {
      * @param config json 字符串
      */
     public void initConfig(String config) {
+        String paramStr = JsonUtil.getStringValue(config, "config", null);
         try {
-            JSONObject obj = new JSONObject(config);
-            String paramStr = obj.optString("config");
             mConfig = new JSONObject(paramStr);
-        } catch(JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 
         JSONObject windowJson = mConfig.optJSONObject("window");
         if (windowJson != null) {
-            mWindowConfig = new WindowConfig();
-            mWindowConfig.navigationBarTitleText = windowJson.optString("navigationBarTitleText");
-            mWindowConfig.pages = windowJson.optJSONObject("pages");
+            mWindowConfig = new WindowConfig(
+                    windowJson.optString("navigationBarTitleText"), windowJson.optJSONObject("pages"));
         }
     }
 
@@ -67,15 +66,15 @@ public class AppConfig {
             return mWindowConfig.navigationBarTitleText;
         }
 
-        JSONObject pageConfig = mWindowConfig.pages.optJSONObject(getPath(url));
+        String pageTitle = mWindowConfig.pages.optString(getPath(url));
 
-        if (pageConfig == null)  {
+        if (TextUtils.isEmpty((pageTitle)))  {
             return mWindowConfig.navigationBarTitleText;
         }
-        return pageConfig.optString("navigationBarTitleText");
+        return pageTitle;
     }
 
-    private String getPath(String url) {
+    public String getPath(String url) {
         if (TextUtils.isEmpty(url)) {
             return "";
         }
@@ -100,7 +99,7 @@ public class AppConfig {
             return "";
         }
 
-        // 打包时注入
+        // 打包时注入 root
         String root = mConfig.optString("root");
         return TextUtils.isEmpty(root) ? "" : root + ".html";
     }
@@ -108,5 +107,10 @@ public class AppConfig {
     private static class WindowConfig {
         String navigationBarTitleText; // 导航栏标题
         JSONObject pages; // 界面标题配置
+
+        WindowConfig(String title, JSONObject pages) {
+            this.navigationBarTitleText = title;
+            this.pages = pages;
+        }
     }
 }

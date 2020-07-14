@@ -3,6 +3,7 @@ package com.my.mini_demo.lib.page.view;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.Toolbar;
@@ -24,6 +25,7 @@ public class NavigationBar extends Toolbar {
     private void init(Context context) {
         Drawable drawable = AppCompatResources.getDrawable(context, R.drawable.my_ic_arrow_back);
 
+        setBackgroundColor(Color.CYAN);
         setNavigationIcon(drawable);
         setNavigationOnClickListener(new OnClickListener() {
             @Override

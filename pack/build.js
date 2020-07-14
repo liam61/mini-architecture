@@ -53,9 +53,9 @@ function transformService(source, pages, output, config) {
   const serviceTpl = loadTemplate('service')
 
   const sourceArr = jsFiles.map((file) => {
-    // TODO:
     if (file.includes('app.js')) {
-      return { code: '', map: '{}', path: '' }
+      const res = parse({ fullPath: file })
+      return Object.assign(res, { path: '' })
     }
     // NOTE: 其他 js 懒得处理了
     let path = ''
@@ -63,6 +63,7 @@ function transformService(source, pages, output, config) {
       path = file.includes(p) ? p : false
       return path
     })
+
     if (path) {
       const res = parse({ fullPath: file })
       return Object.assign(res, { path })
@@ -73,7 +74,7 @@ function transformService(source, pages, output, config) {
   config.root = config.root || pages[0]
 
   const content = serviceTpl({
-    __CONFIG__: `\`${JSON.stringify(config)}\``,
+    __CONFIG__: `'${JSON.stringify(config)}'`,
   })
 
   fs.writeFileSync(path.join(output, 'app-service.js'), jsCode)
@@ -92,7 +93,7 @@ function concatFiles(sourceArr) {
   const concat = new Concat(true, 'service.js', '\n')
 
   sourceArr.forEach(({ code, map, path }) => {
-    concat.add(null, `var __path__ = "${path}";`)
+    concat.add(null, `window.__path__ = "${path}";`)
     concat.add(path, code, map)
   })
 

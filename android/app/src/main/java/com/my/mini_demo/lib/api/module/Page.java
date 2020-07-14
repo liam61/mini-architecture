@@ -6,6 +6,7 @@ import com.my.mini_demo.lib.api.BaseApi;
 import com.my.mini_demo.lib.interfaces.ICallback;
 import com.my.mini_demo.lib.interfaces.OnEventListener;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -34,7 +35,8 @@ public class Page extends BaseApi {
         }
 
         if (res) {
-            callback.onSuccess(null);
+            JSONObject json = new JSONObject();
+            callback.onSuccess(json);
         } else {
             callback.onFail();
         }
