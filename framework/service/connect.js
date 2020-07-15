@@ -17,7 +17,7 @@ serviceApi.subscribe('pageEvent', (params) => {
   const { eventName, data } = params
   const instance = serviceApi.getCurPageInstance()
   const fn = instance[eventName]
-  typeof fn === 'function' && fn.apply(instance, data)
+  typeof fn === 'function' && fn.call(instance, data)
 })
 
 serviceApi.on('onAppRoute', (params) => {

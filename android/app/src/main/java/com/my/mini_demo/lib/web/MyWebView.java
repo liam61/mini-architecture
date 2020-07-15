@@ -23,7 +23,7 @@ public class MyWebView extends WebView {
     private void init() {
         WebSettings settings = getSettings();
 
-        //设置WebView中启用JavaScript执行。
+        // 设置 webView 中启用 javaScript 执行。
         settings.setJavaScriptEnabled(true);
 
         settings.setDisplayZoomControls(false);

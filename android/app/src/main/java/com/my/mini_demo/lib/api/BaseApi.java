@@ -20,16 +20,13 @@ public abstract class BaseApi implements IApi {
 
     @Override
     public void onCreate() {
-
     }
 
     @Override
     public void onDestroy() {
-
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data, ICallback callback) {
-
     }
 }

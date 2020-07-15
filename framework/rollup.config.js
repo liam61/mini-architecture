@@ -5,9 +5,11 @@ import json from '@rollup/plugin-json'
 import image from '@rollup/plugin-image'
 import replace from '@rollup/plugin-replace'
 import { terser } from 'rollup-plugin-terser'
+import path from 'path'
 import config from './package.json'
 import fs from 'fs-extra'
 
+const rootPath = path.join(__dirname, '../')
 const isDev = process.env.ROLLUP_WATCH
 
 const plugins = [
@@ -39,6 +41,7 @@ const plugins = [
     __VERSION__: config.version,
   }),
   !isDev && terser(),
+  isDev && myPlugin(),
 ]
 
 export default [
@@ -61,3 +64,22 @@ export default [
     plugins,
   },
 ]
+
+let count = 0
+
+function myPlugin() {
+  return {
+    name: 'my-plugin',
+    buildEnd() {
+      const dev = path.join(rootPath, 'pack/dev.js')
+      if (!fs.existsSync(dev)) {
+        fs.createFile(dev)
+      }
+      if (count++ !== 0) {
+        fs.writeFileSync(dev, `var update;`, { encoding: 'utf-8' })
+      } else {
+        count++
+      }
+    },
+  }
+}

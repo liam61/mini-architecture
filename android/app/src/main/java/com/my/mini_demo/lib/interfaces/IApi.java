@@ -6,12 +6,12 @@ import org.json.JSONObject;
 
 public interface IApi {
     /**
-     * 可调用的 api
+     * module 可调用的 api
      */
     String[] apis();
 
     /**
-     * 接收到 api 调用时，处理相应逻辑
+     * 唤起 api
      */
     void invoke(String event, JSONObject param, ICallback callback);
 

@@ -47,6 +47,7 @@ public class MiniService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        // 开启 chrome 调试
         WebView.setWebContentsDebuggingEnabled(true);
         return START_NOT_STICKY;
     }

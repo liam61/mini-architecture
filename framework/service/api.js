@@ -11,7 +11,7 @@ const serviceApi = {
   publish: jsBridge.publish,
   subscribe: jsBridge.subscribe,
   navigateTo(params) {
-    if (params.url + '') {
+    if (params.url) {
       invokeRouteMethod('navigateTo', params)
     }
   },
@@ -32,6 +32,9 @@ const serviceApi = {
   alert(message) {
     const instance = serviceApi.getCurPageInstance()
     jsBridge.publish('nativeAlert', { message }, [instance.webviewId])
+  },
+  openLink(url) {
+    invokeRouteMethod('openLink', { url })
   },
   onAppRoute(callback = noop) {
     appRouteCallbacks.push(callback)
@@ -55,11 +58,11 @@ function invokeRouteMethod(eventName, params) {
   const { success = noop, fail = noop, complete = noop, ...restParams } = params || {}
 
   jsBridge.invoke(eventName, restParams, (res) => {
-    const { success: isOk, status, ...restResult } = res
+    const { success: isOk, status, ...result } = res
     const instance = serviceApi.getCurPageInstance()
 
-    isOk ? success.call(instance, restResult) : fail.call(instance, restResult)
-    complete.call(instance, restResult)
+    isOk ? success.call(instance, result) : fail.call(instance, result)
+    complete.call(instance, result)
   })
 }
 

@@ -28,4 +28,7 @@ Page({
   jsAlert() {
     ns.alert('这是利用 jsAlert 建立的 jsBridge')
   },
+  openLink() {
+    ns.openLink('https://www.omyleon.com')
+  },
 })

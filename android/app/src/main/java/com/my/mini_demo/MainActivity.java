@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
         final String appId = "mini1";
         final String userId = "lawler61";
-        final String appPath = "miniDemo.zip"; // 不传则使用 appId
+        final String appPath = "miniDemo.zip";
 
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override

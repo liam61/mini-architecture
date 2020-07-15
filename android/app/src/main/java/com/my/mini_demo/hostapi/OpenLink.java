@@ -11,7 +11,7 @@ import com.my.mini_demo.lib.interfaces.ICallback;
 import org.json.JSONObject;
 
 /**
- * 拓展 api：打开链接
+ * custom api：打开链接
  */
 public class OpenLink extends BaseApi {
 

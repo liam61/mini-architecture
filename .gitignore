@@ -28,3 +28,4 @@ mini/*.zip
 
 pack/_tmp
 pack/*.zip
+pack/dev.js

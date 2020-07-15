@@ -7,11 +7,11 @@ let isBatching = false
 export class _Page {
   constructor(options, webviewId, route) {
     options = options || {}
-    const { data, ...events } = options
+    const { data, ...restParams } = options
     this.route = route
     this.webviewId = webviewId
     this.data = JSON.parse(JSON.stringify(data || {}))
-    registerEvent(this, events)
+    registerEvent(this, restParams)
   }
 
   setData(data, callback) {
@@ -52,15 +52,15 @@ function doSyncData(instance) {
     {
       data,
       callback(...args) {
-        cbs.forEach(cb => cb.apply(instance, args))
+        cbs.forEach((cb) => cb.apply(instance, args))
       },
     },
     [webviewId],
   )
 }
 
-function registerEvent(instance, events) {
-  Object.entries(events).forEach(([event, fn]) => {
-    serviceApi.subscribe(event, typeof fn === 'function' ? fn.bind(instance) : noop)
+function registerEvent(instance, obj) {
+  Object.entries(obj).forEach(([event, fn]) => {
+    typeof fn === 'function' && serviceApi.subscribe(event, fn.bind(instance))
   })
 }

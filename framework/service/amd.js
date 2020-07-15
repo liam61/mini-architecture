@@ -1,8 +1,8 @@
-var statusDefineFlag = 1,
-  statusRequireFlag = 2,
+var defineFlag = 1,
+  requireFlag = 2,
   moduleArr = {}
 const define = function (r, e) {
-  moduleArr[r] = { status: statusDefineFlag, factory: e }
+  moduleArr[r] = { status: defineFlag, factory: e }
 }
 var getPathPrefix = function (r) {
     var e = r.match(/(.*)\/([^\/]+)?$/)
@@ -32,13 +32,13 @@ const require = function (r) {
   if ('string' != typeof r) throw new Error('require args must be a string')
   var e = moduleArr[r]
   if (!e) throw new Error('module "' + r + '" is not defined')
-  if (e.status === statusDefineFlag) {
+  if (e.status === defineFlag) {
     var t,
       i = e.factory,
       n = { exports: {} }
     i && (t = i(getRequireFun(r), n, n.exports)),
       (e.exports = n.exports || t),
-      (e.status = statusRequireFlag)
+      (e.status = requireFlag)
   }
   return e.exports
 }

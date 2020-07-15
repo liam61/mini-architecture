@@ -6,7 +6,6 @@ import com.my.mini_demo.lib.api.BaseApi;
 import com.my.mini_demo.lib.interfaces.ICallback;
 import com.my.mini_demo.lib.interfaces.OnEventListener;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**

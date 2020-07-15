@@ -88,6 +88,10 @@ public class MiniPage extends LinearLayout implements IBridge {
         return false;
     }
 
+    public boolean onReLaunch(String url) {
+        return false;
+    }
+
     public void setNavigationBarTitle(String title) {
         // 调用原生的 Toolbar setTitle
         mNavBar.setTitle(title);
@@ -112,6 +116,7 @@ public class MiniPage extends LinearLayout implements IBridge {
                 }
 
                 mNavBar.setTitle(mAppConfig.getPageTitle(mPagePath));
+                // 加载 pages/xxx.html
                 File viewFile = new File(mAppConfig.getMiniAppSourcePath(getContext()), mPagePath);
                 String viewPath = Uri.fromFile(viewFile).toString();
                 mCurWebView.loadUrl(viewPath);
@@ -185,7 +190,7 @@ public class MiniPage extends LinearLayout implements IBridge {
     public void invoke(String event, String params, String callbackId) { }
 
     @Override
-    public void callback(String cbId, String result) { }
+    public void callback(String callbackId, String result) { }
 
     @Override
     protected void onDetachedFromWindow() {

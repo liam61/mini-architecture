@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * api 管理
+ * api 统一管理
  */
 public class ApiManager {
 
@@ -63,8 +63,6 @@ public class ApiManager {
 
         APIS.clear();
         CALLING_APIS.clear();
-//        mHandler.removeCallbacksAndMessages(null);
-//        mActivity.unbindService(this);
     }
 
     public void invokeApi(Event event, IBridge bridge) {
@@ -117,13 +115,13 @@ public class ApiManager {
 
         @Override
         public void onSuccess(JSONObject result) {
+            String res = assembleResult(result, event.getName(), "ok");
             Log.d("MiniDemo", String.format("call api success! event=%s, result=%s",
-                    event.getName(), assembleResult(result, event.getName(), "ok")));
+                    event.getName(), res));
             CALLING_APIS.remove(event);
 
             if (bridge != null) {
-                bridge.callback(event.getCallbackId(),
-                        assembleResult(result, event.getName(), "ok"));
+                bridge.callback(event.getCallbackId(), res);
             }
         }
 
@@ -132,6 +130,7 @@ public class ApiManager {
             Log.d("MiniDemo", String.format("call api success! event=%s",
                     event.getName()));
             CALLING_APIS.remove(event);
+
             if (bridge != null) {
                 bridge.callback(event.getCallbackId(),
                         assembleResult(null, event.getName(), "fail"));
@@ -141,6 +140,7 @@ public class ApiManager {
         @Override
         public void onCancel() {
             CALLING_APIS.remove(event);
+
             if (bridge != null) {
                 bridge.callback(event.getCallbackId(),
                         assembleResult(null, event.getName(), "cancel"));

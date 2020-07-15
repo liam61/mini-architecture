@@ -39,11 +39,11 @@ public class DemoApplication extends Application {
         int pid = android.os.Process.myPid();
         String processName = "";
 
-        ActivityManager aManager = (ActivityManager) context.getApplicationContext()
+        ActivityManager manager = (ActivityManager) context.getApplicationContext()
                 .getSystemService(Context.ACTIVITY_SERVICE);
 
-        if (aManager != null) {
-            for (ActivityManager.RunningAppProcessInfo process: aManager.getRunningAppProcesses()) {
+        if (manager != null) {
+            for (ActivityManager.RunningAppProcessInfo process: manager.getRunningAppProcesses()) {
                 if (process.pid == pid) {
                     processName = process.processName;
                 }

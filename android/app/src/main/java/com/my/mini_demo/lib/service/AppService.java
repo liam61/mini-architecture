@@ -67,9 +67,9 @@ public class AppService extends LinearLayout implements IBridge {
     }
 
     @Override
-    public void callback(String cbId, String result) {
+    public void callback(String callbackId, String result) {
         mServiceWebView.loadUrl(String.format("javascript:jsBridge.callbackHandler(%s, %s)",
-                cbId, result));
+                callbackId, result));
     }
 
     @Override

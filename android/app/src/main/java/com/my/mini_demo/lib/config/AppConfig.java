@@ -3,14 +3,12 @@ package com.my.mini_demo.lib.config;
 import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.my.mini_demo.lib.utils.FileUtil;
 import com.my.mini_demo.lib.utils.JsonUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONStringer;
 
 import java.io.File;
 
@@ -75,10 +73,6 @@ public class AppConfig {
     }
 
     public String getPath(String url) {
-        if (TextUtils.isEmpty(url)) {
-            return "";
-        }
-
         Uri uri = Uri.parse(url);
         String pagePath = uri.getPath();
 

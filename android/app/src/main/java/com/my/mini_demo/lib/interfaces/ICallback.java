@@ -12,8 +12,5 @@ public interface ICallback {
 
     void onCancel();
 
-    /**
-     * Activity startActivityForResult 时回调
-     */
     void startActivityForResult(Intent intent, int requestCode);
 }

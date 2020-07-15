@@ -20,7 +20,7 @@ public class PageManager {
         mContext = context;
         mListener = listener;
         mAppConfig = appConfig;
-        // 用于 add page（包括 top title 和 webview）
+        // 用于 add page（包括 title 和 webview）
         mContainer = new FrameLayout(context);
     }
 
@@ -79,6 +79,10 @@ public class PageManager {
         return false;
     }
 
+    private boolean reLaunchPage(String url) {
+        return false;
+    }
+
     private boolean setNavigationBarTitle(String title) {
         MiniPage page = getTopPage();
 
@@ -106,7 +110,7 @@ public class PageManager {
             String path = JsonUtil.getStringValue(params, "url", "");
             return navigateToPage(path + ".html");
         } else if ("navigateBack".equals(event)) {
-            return navigateBackPage(JsonUtil.getIntValue(params, "delta", 0));
+            return navigateBackPage(JsonUtil.getIntValue(params, "delta", 1));
         } else if ("redirectTo".equals(event)) {
             return false;
         } else if ("reLaunch".equals(event)) {
