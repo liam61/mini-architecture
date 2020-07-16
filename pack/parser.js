@@ -133,10 +133,10 @@ function genJsCode(events) {
       window.ns.publishPageEvent("${name.slice(PREFIX_EVENT.length)}", ev)
     };`
     if (i === arr.length - 1) {
-      tpl += `Object.assign(_binder, window.ns.data || {});}`
+      tpl += 'Object.assign(_binder, window.ns.data || {});}'
     }
     return tpl
-  }, `;window._binder = document.getElementById("_binder"); function _bindData() {`)
+  }, 'function _bindData() {')
 }
 
 function getShortPath(path) {

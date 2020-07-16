@@ -27,8 +27,8 @@ function transformView(source, pages, output) {
   const appCssPath = path.join(source, 'app.css')
   let appCss = fs.existsSync(appCssPath) ? fs.readFileSync(appCssPath, 'utf-8') : ''
   if (appCss) {
-    const insertTpl = fs.readFileSync(path.join(rootPath, 'framework/common/insert.js'), 'utf-8')
-    appCss = insertTpl.replace('__INSERT_TEXT__', `'${appCss}'`).replace(/\n/g, '')
+    // const insertTpl = fs.readFileSync(path.join(rootPath, 'framework/common/insert.js'), 'utf-8')
+    // appCss = insertTpl.replace('__INSERT_TEXT__', `'${appCss}'`).replace(/\n/g, '')
   }
 
   pages.forEach((page) => {
@@ -36,8 +36,9 @@ function transformView(source, pages, output) {
     const cssPath = path.join(source, page + '.css')
     const css = fs.existsSync(cssPath) ? fs.readFileSync(cssPath, 'utf-8') : ''
     const content = viewTpl({
+      __TEMPLATE_APP_CSS__: appCss,
       __TEMPLATE_HTML__: code,
-      __TEMPLATE_JS__: appCss + js,
+      __TEMPLATE_JS__: js,
       __TEMPLATE_CSS__: css,
     })
 

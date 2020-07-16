@@ -46,13 +46,13 @@ install form [built apk](./mini-demo.apk)
 
 ## Blog post
 
-TODO:
+[mini-architecture：从零手撸一整套小程序架构](https://github.com/lawler61/blog/blob/master/js/mini-architecture/index.md)
 
 ## Record demo
 
-TODO:
+<image src="./record.gif" width=500 alt="mini record" />
 
-## Source
+## References
 
 1. [hera](https://github.com/weidian-inc/hera)
 

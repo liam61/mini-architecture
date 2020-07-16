@@ -8,6 +8,9 @@
     />
     <title>Page</title>
     <style>
+      <%- __TEMPLATE_APP_CSS__ %>
+    </style>
+    <style>
       <%- __TEMPLATE_CSS__ %>
     </style>
     <script src="../../../../framework/webview.js"></script>
@@ -15,10 +18,11 @@
   <body>
     <dom-bind id="_binder">
       <template>
-        <div id="app"><%- __TEMPLATE_HTML__ %></div>
+        <my-view id="app"><%- __TEMPLATE_HTML__ %></my-view>
       </template>
     </dom-bind>
     <script>
+      window._binder = document.getElementById("_binder");
       <%- __TEMPLATE_JS__ %>
     </script>
   </body>
