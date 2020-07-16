@@ -2,7 +2,7 @@ const path = require('path')
 const fs = require('fs-extra')
 const archiver = require('archiver')
 const childProcess = require('child_process')
-const { execSync } = childProcess
+const { execSync, spawnSync } = childProcess
 const { transformView, transformService } = require('./build')
 
 const rootPath = path.join(__dirname, '../')
@@ -29,7 +29,7 @@ function packFramework() {
       return reject('\nfirst pack...')
     }
 
-    zipFiles(source, path.join(source, `../__${name}`), (s, output) => {
+    zipFiles(source, name, path.join(source, `../__${name}`), (s, output) => {
       const targetPath = path.join(outputDir, name)
 
       if (fs.existsSync(targetPath)) {
@@ -60,7 +60,7 @@ function packMini() {
     transformService(source, pages, tmp, config)
     copyOther(source, tmp)
 
-    zipFiles(tmp, path.join(tmp, `../__${name}`), (s, output) => {
+    zipFiles(tmp, name, path.join(tmp, `../__${name}`), (s, output) => {
       const targetPath = path.join(outputDir, name)
 
       if (fs.existsSync(targetPath)) {
@@ -94,7 +94,8 @@ function installApp() {
     }
     fs.writeFileSync('local.properties', `sdk.dir=${escapePath(process.env.ANDROID_HOME)}`)
   }
-  execSync(process.platform === 'win32' ? `gradlew.bat` : `./gradlew`, { encoding: 'utf-8' })
+  const cmd = process.platform === 'win32' ? 'gradlew.bat' : './gradlew'
+  spawnSync(cmd, ['clean', 'assemble'], { encoding: 'utf-8', shell: true })
   console.log('\nsuccess build app...')
 
   const apkName = 'app/build/outputs/apk/debug/app-debug.apk'
@@ -122,7 +123,7 @@ function copyOther(source, targetPath) {
   })
 }
 
-function zipFiles(source, output, callback) {
+function zipFiles(source, name, output, callback) {
   const archive = archiver('zip', {
     zlib: { level: 9 },
   })
@@ -130,7 +131,7 @@ function zipFiles(source, output, callback) {
 
   stream.on('close', () => {
     const size = archive.pointer()
-    console.log(`\nsuccess zip ${source}, ${(size / 1024).toFixed(3)} kb...`)
+    console.log(`\nsuccess zip ${name}, ${(size / 1024).toFixed(3)} kb...`)
     callback && callback(source, output)
   })
 
