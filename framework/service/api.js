@@ -58,6 +58,12 @@ function invokeRouteMethod(eventName, params) {
   const { success = noop, fail = noop, complete = noop, ...restParams } = params || {}
 
   jsBridge.invoke(eventName, restParams, (res) => {
+    try {
+      typeof res === 'string' && (res = JSON.parse(res))
+    } catch {
+      res = {}
+    }
+
     const { success: isOk, status, ...result } = res
     const instance = serviceApi.getCurPageInstance()
 

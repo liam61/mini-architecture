@@ -1,7 +1,7 @@
 import _global from './global'
 import { safeExec, noop } from './utils'
 
-const isWebview = _global.webkit
+const isIOS = _global.webkit
 const EVENT_PREFIX = 'custom_event_'
 
 const callbackMap = {}
@@ -17,14 +17,14 @@ function invoke(event, params, callback = noop) {
   const paramStr = JSON.stringify(params || {})
   callbackMap[++callbackIndex] = callback
 
-  if (isWebview) {
+  if (isIOS) {
     _global.webkit.messageHandlers.invoke.postMessage({
       event,
       paramsString: paramStr,
       callbackIndex,
     })
   } else {
-    _global.jsCore.invoke(event, paramStr, callbackIndex)
+    _global.jsCore.invoke(event, paramStr, callbackIndex + '')
   }
 }
 
@@ -46,7 +46,16 @@ function subscribe(event, handler = noop) {
 
 function subscribeHandler(event, params, webviewId) {
   const handler = event.startsWith(EVENT_PREFIX) ? customEventMap[event] : eventMap[event]
-  typeof handler === 'function' && handler(params, webviewId)
+
+  if (typeof handler === 'function') {
+    try {
+      typeof params === 'string' && (params = JSON.parse(params))
+    } catch {
+      params = {}
+    }
+
+    handler(params, webviewId)
+  }
 }
 
 function publish(event, params, webviewIds = []) {
@@ -54,7 +63,7 @@ function publish(event, params, webviewIds = []) {
   event = EVENT_PREFIX + event
   webviewIds = JSON.stringify(webviewIds)
 
-  if (isWebview) {
+  if (isIOS) {
     _global.webkit.messageHandlers.publish.postMessage({
       event: event,
       paramsString: paramStr,
@@ -78,10 +87,10 @@ const jsBridge = {
   subscribe(...args) {
     safeExec(subscribe.bind(jsBridge, ...args))
   },
-  subscribeHandler,
-  callbackHandler,
 }
 
 export default jsBridge
 
 _global.jsBridge = jsBridge
+_global.callbackHandler = callbackHandler
+_global.subscribeHandler = subscribeHandler

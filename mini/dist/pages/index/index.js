@@ -9,7 +9,7 @@ function getHello() {
 Page({
   data: {
     loading: false,
-    hello: 'hello',
+    hello: 'v8 lack of setTimeout',
   },
   loadData() {
     this.setData({ loading: true, hello: '...' })

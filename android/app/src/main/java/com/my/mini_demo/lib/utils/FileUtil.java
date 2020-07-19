@@ -7,9 +7,11 @@ import android.text.TextUtils;
 import com.my.mini_demo.lib.main.MiniService;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -48,6 +50,30 @@ public class FileUtil {
             frameworkDir.mkdirs();
         }
         return frameworkDir;
+    }
+
+    public static String readString(File file) {
+        String content = null;
+        FileInputStream fis = null;
+
+        try {
+            fis = new FileInputStream(file);
+            byte[] buffer = new byte[fis.available()];
+            fis.read(buffer);
+            content = new String(buffer, StandardCharsets.UTF_8);
+        } catch (Exception e) {
+            System.err.print(e.toString());
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return content;
     }
 
     public static boolean unzipFile(InputStream in, String dir) {

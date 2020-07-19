@@ -33,13 +33,12 @@ public class AppService extends LinearLayout implements IBridge {
         mListener = listener;
         mServiceWebView = new MyWebView(context, this);
 
-        // 现在也是利用了 webview 提供的 js 运行环境
-        // TODO: v8 worker + Thread
+        // 现在是利用了 webview 提供的 js 运行环境
         addView(mServiceWebView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
     }
 
     public void subscribeHandler(String event, String params, int viewId) {
-        String jsFun = String.format("javascript:jsBridge.subscribeHandler('%s', %s, %s)",
+        String jsFun = String.format("javascript:subscribeHandler('%s', %s, %s)",
                 event, params, viewId);
         mServiceWebView.loadUrl(jsFun);
     }

@@ -57,11 +57,13 @@ public class MiniPage extends LinearLayout implements IBridge {
         MyWebView webView = new MyWebView(mContext, this);
         // 控制 webview 中的网页跳转依然在 webview 中打开
         webView.setWebViewClient(new MyWebViewClient(mAppConfig));
-         webView.setWebChromeClient(new MyWebChromeClient());
+        webView.setWebChromeClient(new MyWebChromeClient());
         mCurWebView = webView;
 
         mWebLayout.addView(webView, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.MATCH_PARENT));
+
+        Log.e("MiniDemo", "page inited");
     }
 
     public int getViewId() {
@@ -168,7 +170,7 @@ public class MiniPage extends LinearLayout implements IBridge {
 
             for (int viewId : viewIds) {
                 if (viewId == webView.getViewId()) {
-                    String jsFun = String.format("javascript:jsBridge.subscribeHandler('%s', %s)",
+                    String jsFun = String.format("javascript:subscribeHandler('%s', %s)",
                             event, params);
                     webView.loadUrl(jsFun);
                     break;

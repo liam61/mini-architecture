@@ -26,10 +26,6 @@ function transformView(source, pages, output) {
   const viewTpl = loadTemplate('view')
   const appCssPath = path.join(source, 'app.css')
   let appCss = fs.existsSync(appCssPath) ? fs.readFileSync(appCssPath, 'utf-8') : ''
-  if (appCss) {
-    // const insertTpl = fs.readFileSync(path.join(rootPath, 'framework/common/insert.js'), 'utf-8')
-    // appCss = insertTpl.replace('__INSERT_TEXT__', `'${appCss}'`).replace(/\n/g, '')
-  }
 
   pages.forEach((page) => {
     const { code, js } = parse({ fullPath: path.join(source, page + '.html'), page })
@@ -51,7 +47,9 @@ function transformView(source, pages, output) {
 
 function transformService(source, pages, output, config) {
   const jsFiles = glob.sync(`${source}/**/*.js`, { ignore: [] })
-  const serviceTpl = loadTemplate('service')
+  // const serviceTpl = loadTemplate('service')
+  const serviceTpl = loadTemplate('service-worker')
+  const frameworkJs = fs.readFileSync(path.join(rootPath, 'framework/dist/service.js'), 'utf-8')
 
   const sourceArr = jsFiles.map((file) => {
     if (file.includes('app.js')) {
@@ -75,14 +73,12 @@ function transformService(source, pages, output, config) {
   config.root = config.root || pages[0]
 
   const content = serviceTpl({
+    __FRAMEWORK_SERVICE__: frameworkJs,
+    __TEMPLATE_JS__: isDev ? jsCode : minify(jsCode, minifyConfig),
     __CONFIG__: `'${JSON.stringify(config)}'`,
   })
 
-  fs.writeFileSync(path.join(output, 'app-service.js'), jsCode)
-  fs.writeFileSync(
-    path.join(output, 'service.html'),
-    isDev ? content : minify(content, minifyConfig),
-  )
+  fs.writeFileSync(path.join(output, 'app-service.js'), content)
 }
 
 function loadTemplate(name) {

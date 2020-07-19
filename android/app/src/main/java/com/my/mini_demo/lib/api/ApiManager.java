@@ -127,7 +127,7 @@ public class ApiManager {
 
         @Override
         public void onFail() {
-            Log.d("MiniDemo", String.format("call api success! event=%s",
+            Log.d("MiniDemo", String.format("call api fail! event=%s",
                     event.getName()));
             CALLING_APIS.remove(event);
 
