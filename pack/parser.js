@@ -1,9 +1,6 @@
 // const path = require('path')
-const babel = require('@babel/core')
-const parser = require('@babel/parser')
-const t = require('@babel/types')
-const generator = require('@babel/generator').default
-const traverse = require('@babel/traverse').default
+const { types: t, parse, traverse, transform } = require('@babel/core')
+const generator = require('@babel/generator').default // by @babel/core
 const fs = require('fs-extra')
 const Concat = require('concat-with-sourcemaps')
 
@@ -14,15 +11,17 @@ const PREFIX_EVENT = '_bind'
 const REG_DYNAMIC = /\{\{([^}]+)\}\}/g
 const dynamicMap = {}
 
-function parse(params) {
+function parseFile(params) {
   const { fullPath, page } = params
   const output = fs.readFileSync(fullPath, 'utf-8')
   const isJsx = /\.html$/.test(fullPath)
   let result = null
 
   if (isJsx) {
-    const ast = parser.parse(output, {
-      plugins: ['jsx'],
+    const ast = parse(output, {
+      parserOpts: {
+        plugins: ['jsx'],
+      },
     })
 
     traverse(ast, {
@@ -89,13 +88,13 @@ function parse(params) {
     // why you end with ";"
     result = { code: code.slice(0, -1), js: jsCode }
   } else {
-    const source = babel.transform(output, {
-      presets: isDev ? ['@babel/preset-env'] : ['@babel/preset-env', 'minify'], // isJsx && ['@babel/preset-react', { pragma: '_l' }]
-      plugins: [],
+    const source = transform(output, {
+      presets: ['@babel/preset-env', !isDev && 'minify'].filter(Boolean), // isJsx && ['@babel/preset-react', { pragma: '_l' }]
       sourceMaps: isDev,
       sourceRoot: process.cwd(),
       sourceFileName: fullPath,
       babelrc: false,
+      ast: false,
     })
 
     const shortPath = getShortPath(fullPath)
@@ -150,4 +149,4 @@ function getShortPath(path) {
 //   page: 'pages/index/index',
 // })
 
-module.exports = parse
+module.exports = parseFile

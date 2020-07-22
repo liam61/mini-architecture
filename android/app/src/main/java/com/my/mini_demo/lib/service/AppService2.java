@@ -18,7 +18,7 @@ import com.my.mini_demo.lib.utils.JsonUtil;
 import java.io.File;
 
 /**
- * 小程序 Service 层，加载 service.html（v8 worker 实现）
+ * 小程序 Service 层，加载 app-service.js（v8 worker 实现）
  */
 public class AppService2 implements IBridge, JavaCallback {
 

@@ -26,6 +26,7 @@ const plugins = [
         {
           corejs: 3,
           modules: false,
+          // global usage
           useBuiltIns: 'usage',
           targets: {
             browsers: ['Android >= 4.4', 'ChromeAndroid >= 62', 'iOS >= 9'],
@@ -33,6 +34,14 @@ const plugins = [
         },
       ],
     ],
+    // pure usage
+    // plugins: [
+    //   '@babel/transform-runtime',
+    //   {
+    //     corejs: 3,
+    //     ...
+    //   },
+    // ],
   }),
   replace({
     __INSERT_TEXT__: JSON.stringify(

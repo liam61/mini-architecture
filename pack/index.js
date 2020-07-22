@@ -11,7 +11,7 @@ pack()
 function pack() {
   packFramework()
     .then(packMini)
-    // .then(() => require('./install'))
+    .then(() => require('./install'))
     .catch((err) => {
       console.log(err)
     })

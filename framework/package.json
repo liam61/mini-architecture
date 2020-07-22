@@ -1,6 +1,6 @@
 {
  "name": "framework",
- "version": "0.0.1",
+ "version": "0.0.2",
  "description": "",
  "scripts": {
   "dev": "rm -rf dist && rollup -cw",
@@ -17,7 +17,6 @@
  },
  "devDependencies": {
   "@babel/core": "^7.10.4",
-  "@babel/plugin-transform-runtime": "^7.10.4",
   "@babel/preset-env": "^7.10.4",
   "@rollup/plugin-babel": "^5.0.4",
   "@rollup/plugin-commonjs": "^13.0.0",
