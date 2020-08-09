@@ -52,6 +52,16 @@ install form [built apk](./mini-demo.apk)
 
 <image src="./record.gif" width=500 alt="mini record" />
 
+## TODO
+
+- [x] build logs
+
+- [ ] v8 thread worker
+
+- [ ] v8 thread debug tool
+
+- [ ] all view page build in one html
+
 ## References
 
 1. [hera](https://github.com/weidian-inc/hera)

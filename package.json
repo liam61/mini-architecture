@@ -6,7 +6,7 @@
     "bootstrap": "yarn && node index.js --cmd install",
     "dev": "node index.js --cmd dev",
     "build": "node index.js --cmd build",
-    "run-framework": "yarn --cwd ./framework",
+    "run-framework": "cross-env BOOT_ENV=root yarn --cwd ./framework",
     "run-pack": "yarn --cwd ./pack",
     "lint": "eslint && prettier --write"
   },
@@ -38,6 +38,7 @@
   "homepage": "https://github.com/lawler61/mini-architecture#readme",
   "devDependencies": {
     "commander": "^5.1.0",
+    "cross-env": "^7.0.2",
     "eslint": "^7.4.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",

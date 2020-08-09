@@ -2,9 +2,12 @@ const path = require('path')
 const fs = require('fs-extra')
 const archiver = require('archiver')
 const { transformView, transformService } = require('./build')
+const chalk = require('chalk')
+chalk.level = 3
 
 const rootPath = path.join(__dirname, '../')
 const outputDir = path.join(rootPath, 'android/app/src/main/assets')
+const isDev = process.env.NODE_ENV !== 'production'
 
 pack()
 
@@ -12,8 +15,8 @@ function pack() {
   packFramework()
     .then(packMini)
     .then(() => require('./install'))
-    .catch((err) => {
-      console.log(err)
+    .catch(err => {
+      console.log(isDev ? err : chalk.red(err.stack))
     })
 }
 
@@ -24,7 +27,7 @@ function packFramework() {
 
     // 第一次直接返回
     if (!fs.existsSync(source)) {
-      return reject('\nfirst pack...')
+      return reject('first pack...')
     }
 
     zipFiles(source, name, path.join(source, `../__${name}`), (s, output) => {
@@ -34,7 +37,7 @@ function packFramework() {
         fs.removeSync(targetPath)
       }
       fs.move(output, targetPath, () => {
-        console.log(`\nsuccess create ${targetPath}...`)
+        console.log(chalk.cyan(`\nsuccess create ${targetPath}...`))
         resolve()
       })
     })
@@ -42,7 +45,7 @@ function packFramework() {
 }
 
 function packMini() {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     const source = path.join(rootPath, 'mini/dist')
     const name = 'miniDemo.zip'
     const tmp = path.join(rootPath, 'pack/_tmp')
@@ -65,7 +68,7 @@ function packMini() {
         fs.removeSync(targetPath)
       }
       fs.move(output, targetPath, () => {
-        console.log(`\nsuccess create ${targetPath}...`)
+        console.log(chalk.cyan(`\nsuccess create ${targetPath}...`))
         resolve()
       })
     })
@@ -79,7 +82,7 @@ function copyOther(source, targetPath) {
     filter(src) {
       if (fs.lstatSync(src).isDirectory()) return true
       if (src.includes('app.json')) return false
-      return !exclude.some((ext) => ext === path.extname(src))
+      return !exclude.some(ext => ext === path.extname(src))
     },
   })
 }
@@ -92,18 +95,18 @@ function zipFiles(source, name, output, callback) {
 
   stream.on('close', () => {
     const size = archive.pointer()
-    console.log(`\nsuccess zip ${name}, ${(size / 1024).toFixed(3)} kb...`)
+    console.log(chalk.cyan(`\nsuccess zip ${name}, ${(size / 1024).toFixed(3)} kb...`))
     callback && callback(source, output)
   })
 
-  archive.on('warning', (err) => {
+  archive.on('warning', err => {
     if (err.code === 'ENOENT') {
     } else {
       throw err
     }
   })
 
-  archive.on('error', (err) => {
+  archive.on('error', err => {
     throw err
   })
 

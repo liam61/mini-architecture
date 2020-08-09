@@ -5,12 +5,16 @@ import json from '@rollup/plugin-json'
 import image from '@rollup/plugin-image'
 import replace from '@rollup/plugin-replace'
 import { terser } from 'rollup-plugin-terser'
+// import analyzer from "rollup-plugin-analyzer";
 import path from 'path'
 import config from './package.json'
 import fs from 'fs-extra'
+import chalk from 'chalk'
+chalk.level = 3
 
 const rootPath = path.join(__dirname, '../')
 const isDev = process.env.ROLLUP_WATCH
+const bootFromRoot = process.env.BOOT_ENV === 'root'
 
 const plugins = [
   resolve(),
@@ -50,7 +54,7 @@ const plugins = [
     __VERSION__: config.version,
   }),
   !isDev && terser(),
-  isDev && myPlugin(),
+  myPlugin(),
 ]
 
 export default [
@@ -79,7 +83,14 @@ let count = 0
 function myPlugin() {
   return {
     name: 'my-plugin',
+    options(options) {
+      bootFromRoot &&
+        console.log(
+          chalk.cyan(`[rollup] bundles ${options.input} → ${options.output[0].file}...\n`),
+        )
+    },
     buildEnd() {
+      if (!isDev) return
       const dev = path.join(rootPath, 'pack/dev.js')
       if (!fs.existsSync(dev)) {
         fs.createFile(dev)
@@ -89,6 +100,11 @@ function myPlugin() {
       } else {
         count++
       }
+    },
+    outputOptions(options) {
+      if (!bootFromRoot) return
+      console.log(chalk.cyan(`[rollup] created ${options.file}\n`))
+      isDev && count > 2 && console.log('[rollup] waiting for changes...\n')
     },
   }
 }

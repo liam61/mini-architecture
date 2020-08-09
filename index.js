@@ -2,7 +2,7 @@ const program = require('commander')
 const runAll = require('npm-run-all')
 const stream = require('stream')
 
-program.option('--cmd [command]', '...').parse(process.argv)
+program.option('--cmd [command]', 'install, dev, build').parse(process.argv)
 const { cmd } = program
 
 const options = {
@@ -10,7 +10,7 @@ const options = {
   parallel: cmd !== 'build',
 }
 
-console.log(`\n${JSON.stringify(options)}\n\n`)
+console.log(`\n${JSON.stringify(options)}\n`)
 
 class BufferStream extends stream.Writable {
   constructor() {
@@ -20,13 +20,14 @@ class BufferStream extends stream.Writable {
 
   _write(chunk, _encoding, callback) {
     this.value += chunk.toString()
+    console.log(chunk.toString())
     callback()
   }
 }
 
-const stdout = new BufferStream()
+options.stdout = new BufferStream()
 
-runAll([`run-* {1}`], { ...options, stdout }).then((res) => {
+runAll([`run-* {1}`], options).then(res => {
   // console.log(res)
-  console.log(stdout.value)
+  // console.log(stdout.value)
 })

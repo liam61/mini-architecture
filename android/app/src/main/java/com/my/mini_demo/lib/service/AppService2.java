@@ -29,7 +29,6 @@ public class AppService2 implements IBridge, JavaCallback {
     private AppConfig mAppConfig;
     private ApiManager mApiManager;
 
-
     public AppService2(Context context, OnEventListener listener, AppConfig appConfig, ApiManager apiManager) {
         mServiceWorker = V8.createV8Runtime(AppService2.GLOBAL);
         mListener = listener;
