@@ -5,5 +5,5 @@
       "polymer-3"
     ]
   },
-  "entrypoint": "comp.html"
+  "entrypoint": "web.html"
 }

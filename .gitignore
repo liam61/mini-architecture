@@ -5,7 +5,7 @@ local.properties
 .DS_Store
 build
 android/app/build
-android/app/src/main/assets/*.zip
+android/app/src/main/assets
 captures
 .externalNativeBuild
 .cxx
@@ -26,6 +26,6 @@ framework/*.zip
 
 mini/*.zip
 
-pack/_tmp
+pack/_temp
 pack/*.zip
-pack/dev.js
+pack/_dev.js

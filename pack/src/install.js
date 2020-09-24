@@ -1,28 +1,34 @@
 const path = require('path')
 const fs = require('fs-extra')
+const chalk = require('chalk')
 const childProcess = require('child_process')
 const { execSync, spawnSync } = childProcess
 
-const rootPath = path.join(__dirname, '../')
+const rootPath = path.join(__dirname, '../..')
 
 installApp()
 
 function installApp() {
-  process.chdir(path.join(rootPath, 'android'))
+  const androidPath =
+    // by cli
+    typeof process.env.MINI_ANDROID === 'string'
+      ? process.env.MINI_ANDROID || path.join(rootPath, 'cli/android')
+      : path.join(rootPath, 'android')
+  process.chdir(androidPath)
   execSync('adb start-server')
   const deviceInfo = execSync('adb devices', { encoding: 'utf-8' })
-  const line = deviceInfo.trim().split(/\r?\n/)[1]
-  const words = line.split(/[ ,\t]+/).filter((w) => w !== '')
+  const line = deviceInfo.trim().split(/\r?\n/)[1] || ''
+  const words = line.split(/[ ,\t]+/).filter(w => w !== '')
+  const device = words[0]
 
-  let device = words[0]
   if (words[1] !== 'device') {
-    console.log('\nno device found...')
+    console.log(chalk.red('\nno device found...'))
     return
   }
   console.log(`\nsuccess get device ${device}...`)
 
   if (!fs.existsSync('local.properties')) {
-    const escapePath = (text) => {
+    const escapePath = text => {
       return text.replace(/[-[\]{}()*+?.,\\^$|#:\s]/g, '\\$&')
     }
     fs.writeFileSync('local.properties', `sdk.dir=${escapePath(process.env.ANDROID_HOME)}`)

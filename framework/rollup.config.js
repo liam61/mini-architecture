@@ -91,7 +91,7 @@ function myPlugin() {
     },
     buildEnd() {
       if (!isDev) return
-      const dev = path.join(rootPath, 'pack/dev.js')
+      const dev = path.join(rootPath, 'pack/_dev.js')
       if (!fs.existsSync(dev)) {
         fs.createFile(dev)
       }

@@ -1,6 +1,6 @@
 // const path = require('path')
 const { types: t, parse, traverse, transform } = require('@babel/core')
-const generator = require('@babel/generator').default // by @babel/core
+const { default: generator } = require('@babel/generator') // by @babel/core
 const fs = require('fs-extra')
 const Concat = require('concat-with-sourcemaps')
 
@@ -140,7 +140,7 @@ function genJsCode(events) {
 
 function getShortPath(path) {
   const arr = path.split('/')
-  const idx = arr.findIndex((dir) => dir === 'mini')
+  const idx = arr.findIndex(dir => dir === 'mini')
   return arr.slice(idx).join('/')
 }
 
