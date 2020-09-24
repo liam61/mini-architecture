@@ -50,11 +50,15 @@ install form [built apk](./mini-demo.apk)
 
 ## Record demo
 
-<image src="./record.gif" width=500 alt="mini record" />
+<image src="./record.gif" width=400 alt="mini record" />
 
 ## TODO
 
 - [x] build logs
+
+- [x] package publish 改造
+
+- [ ] package 管理文件调用
 
 - [ ] v8 thread worker
 

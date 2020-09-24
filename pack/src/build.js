@@ -4,10 +4,9 @@ const ejs = require('ejs')
 const glob = require('glob')
 const parse = require('./parser')
 const Concat = require('concat-with-sourcemaps')
-const minify = require('html-minifier').minify
+const { minify } = require('html-minifier')
 
 const isDev = process.env.NODE_ENV !== 'production'
-const rootPath = path.join(__dirname, '../')
 const minifyConfig = {
   preserveLineBreaks: true,
   collapseWhitespace: true,
@@ -21,15 +20,17 @@ const minifyConfig = {
     },
   },
 }
+const transformConfig = {}
 
-function transformView(source, pages, output) {
+function transformView() {
+  const { miniPath, output, miniConfig } = transformConfig
   const viewTpl = loadTemplate('view')
-  const appCssPath = path.join(source, 'app.css')
+  const appCssPath = path.join(miniPath, 'app.css')
   let appCss = fs.existsSync(appCssPath) ? fs.readFileSync(appCssPath, 'utf-8') : ''
 
-  pages.forEach((page) => {
-    const { code, js } = parse({ fullPath: path.join(source, page + '.html'), page })
-    const cssPath = path.join(source, page + '.css')
+  miniConfig.pages.forEach(page => {
+    const { code, js } = parse({ fullPath: path.join(miniPath, page + '.html'), page })
+    const cssPath = path.join(miniPath, page + '.css')
     const css = fs.existsSync(cssPath) ? fs.readFileSync(cssPath, 'utf-8') : ''
     const content = viewTpl({
       __TEMPLATE_APP_CSS__: appCss,
@@ -45,20 +46,21 @@ function transformView(source, pages, output) {
   })
 }
 
-function transformService(source, pages, output, config) {
-  const jsFiles = glob.sync(`${source}/**/*.js`, { ignore: [] })
+function transformService() {
+  const { miniPath, output, frameworkPath, miniConfig } = transformConfig
+  const jsFiles = glob.sync(`${miniPath}/**/*.js`, { ignore: [] })
   // const serviceTpl = loadTemplate('service')
   const serviceTpl = loadTemplate('service-worker')
-  const frameworkJs = fs.readFileSync(path.join(rootPath, 'framework/dist/service.js'), 'utf-8')
+  const frameworkJs = fs.readFileSync(path.join(frameworkPath, 'service.js'), 'utf-8')
 
-  const sourceArr = jsFiles.map((file) => {
+  const sourceArr = jsFiles.map(file => {
     if (file.includes('app.js')) {
       const res = parse({ fullPath: file })
       return Object.assign(res, { path: '' })
     }
     // NOTE: 其他 js 懒得处理了
     let path = ''
-    pages.some((p) => {
+    miniConfig.pages.some(p => {
       path = file.includes(p) ? p : false
       return path
     })
@@ -70,19 +72,20 @@ function transformService(source, pages, output, config) {
   })
 
   const jsCode = concatFiles(sourceArr)
-  config.root = config.root || pages[0]
+  miniConfig.root = miniConfig.root || miniConfig.pages[0]
 
   const content = serviceTpl({
     __FRAMEWORK_SERVICE__: frameworkJs,
     __TEMPLATE_JS__: isDev ? jsCode : minify(jsCode, minifyConfig),
-    __CONFIG__: `'${JSON.stringify(config)}'`,
+    __CONFIG__: `'${JSON.stringify(miniConfig)}'`,
   })
 
   fs.writeFileSync(path.join(output, 'app-service.js'), content)
 }
 
 function loadTemplate(name) {
-  const template = fs.readFileSync(path.join(rootPath, `framework/template/${name}.ejs`), 'utf-8')
+  const { templatePath } = transformConfig
+  const template = fs.readFileSync(path.join(templatePath, `${name}.ejs`), 'utf-8')
   return ejs.compile(template, { cache: true, filename: name })
 }
 
@@ -98,6 +101,9 @@ function concatFiles(sourceArr) {
 }
 
 module.exports = {
-  transformView,
-  transformService,
+  transform(config) {
+    Object.assign(transformConfig, config)
+    transformView()
+    transformService()
+  },
 }

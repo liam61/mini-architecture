@@ -12,14 +12,10 @@ if (!_global.jsCore) {
 
   _global.console = {
     log(...args) {
-      _global.log(
-        args.map((arg) => (typeof arg === 'object' ? JSON.stringify(arg) : arg)).join(', '),
-      )
+      _global.log(args.map(arg => (typeof arg === 'object' ? JSON.stringify(arg) : arg)).join(', '))
     },
     err(...args) {
-      _global.log(
-        args.map((arg) => (typeof arg === 'object' ? JSON.stringify(arg) : arg)).join(', '),
-      )
+      _global.log(args.map(arg => (typeof arg === 'object' ? JSON.stringify(arg) : arg)).join(', '))
     },
   }
 
