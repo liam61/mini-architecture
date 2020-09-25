@@ -1,16 +1,17 @@
 {
   "name": "@mini-architecture/framework",
-  "version": "0.0.3-beta1",
+  "version": "0.0.3",
   "description": "",
   "scripts": {
     "dev": "rm -rf dist && rollup -cw",
-    "build": "rm -rf dist && rollup -c",
+    "build": "rm -rf dist && rm -rf dev && rollup -c",
     "web": "polymer serve --npm"
   },
   "author": "lawler61",
   "license": "ISC",
   "files": [
     "dist",
+    "dev",
     "template"
   ],
   "publishConfig": {
@@ -24,7 +25,7 @@
     "regenerator-runtime": "^0.13.5"
   },
   "devDependencies": {
-    "@mini-architecture/base": "^0.0.3-beta2",
+    "@mini-architecture/base": "^0.0.3",
     "@rollup/plugin-babel": "^5.0.4",
     "@rollup/plugin-commonjs": "^13.0.0",
     "@rollup/plugin-image": "^2.0.5",

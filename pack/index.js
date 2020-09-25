@@ -3,14 +3,15 @@ const fs = require('fs-extra')
 const archiver = require('archiver')
 const builder = require('./src/build')
 const chalk = require('chalk')
+const { normalizePath, normalizeBoolean } = require('./src/utils')
 chalk.level = 3
 
 const rootPath = path.join(__dirname, '..')
-const outputDir = process.env.MINI_OUTPUT || path.join(rootPath, 'android/app/src/main/assets')
-const frameworkPath = process.env.MINI_FRAMEWORK || path.join(rootPath, 'framework/dist')
-const miniPath = process.env.MINI_ENTRY || path.join(rootPath, 'mini/dist')
+const outputDir = normalizePath('MINI_OUTPUT', path.join(rootPath, 'android/app/src/main/assets'))
+const frameworkPath = normalizePath('MINI_FRAMEWORK', path.join(rootPath, 'framework/dist'))
+const miniPath = normalizePath('MINI_ENTRY', path.join(rootPath, 'mini/dist'))
 const isDev = process.env.NODE_ENV !== 'production'
-const isZip = process.env.MINI_ZIP ? JSON.parse(process.env.MINI_ZIP) : true
+const isZip = normalizeBoolean('MINI_ZIP', true)
 
 pack()
 

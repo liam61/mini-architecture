@@ -1,8 +1,8 @@
 {
   "ext": "js",
   "ignore": [
-    "_temp/*",
-    "node_modules/*"
+    "_temp",
+    "android"
   ],
-  "delay": "1000"
+  "delay": "600"
 }

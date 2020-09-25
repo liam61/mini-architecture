@@ -12,6 +12,8 @@ a full mini app architecture demo
 
 - [mini](https://github.com/lawler61/mini-architecture/tree/master/mini) an example of mini-app
 
+- [cli](https://github.com/lawler61/mini-architecture/tree/master/cli) mini-architecture cli
+
 ## Start
 
 ### 1. required environment
@@ -24,17 +26,27 @@ a full mini app architecture demo
 
 4. [ADB](https://developer.android.com/studio/command-line/adb?hl=zh-cn)
 
-### 2. run
+### 2. 🔥quick start
 
-1. install: `yarn bootstrap`
+1. `yarn global add @mini-architecture/cli`
 
-2. dev: `yarn dev`
-
-3. build: `yarn build`
+2. `ma-cli -m build -e @mini --no-zip`
 
 before you run, don't forget to connect mobile to you computer. It may be slow for the first time while you running
 
-### 3. Quick install
+see [@mini-architecture/cli](https://github.com/lawler61/mini-architecture/tree/master/cli) for more details
+
+### 3. dev
+
+1. `git clone git@github.com:lawler61/mini-architecture.git && cd mini-architecture`
+
+2. `yarn`
+
+3. `yarn bootstrap` for all packages
+
+4. `yarn dev / build` for dev or build
+
+### 4. Quick install
 
 install form [built apk](./mini-demo.apk)
 
@@ -48,7 +60,7 @@ install form [built apk](./mini-demo.apk)
 
 [mini-architecture：从零手撸一整套小程序架构](https://github.com/lawler61/blog/blob/master/js/mini-architecture/index.md)
 
-## Record demo
+## Records
 
 <image src="./record.gif" width=400 alt="mini record" />
 
@@ -58,7 +70,11 @@ install form [built apk](./mini-demo.apk)
 
 - [x] package publish 改造
 
-- [ ] package 管理文件调用
+- [x] package dev & cli 调用
+
+- [x] cli
+
+- [ ] devtools
 
 - [ ] v8 thread worker
 

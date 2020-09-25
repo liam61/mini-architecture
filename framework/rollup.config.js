@@ -16,67 +16,91 @@ const rootPath = path.join(__dirname, '../')
 const isDev = process.env.ROLLUP_WATCH
 const bootFromRoot = process.env.BOOT_ENV === 'root'
 
-const plugins = [
-  resolve(),
-  json(),
-  image(),
-  commonjs(),
-  babel({
-    babelHelpers: 'bundled',
-    exclude: 'node_modules/**',
-    presets: [
-      [
-        '@babel/preset-env',
-        {
-          corejs: 3,
-          modules: false,
-          // global usage
-          useBuiltIns: 'usage',
-          targets: {
-            browsers: ['Android >= 4.4', 'ChromeAndroid >= 62', 'iOS >= 9'],
+const getPlugins = (compress = !isDev) => {
+  return [
+    resolve(),
+    json(),
+    image(),
+    commonjs(),
+    babel({
+      babelHelpers: 'bundled',
+      exclude: 'node_modules/**',
+      presets: [
+        [
+          '@babel/preset-env',
+          {
+            corejs: 3,
+            modules: false,
+            // global usage
+            useBuiltIns: 'usage',
+            targets: {
+              browsers: ['Android >= 4.4', 'ChromeAndroid >= 62', 'iOS >= 9'],
+            },
           },
-        },
+        ],
       ],
-    ],
-    // pure usage
-    // plugins: [
-    //   '@babel/transform-runtime',
-    //   {
-    //     corejs: 3,
-    //     ...
-    //   },
-    // ],
-  }),
-  replace({
-    __INSERT_TEXT__: JSON.stringify(
-      fs.readFileSync(__dirname + '/webview/components/reset.css', 'utf-8'),
-    ),
-    __VERSION__: config.version,
-  }),
-  !isDev && terser(),
-  myPlugin(),
-]
+      // pure usage
+      // plugins: [
+      //   '@babel/transform-runtime',
+      //   {
+      //     corejs: 3,
+      //     ...
+      //   },
+      // ],
+    }),
+    replace({
+      __INSERT_TEXT__: JSON.stringify(
+        fs.readFileSync(__dirname + '/webview/components/reset.css', 'utf-8'),
+      ),
+      __VERSION__: config.version,
+    }),
+    compress && terser(),
+    myPlugin(),
+  ]
+}
+
+const normalPlugins = getPlugins()
+const extraBuildPlugins = getPlugins(false)
+
+const generateEntry = ({ name, output, sourcemap, plugins = normalPlugins }) => {
+  return {
+    input: `${name}/index.js`,
+    output: {
+      file: `${output}/${name}.js`,
+      format: 'iife',
+      sourcemap,
+    },
+    plugins,
+  }
+}
 
 export default [
-  {
-    input: 'webview/index.js',
-    output: {
-      file: 'dist/webview.js',
-      format: 'iife',
-      sourcemap: isDev ? 'inline' : true,
-    },
-    plugins,
-  },
-  {
-    input: 'service/index.js',
-    output: {
-      file: 'dist/service.js',
-      format: 'iife',
-      sourcemap: isDev ? 'inline' : true,
-    },
-    plugins,
-  },
-]
+  generateEntry({
+    name: 'webview',
+    output: 'dist',
+    sourcemap: isDev ? 'inline' : true,
+  }),
+  generateEntry({
+    name: 'service',
+    output: 'dist',
+    sourcemap: isDev ? 'inline' : true,
+  }),
+  // when build also generate dev
+  !isDev &&
+    generateEntry({
+      name: 'webview',
+      output: 'dev',
+      sourcemap: 'inline',
+      plugins: extraBuildPlugins,
+    }),
+  !isDev &&
+    generateEntry({
+      name: 'service',
+      output: 'dev',
+      sourcemap: 'inline',
+      plugins: extraBuildPlugins,
+    }),
+].filter(Boolean)
 
 let count = 0
 
@@ -95,6 +119,7 @@ function myPlugin() {
       if (!fs.existsSync(dev)) {
         fs.createFile(dev)
       }
+      // pack 中 nodemon watch ../framework 有问题，暂时没更好办法
       if (count++ !== 0) {
         fs.writeFileSync(dev, `var update;`, { encoding: 'utf-8' })
       } else {

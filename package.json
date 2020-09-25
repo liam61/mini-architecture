@@ -1,6 +1,6 @@
 {
   "name": "@mini-architecture/base",
-  "version": "0.0.3-beta2",
+  "version": "0.0.3",
   "description": "",
   "main": "index.js",
   "scripts": {

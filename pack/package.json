@@ -1,11 +1,8 @@
 {
-  "name": "@mini-architecture/cli",
-  "version": "0.0.3-beta4",
+  "name": "@mini-architecture/pack",
+  "version": "0.0.3",
   "description": "",
   "main": "index.js",
-  "bin": {
-    "ma-pack": "bin/pack.js"
-  },
   "scripts": {
     "dev": "cross-env NODE_ENV=develop nodemon",
     "build": "cross-env NODE_ENV=production node index.js"
@@ -21,7 +18,7 @@
     "registry": "https://registry.npmjs.org"
   },
   "dependencies": {
-    "@mini-architecture/base": "^0.0.3-beta2",
+    "@mini-architecture/base": "^0.0.3",
     "archiver": "^4.0.1",
     "babel-preset-minify": "^0.5.1",
     "concat-with-sourcemaps": "^1.1.0",
