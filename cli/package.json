@@ -1,21 +1,23 @@
 {
   "name": "@mini-architecture/cli",
-  "version": "0.0.3",
+  "version": "0.0.4-beta5",
   "description": "",
   "bin": {
     "ma-cli": "bin/index.js"
   },
   "author": "lawler61",
   "license": "ISC",
-  "files": [],
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"
   },
   "dependencies": {
-    "@mini-architecture/framework": "^0.0.3",
+    "@mini-architecture/framework": "^0.0.4-beta2",
     "@mini-architecture/mini": "^0.0.3-beta1",
-    "@mini-architecture/pack": "^0.0.3",
+    "@mini-architecture/pack": "^0.0.4-beta2",
+    "chalk": "^4.1.0",
+    "commander": "^6.1.0",
+    "ignore-by-default": "^2.0.0",
     "nodemon": "^2.0.4"
   }
 }

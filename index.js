@@ -27,7 +27,7 @@ class BufferStream extends stream.Writable {
 
 options.stdout = new BufferStream()
 
-runAll([`run-* {1}`], options).then(res => {
+runAll([`run-* {1}`, cmd === 'install' && 'i-cli'].filter(Boolean), options).then(res => {
   // console.log(res)
   // console.log(stdout.value)
 })

@@ -7,7 +7,7 @@ const { normalizePath, normalizeBoolean } = require('./src/utils')
 chalk.level = 3
 
 const rootPath = path.join(__dirname, '..')
-const outputDir = normalizePath('MINI_OUTPUT', path.join(rootPath, 'android/app/src/main/assets'))
+const outputPath = normalizePath('MINI_OUTPUT', path.join(rootPath, 'android/app/src/main/assets'))
 const frameworkPath = normalizePath('MINI_FRAMEWORK', path.join(rootPath, 'framework/dist'))
 const miniPath = normalizePath('MINI_ENTRY', path.join(rootPath, 'mini/dist'))
 const isDev = process.env.NODE_ENV !== 'production'
@@ -27,10 +27,13 @@ function pack() {
 function packFramework() {
   return new Promise((resolve, reject) => {
     const name = `framework${isZip ? '.zip' : ''}`
-    const to = path.join(outputDir, name)
+    const to = path.join(outputPath, name)
 
     // 第一次直接返回
-    if (!fs.existsSync(frameworkPath)) {
+    if (
+      !fs.existsSync(path.join(frameworkPath, 'webview.js')) ||
+      !fs.existsSync(path.join(frameworkPath, 'service.js'))
+    ) {
       return reject('first pack...')
     }
 
@@ -48,7 +51,7 @@ function packMini({}) {
   return new Promise(resolve => {
     const name = `miniDemo${isZip ? '.zip' : ''}`
     const temp = path.join(rootPath, 'pack/_temp')
-    const to = path.join(outputDir, name)
+    const to = path.join(outputPath, name)
     const miniConfig = JSON.parse(fs.readFileSync(path.join(miniPath, 'app.json'), 'utf-8'))
 
     if (fs.existsSync(temp)) {

@@ -1,6 +1,6 @@
 {
   "name": "@mini-architecture/base",
-  "version": "0.0.3",
+  "version": "0.0.4-beta2",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -9,15 +9,16 @@
     "build": "node index.js --cmd build",
     "run-framework": "cross-env BOOT_ENV=root yarn --cwd ./framework",
     "run-pack": "yarn --cwd ./pack",
+    "i-cli": "yarn --cwd ./cli install",
     "lint": "eslint && prettier --write"
   },
-  "files": [
-    "record.gif"
-  ],
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org"
+  "author": "lawler61",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lawler61/mini-architecture.git"
   },
+  "homepage": "https://github.com/lawler61/mini-architecture#readme",
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
@@ -37,29 +38,16 @@
       "prettier --write"
     ]
   },
-  "author": "lawler61",
-  "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/lawler61/mini-architecture.git"
-  },
-  "homepage": "https://github.com/lawler61/mini-architecture#readme",
-  "dependencies": {
-    "@babel/core": "^7.11.6",
-    "@babel/preset-env": "^7.11.5",
-    "chalk": "^4.1.0",
+  "devDependencies": {
     "commander": "^5.1.0",
     "cross-env": "^7.0.2",
-    "fs-extra": "^9.0.1",
-    "npm-run-all": "^4.1.5"
-  },
-  "devDependencies": {
-    "eslint": "^7.4.0",
+    "eslint": "^7.9.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-standard": "^4.0.1",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.11",
+    "npm-run-all": "^4.1.5",
     "prettier": "^2.0.5"
   }
 }

@@ -5,7 +5,9 @@ const chalk = require('chalk')
 const nodemon = require('nodemon')
 const ignoreRoot = require('ignore-by-default').directories()
 
-const maModule = path.join(__dirname, '../node_modules/@mini-architecture')
+// global add cli 和 mini、pack 在同一级目录
+const maModule = path.join(__dirname, '../..')
+// path.join(__dirname, '../node_modules/@mini-architecture')
 const commands = ['dev', 'build']
 
 program.version('0.0.2')
@@ -50,6 +52,7 @@ function run() {
       // ]
       ignoreRoot: ignoreRoot.map(_ => `**/${_}/**`).filter(_ => !_.includes('node_modules')),
       watch: [process.env.MINI_ENTRY, process.env.MINI_FRAMEWORK],
+      ext: '*',
       delay: 600,
     })
   } else {

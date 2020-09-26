@@ -1,4 +1,3 @@
-// const path = require('path')
 const { types: t, parse, traverse, transform } = require('@babel/core')
 const { default: generator } = require('@babel/generator') // by @babel/core
 const fs = require('fs-extra')

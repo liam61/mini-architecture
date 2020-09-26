@@ -12,7 +12,7 @@ import fs from 'fs-extra'
 import chalk from 'chalk'
 chalk.level = 3
 
-const rootPath = path.join(__dirname, '../')
+const rootPath = path.join(__dirname, '..')
 const isDev = process.env.ROLLUP_WATCH
 const bootFromRoot = process.env.BOOT_ENV === 'root'
 
@@ -113,15 +113,16 @@ function myPlugin() {
           chalk.cyan(`[rollup] bundles ${options.input} → ${options.output[0].file}...\n`),
         )
     },
+    // pack 中 nodemon watch ../framework 有问题，暂时没其他办法
     buildEnd() {
       if (!isDev) return
-      const dev = path.join(rootPath, 'pack/_dev.js')
-      if (!fs.existsSync(dev)) {
-        fs.createFile(dev)
+      const _dev = path.join(rootPath, 'pack/_dev.js')
+
+      if (!fs.existsSync(_dev)) {
+        fs.createFile(_dev)
       }
-      // pack 中 nodemon watch ../framework 有问题，暂时没更好办法
       if (count++ !== 0) {
-        fs.writeFileSync(dev, `var update;`, { encoding: 'utf-8' })
+        fs.writeFileSync(_dev, `update: ${count}`, { encoding: 'utf-8' })
       } else {
         count++
       }

@@ -1,6 +1,6 @@
 {
   "name": "@mini-architecture/pack",
-  "version": "0.0.3",
+  "version": "0.0.4-beta2",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -18,15 +18,19 @@
     "registry": "https://registry.npmjs.org"
   },
   "dependencies": {
-    "@mini-architecture/base": "^0.0.3",
+    "@babel/core": "^7.11.6",
+    "@babel/preset-env": "^7.11.5",
     "archiver": "^4.0.1",
     "babel-preset-minify": "^0.5.1",
+    "chalk": "^4.1.0",
     "concat-with-sourcemaps": "^1.1.0",
     "ejs": "^3.1.3",
+    "fs-extra": "^9.0.1",
     "glob": "^7.1.6",
     "html-minifier": "^4.0.0"
   },
   "devDependencies": {
+    "cross-env": "^7.0.2",
     "nodemon": "^2.0.4"
   }
 }
