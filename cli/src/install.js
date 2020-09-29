@@ -1,14 +1,12 @@
-const path = require('path')
 const fs = require('fs-extra')
 const chalk = require('chalk')
 const childProcess = require('child_process')
-const { normalizePath } = require('./utils')
 const { execSync, spawnSync } = childProcess
 
 installApp()
 
 function installApp() {
-  const androidPath = normalizePath('MINI_ANDROID', path.join(__dirname, '../../android'))
+  const androidPath = process.env.MINI_INSTALL
   process.chdir(androidPath)
   execSync('adb start-server')
   const deviceInfo = execSync('adb devices', { encoding: 'utf-8' })

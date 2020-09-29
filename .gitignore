@@ -11,6 +11,8 @@ captures
 .cxx
 
 .project
+*.bak
+*.zip
 
 node_modules
 npm-debug.log
@@ -19,15 +21,9 @@ yarn.lock
 package-lock.json
 .npmrc
 
-*.bak
-
 framework/dist
 framework/dev
-framework/*.zip
-
-mini/*.zip
 
 pack/dist
 pack/_temp
-pack/*.zip
 pack/_dev.js

@@ -12,7 +12,7 @@ a full mini app architecture demo
 
 - [mini](https://github.com/lawler61/mini-architecture/tree/master/mini) an example of mini-app
 
-- [cli](https://github.com/lawler61/mini-architecture/tree/master/cli) mini-architecture cli
+- [cli](https://github.com/lawler61/mini-architecture/tree/master/cli) 🔥mini-architecture cli
 
 ## Start
 

@@ -3,7 +3,7 @@ import commonjs from '@rollup/plugin-commonjs'
 import json from '@rollup/plugin-json'
 import builtins from 'builtin-modules'
 
-// Circular dependencies
+// Circular dependencies error
 export default {
   input: 'index.js',
   output: {

@@ -1,8 +1,7 @@
 {
-  "name": "@mini-architecture/base",
-  "version": "0.0.4-beta2",
-  "description": "",
-  "main": "index.js",
+  "name": "@mini-architecture/home",
+  "version": "0.0.4-beta1",
+  "description": "mini-architecture home page",
   "scripts": {
     "bootstrap": "yarn && node index.js --cmd install",
     "dev": "node index.js --cmd dev",
@@ -14,6 +13,11 @@
   },
   "author": "lawler61",
   "license": "ISC",
+  "files": [],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lawler61/mini-architecture.git"

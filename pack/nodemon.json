@@ -1,8 +1,7 @@
 {
   "ext": "js",
   "ignore": [
-    "_temp",
-    "android"
+    "_temp"
   ],
   "delay": "600"
 }
