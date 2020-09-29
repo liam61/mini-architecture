@@ -1,0 +1,36 @@
+.ma-top {
+  display: flex;
+  height: 20px;
+  margin: 2px 10px;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+
+  &-battery {
+    display: flex;
+
+    .battery {
+      width: 22px;
+      margin-left: 4px;
+
+      &:before {
+        content: '';
+        width: 12px;
+        height: 6px;
+        transform: translateX(-1px);
+        background-color: black;
+      }
+
+      &:after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 0;
+        width: 18px;
+        height: 8px;
+        border: 1px solid;
+        border-radius: 1px;
+      }
+    }
+  }
+}

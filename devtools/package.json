@@ -1,0 +1,31 @@
+{
+  "name": "devtools",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel serve client/index.html -d dist --no-cache",
+    "build": "cross-env NODE_ENV=production node index.js"
+  },
+  "author": "lawler61",
+  "license": "ISC",
+  "dependencies": {
+    "chrome-launcher": "^0.13.4",
+    "express": "^4.17.1",
+    "express-ws": "^4.0.0",
+    "get-port": "^5.1.1",
+    "pack": "file:../pack",
+    "ws": "^7.3.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.3.0",
+    "@typescript-eslint/parser": "^4.3.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.21.2",
+    "less": "^3.12.2",
+    "parcel-bundler": "^1.12.4",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
+}

@@ -27,3 +27,5 @@ framework/dev
 pack/dist
 pack/_temp
 pack/_dev.js
+
+devtools/dist
