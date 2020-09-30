@@ -29,3 +29,5 @@ pack/_temp
 pack/_dev.js
 
 devtools/dist
+devtools/_dev
+devtools/.cache

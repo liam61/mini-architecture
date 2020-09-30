@@ -3,7 +3,11 @@ import 'regenerator-runtime/runtime'
 
 const _global = new Function('return this;')()
 
-// v8 worker
+// devtools
+if (_global.env === 'devtools') {
+}
+
+// android v8 worker
 if (!_global.jsCore) {
   _global.jsCore = {
     publish: _global.publish,

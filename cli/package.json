@@ -2,7 +2,7 @@
   "name": "@mini-architecture/cli",
   "version": "0.0.5-beta2",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "bin": {
     "ma-cli": "bin/index.js"
   },

@@ -1,6 +1,5 @@
-const pack = require('@mini-architecture/pack')
 const chalk = require('chalk')
-
+const pack = require(process.env.MINI_ENV === 'devtools' ? '../../pack' : '@mini-architecture/pack')
 const isDev = process.env.NODE_ENV !== 'production'
 
 pack()

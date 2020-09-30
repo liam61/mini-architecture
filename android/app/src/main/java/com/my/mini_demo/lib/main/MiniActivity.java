@@ -71,6 +71,7 @@ public class MiniActivity extends AppCompatActivity implements OnEventListener {
         mAppService = new AppService2(this, this, mAppConfig, mApiManager);
     }
 
+    // service publish serviceReady
     @Override
     public void onServiceReady() {
         mPageManager.launchHomePage(mAppConfig.getRootPath());
@@ -78,15 +79,11 @@ public class MiniActivity extends AppCompatActivity implements OnEventListener {
 
     @Override
     public void notifyPageSubscribers(String event, String params, int[] viewIds) {
-        Log.d("MiniDemo", String.format("notifyPageSubscribers %s, %s, %s",
-                event, params, Arrays.toString(viewIds)));
         mPageManager.subscribeHandler(event, params, viewIds);
     }
 
     @Override
     public void notifyServiceSubscribers(String event, String params, int viewId) {
-        Log.d("MiniDemo", String.format("notifyServiceSubscribers %s, %s, %s",
-                event, params, viewId));
         mAppService.subscribeHandler(event, params, viewId);
     }
 

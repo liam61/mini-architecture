@@ -1,13 +1,26 @@
 .ma-top {
-  display: flex;
   height: 20px;
-  margin: 2px 10px;
-  align-items: center;
-  justify-content: space-between;
+  line-height: 20px;
+  margin: 2px 0;
+  text-align: center;
   font-size: 14px;
 
+  &-name {
+    position: absolute;
+    display: inline-flex;
+    left: 10px;
+
+    .wifi {
+      width: 15px;
+      margin-right: 4px;
+    }
+  }
+
   &-battery {
-    display: flex;
+    position: absolute;
+    display: inline-flex;
+    right: 10px;
+
 
     .battery {
       width: 22px;
@@ -29,7 +42,7 @@
         width: 18px;
         height: 8px;
         border: 1px solid;
-        border-radius: 1px;
+        border-radius: 2px;
       }
     }
   }

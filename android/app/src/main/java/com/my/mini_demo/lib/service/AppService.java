@@ -38,6 +38,9 @@ public class AppService extends LinearLayout implements IBridge {
     }
 
     public void subscribeHandler(String event, String params, int viewId) {
+        Log.d("MiniDemo", String.format("subscribeHandler is called by native! event=%s, params=%s, viewId=%s",
+                event, params, viewId));
+        
         String jsFun = String.format("javascript:subscribeHandler('%s', %s, %s)",
                 event, params, viewId);
         mServiceWebView.loadUrl(jsFun);
@@ -67,7 +70,7 @@ public class AppService extends LinearLayout implements IBridge {
 
     @Override
     public void callback(String callbackId, String result) {
-        mServiceWebView.loadUrl(String.format("javascript:jsBridge.callbackHandler(%s, %s)",
+        mServiceWebView.loadUrl(String.format("javascript:callbackHandler(%s, %s)",
                 callbackId, result));
     }
 

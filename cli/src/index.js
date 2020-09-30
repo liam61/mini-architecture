@@ -4,11 +4,11 @@ const { homedir } = require('os')
 const chalk = require('chalk')
 const nodemon = require('nodemon')
 const ignoreRoot = require('ignore-by-default').directories()
-const { validate } = require('./src/utils')
+const { validate } = require('./utils')
 
 // global add cli 和 mini、pack 在同一级目录
-const maPath = path.join(__dirname, '..')
-const commands = ['dev', 'build']
+const maPath = path.join(__dirname, '../..')
+const commands = ['dev', 'build', 'devtools']
 
 module.exports = function run(config) {
   const { mode, entry = '', framework = '', install = '', output = '', zip } = config || {}
@@ -27,8 +27,9 @@ module.exports = function run(config) {
     return
   }
 
-  const isDev = mode === 'dev'
+  const isDev = ['dev', 'devtools'].includes(mode)
   process.env.NODE_ENV = isDev ? 'develop' : 'production'
+  process.env.MINI_ENV = mode
   process.env.MINI_ENTRY = entry !== '@mini' ? entry : path.join(maPath, 'mini/dist')
   process.env.MINI_FRAMEWORK = framework || path.join(maPath, `framework/${isDev ? 'dev' : 'dist'}`)
   process.env.MINI_INSTALL = install !== true ? install : path.join(maPath, 'cli/android')
@@ -39,9 +40,9 @@ module.exports = function run(config) {
       : `${homedir()}/.ma-dev`)
   process.env.MINI_ZIP = zip
 
-  if (mode === 'dev') {
+  if (isDev) {
     nodemon({
-      script: require.resolve('./src/pack.js'),
+      script: require.resolve('./pack.js'),
       // https://github.com/remy/nodemon/blob/master/lib/config/defaults.js#L15
       ignoreRoot: ignoreRoot.map(_ => `**/${_}/**`).filter(_ => !_.includes('node_modules')),
       watch: [process.env.MINI_ENTRY, process.env.MINI_FRAMEWORK],
@@ -49,6 +50,6 @@ module.exports = function run(config) {
       delay: 600,
     })
   } else {
-    require('./src/pack.js')
+    require('./pack.js')
   }
 }

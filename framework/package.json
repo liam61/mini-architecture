@@ -1,6 +1,6 @@
 {
   "name": "@mini-architecture/framework",
-  "version": "0.0.4-beta2",
+  "version": "0.0.4-beta3",
   "description": "",
   "scripts": {
     "dev": "rm -rf dist && rollup -cw",

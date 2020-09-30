@@ -3,7 +3,7 @@ const runAll = require('npm-run-all')
 const stream = require('stream')
 
 program.option('--cmd [command]', 'install, dev, build').parse(process.argv)
-const { cmd } = program
+const { cmd, clean } = program
 
 const options = {
   arguments: [cmd],

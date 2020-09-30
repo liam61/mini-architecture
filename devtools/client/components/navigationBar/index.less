@@ -2,20 +2,31 @@
   position: relative;
   height: 50px;
   line-height: 50px;
-  padding: 0 10px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+
+  &-back {
+    position: absolute;
+    padding: 0 10px;
+
+    .back {
+      width: 10px;
+      vertical-align: -3px;
+    }
+  }
 
   &-title {
     text-align: center;
+    font-weight: bold;
+    z-index: -1;
   }
 
   &-capsule {
     position: absolute;
     display: flex;
-    top: 10px;
+    top: 11px;
     right: 10px;
     width: 85px;
-    height: 30px;
+    height: 28px;
     border-radius: 30px;
     border: 1px solid rgba(0, 0, 0, 0.1);
 
@@ -48,7 +59,7 @@
       }
     }
 
-    .quit {
+    .exit {
       flex: 1;
 
       &:before {

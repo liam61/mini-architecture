@@ -57,6 +57,9 @@ public class AppService2 implements IBridge, JavaCallback {
     }
 
     public void subscribeHandler(String event, String params, int viewId) {
+        Log.d("MiniDemo", String.format("subscribeHandler is called by native! event=%s, params=%s, viewId=%s",
+                event, params, viewId));
+
         V8Array arguments = new V8Array(mServiceWorker);
         arguments.push(event);
         arguments.push(params);

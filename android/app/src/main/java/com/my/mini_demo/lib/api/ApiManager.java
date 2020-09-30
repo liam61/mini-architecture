@@ -30,7 +30,6 @@ public class ApiManager {
 
     private Activity mActivity;
     private final Map<String, IApi> APIS = new HashMap<>();
-    private final Map<Event, Pair<IApi, ICallback>> CALLING_APIS = new HashMap<>();
 
     public ApiManager(Activity activity, OnEventListener listener, AppConfig appConfig) {
         mActivity = activity;
@@ -62,7 +61,6 @@ public class ApiManager {
         }
 
         APIS.clear();
-        CALLING_APIS.clear();
     }
 
     public void invokeApi(Event event, IBridge bridge) {
@@ -79,7 +77,6 @@ public class ApiManager {
         }
 
         if (api != null) {
-            CALLING_APIS.put(event, Pair.create(api, callback));
             api.invoke(event.getName(), event.getParam(), callback);
         }
     }
@@ -118,7 +115,6 @@ public class ApiManager {
             String res = assembleResult(result, event.getName(), "ok");
             Log.d("MiniDemo", String.format("call api success! event=%s, result=%s",
                     event.getName(), res));
-            CALLING_APIS.remove(event);
 
             if (bridge != null) {
                 bridge.callback(event.getCallbackId(), res);
@@ -129,7 +125,6 @@ public class ApiManager {
         public void onFail() {
             Log.d("MiniDemo", String.format("call api fail! event=%s",
                     event.getName()));
-            CALLING_APIS.remove(event);
 
             if (bridge != null) {
                 bridge.callback(event.getCallbackId(),
@@ -139,8 +134,6 @@ public class ApiManager {
 
         @Override
         public void onCancel() {
-            CALLING_APIS.remove(event);
-
             if (bridge != null) {
                 bridge.callback(event.getCallbackId(),
                         assembleResult(null, event.getName(), "cancel"));

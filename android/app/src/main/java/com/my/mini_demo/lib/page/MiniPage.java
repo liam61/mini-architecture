@@ -20,6 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.Arrays;
 
 /**
  * 小程序 View 层，加载相应的 xxxPage.html
@@ -30,7 +31,7 @@ public class MiniPage extends LinearLayout implements IBridge {
     private AppConfig mAppConfig;
     private String mPagePath;
     private String mOpenType;
-    private MyWebView mCurWebView;
+    private MyWebView mWebView;
     private NavigationBar mNavBar;
     private FrameLayout mWebLayout;
     private OnEventListener mListener;
@@ -58,7 +59,7 @@ public class MiniPage extends LinearLayout implements IBridge {
         // 控制 webview 中的网页跳转依然在 webview 中打开
         webView.setWebViewClient(new MyWebViewClient(mAppConfig));
         webView.setWebChromeClient(new MyWebChromeClient());
-        mCurWebView = webView;
+        mWebView = webView;
 
         mWebLayout.addView(webView, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.MATCH_PARENT));
@@ -67,7 +68,7 @@ public class MiniPage extends LinearLayout implements IBridge {
     }
 
     public int getViewId() {
-        return mCurWebView != null ? mCurWebView.getViewId() : 0;
+        return mWebView != null ? mWebView.getViewId() : 0;
     }
 
     public boolean onLaunchHome(String url) {
@@ -100,7 +101,7 @@ public class MiniPage extends LinearLayout implements IBridge {
     }
 
     private boolean loadUrl(String url, String openType) {
-        if (TextUtils.isEmpty(url) || mCurWebView == null) {
+        if (TextUtils.isEmpty(url) || mWebView == null) {
             return false;
         }
 
@@ -121,7 +122,7 @@ public class MiniPage extends LinearLayout implements IBridge {
                 // 加载 pages/xxx.html
                 File viewFile = new File(mAppConfig.getMiniAppSourcePath(getContext()), mPagePath);
                 String viewPath = Uri.fromFile(viewFile).toString();
-                mCurWebView.loadUrl(viewPath);
+                mWebView.loadUrl(viewPath);
             }
         });
     }
@@ -163,6 +164,8 @@ public class MiniPage extends LinearLayout implements IBridge {
         if (viewIds == null || viewIds.length == 0) {
             return;
         }
+        Log.d("MiniDemo", String.format("subscribeHandler is called by native! event=%s, params=%s, viewIds=%s",
+                event, params, Arrays.toString(viewIds)));
 
         int count = mWebLayout.getChildCount();
         for (int i = 0; i < count; i++) {
@@ -170,6 +173,7 @@ public class MiniPage extends LinearLayout implements IBridge {
 
             for (int viewId : viewIds) {
                 if (viewId == webView.getViewId()) {
+                    // native -> client
                     String jsFun = String.format("javascript:subscribeHandler('%s', %s)",
                             event, params);
                     webView.loadUrl(jsFun);

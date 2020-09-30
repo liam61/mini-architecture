@@ -33,10 +33,11 @@ function transformView() {
     const cssPath = path.join(miniPath, page + '.css')
     const css = fs.existsSync(cssPath) ? fs.readFileSync(cssPath, 'utf-8') : ''
     const content = viewTpl({
-      __TEMPLATE_APP_CSS__: appCss,
-      __TEMPLATE_HTML__: code,
-      __TEMPLATE_JS__: js,
-      __TEMPLATE_CSS__: css,
+      __ENV__: process.env.MINI_ENV,
+      __APP_CSS__: appCss,
+      __HTML__: code,
+      __JS__: js,
+      __CSS__: css,
     })
 
     // 默认以 /index 结束
@@ -49,7 +50,7 @@ function transformView() {
 function transformService() {
   const { miniPath, output, frameworkPath, miniConfig } = transformConfig
   const jsFiles = glob.sync(`${miniPath}/**/*.js`, { ignore: [] })
-  // const serviceTpl = loadTemplate('service')
+  const serviceHtmlTpl = loadTemplate('service')
   const serviceTpl = loadTemplate('service-worker')
   const frameworkJs = fs.readFileSync(path.join(frameworkPath, 'service.js'), 'utf-8')
 
@@ -74,13 +75,23 @@ function transformService() {
   const jsCode = concatFiles(sourceArr)
   miniConfig.root = miniConfig.root || miniConfig.pages[0]
 
-  const content = serviceTpl({
-    __FRAMEWORK_SERVICE__: frameworkJs,
-    __TEMPLATE_JS__: isDev ? jsCode : minify(jsCode, minifyConfig),
-    __CONFIG__: `'${JSON.stringify(miniConfig)}'`,
-  })
+  if (process.env.MINI_ENV === 'devtools') {
+    const content = serviceHtmlTpl({
+      __ENV__: 'devtools',
+      __CONFIG__: `'${JSON.stringify(miniConfig)}'`,
+    })
 
-  fs.writeFileSync(path.join(output, 'app-service.js'), content)
+    fs.writeFileSync(path.join(output, 'app-service.js'), jsCode)
+    fs.writeFileSync(path.join(output, 'service.html'), content)
+  } else {
+    const content = serviceTpl({
+      __SERVICE__: frameworkJs,
+      __JS__: isDev ? jsCode : minify(jsCode, minifyConfig),
+      __CONFIG__: `'${JSON.stringify(miniConfig)}'`,
+    })
+
+    fs.writeFileSync(path.join(output, 'app-service.js'), content)
+  }
 }
 
 function loadTemplate(name) {

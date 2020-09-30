@@ -51,7 +51,7 @@ function packMini({}) {
   return new Promise(resolve => {
     const name = `miniDemo${isZip ? '.zip' : ''}`
     const temp = path.join(rootPath, 'pack/_temp')
-    const to = path.join(outputPath, name)
+    const to = path.join(outputPath, process.env.MINI_ENV === 'devtools' ? 'apps' : '', name)
     const miniConfig = JSON.parse(fs.readFileSync(path.join(miniPath, 'app.json'), 'utf-8'))
 
     if (fs.existsSync(temp)) {
@@ -61,7 +61,7 @@ function packMini({}) {
     builder.transform({
       miniPath,
       frameworkPath,
-      templatePath: path.join(frameworkPath, '../template'),
+      templatePath: path.join(rootPath, 'pack/template'),
       output: temp,
       miniConfig,
     })

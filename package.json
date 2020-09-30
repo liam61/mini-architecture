@@ -8,6 +8,7 @@
     "build": "node index.js --cmd build",
     "run-framework": "cross-env BOOT_ENV=root yarn --cwd ./framework",
     "run-pack": "yarn --cwd ./pack",
+    "run-devtools": "yarn --cwd ./devtools",
     "i-cli": "yarn --cwd ./cli install",
     "lint": "eslint && prettier --write"
   },

@@ -8,22 +8,23 @@
     />
     <title>Page</title>
     <style>
-      <%- __TEMPLATE_APP_CSS__ %>
+      <%- __APP_CSS__ %>
     </style>
     <style>
-      <%- __TEMPLATE_CSS__ %>
+      <%- __CSS__ %>
     </style>
+    <%- __ENV__ == 'devtools' ? '<script>window.env = "devtools";</script>' : '' %>
     <script src="../../../../framework/webview.js"></script>
   </head>
   <body>
     <dom-bind id="_binder">
       <template>
-        <my-view id="app"><%- __TEMPLATE_HTML__ %></my-view>
+        <my-view id="app"><%- __HTML__ %></my-view>
       </template>
     </dom-bind>
     <script>
       window._binder = document.getElementById("_binder");
-      <%- __TEMPLATE_JS__ %>
+      <%- __JS__ %>
     </script>
   </body>
 </html>
