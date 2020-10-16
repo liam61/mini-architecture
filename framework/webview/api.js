@@ -20,4 +20,4 @@ const webviewApi = {
 
 export { webviewApi }
 
-window.ns = webviewApi
+window.ma = webviewApi

@@ -1,17 +1,12 @@
 import MiniPage from '../page'
-import AppConfig from '../config/appConfig'
 import { OnEventListener } from '../interfaces'
 
 export default class PageManager {
-  constructor(
-    public container: any,
-    public listener: OnEventListener,
-    public appConfig: AppConfig,
-  ) {}
+  constructor(public container: any, public listener: OnEventListener) {}
 
   private createPage(url: string, navigateType: string) {
-    const page = new MiniPage(this.appConfig.getPageUrl(url), navigateType, this.listener)
-    this.setNavigationBarTitle(this.appConfig.getTitle(url))
+    const page = new MiniPage(url, navigateType, this.listener)
+    page.getPath() && this.setNavigationBarTitle(window.appConfig.getTitle(page.getPath()))
     this.container.addView(page)
     return page
   }
@@ -20,10 +15,17 @@ export default class PageManager {
     return this.container.getTopPage()
   }
 
+  getJsCoreById(id: string) {
+    const page: MiniPage = this.container
+      .getWebViews()
+      .find((page: MiniPage) => +id === page.getId())
+    return page ? page.getJsCore() : {}
+  }
+
   launchHomePage() {
     try {
       this.container.removeAllViews()
-      this.createPage(this.appConfig.getPageUrl('root'), 'appLaunch')
+      this.createPage('root', 'appLaunch')
       return true
     } catch {
       return false
@@ -68,7 +70,7 @@ export default class PageManager {
     if (!viewIds.length) return
 
     this.container.getWebViews().forEach((page: MiniPage) => {
-      viewIds.includes(page.getId()) && page.subscribeHandler(event, params, viewIds)
+      viewIds.includes(page.getId()) && page.subscribeHandler(event, params, page.getId())
     })
   }
 

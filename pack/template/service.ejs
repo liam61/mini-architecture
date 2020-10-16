@@ -10,8 +10,8 @@
   </head>
   <body>
     <script>
-      if (typeof ns === 'object') {
-        ns.publish('serviceReady', { config: <%- __CONFIG__ %> })
+      if (typeof ma === 'object') {
+        ma.publish('serviceReady', { config: <%- __CONFIG__ %> })
       }
     </script>
   </body>

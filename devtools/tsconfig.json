@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "baseUrl": "./",
-    "rootDir": "./",
     "target": "es2017",
     "module": "commonjs",
     "moduleResolution": "node",
@@ -9,25 +8,23 @@
       "dom",
       "esnext"
     ],
+    "typeRoots": [
+      "typings"
+    ],
     "jsx": "react",
     "noUnusedLocals": true,
     "noImplicitAny": false,
     "noImplicitThis": true,
     "esModuleInterop": true,
     "declaration": true,
+    "emitDeclarationOnly": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "downlevelIteration": true,
-    "sourceMap": false,
     "outDir": "dist",
-    "incremental": true,
+    "sourceMap": false,
     "allowSyntheticDefaultImports": true
   },
-  "include": [
-    "client",
-    "server"
-  ],
   "exclude": [
     "node_modules"
   ]

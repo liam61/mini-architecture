@@ -4,6 +4,7 @@ import path from 'path'
 const app = express()
 
 app.use(express.static(path.join(__dirname, '../_dev')))
+app.use('/client', express.static(path.join(__dirname, '../dist')))
 
 // app.get('/json', () => {
   // res.status(200).json(retJson);

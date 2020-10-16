@@ -1,4 +1,3 @@
-import AppConfig from '../config/appConfig'
 import ApiManager from '../api/apiManager'
 import { IBridge, OnEventListener } from '../interfaces'
 import WebView from '../webview'
@@ -10,11 +9,13 @@ export default class AppService implements IBridge {
   private service: WebView
 
   constructor(
+    public container: any,
     public listener: OnEventListener,
-    public appConfig: AppConfig,
     public apiManager: ApiManager,
   ) {
-    this.service = new WebView(this)
+    this.service = new WebView(this, 'service')
+    this.service.loadUrl('service')
+    this.container.addView(this, 'service')
   }
 
   getId() {
@@ -22,11 +23,15 @@ export default class AppService implements IBridge {
   }
 
   getName() {
-    return 'maService'
+    return this.service.name
   }
 
   getUrl() {
     return this.service.url
+  }
+
+  getJsCore() {
+    return this.service.jsCore
   }
 
   onDestroy() {
@@ -35,7 +40,7 @@ export default class AppService implements IBridge {
 
   subscribeHandler(event: string, params: string, viewId: number) {
     console.log(
-      `[devtools]: subscribeHandler is called by native! event=${event}, params=${params}, viewId=${viewId}`,
+      `[devtools]: service subscribeHandler is called! event=${event}, params=${params}, called by viewId=${viewId}`,
     )
     this.service.loadUrl(`javascript:subscribeHandler('${event}', ${params}, ${viewId})`)
   }
@@ -45,7 +50,7 @@ export default class AppService implements IBridge {
 
     // prefix 在 framework 中拼接
     if (event === 'custom_event_serviceReady') {
-      this.appConfig.init(params)
+      window.appConfig.init(params)
       this.listener.onServiceReady()
     } else {
       // custom_event_appDataChange | custom_event_nativeAlert
@@ -60,7 +65,7 @@ export default class AppService implements IBridge {
 
   callback(callbackId: string, result: string) {
     console.log(
-      `[devtools]: callbackHandler is called by native! callbackId=${callbackId}, result=${result}`,
+      `[devtools]: service callbackHandler is called! callbackId=${callbackId}, result=${result}`,
     )
     this.service.loadUrl(`javascript:callbackHandler(${callbackId}, ${result})`)
   }

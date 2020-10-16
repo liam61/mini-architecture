@@ -8,7 +8,7 @@ export default class MiniPage implements IBridge {
   openType: string
   private webView: WebView
 
-  constructor(public url: string, openType: string, public listener: OnEventListener) {
+  constructor(url: string, openType: string, public listener: OnEventListener) {
     this.webView = new WebView(this)
     this.loadUrl(url, openType)
   }
@@ -18,11 +18,19 @@ export default class MiniPage implements IBridge {
   }
 
   getName() {
-    return `maWebview${this.getId()}`
+    return this.webView.name
   }
 
   getUrl() {
     return this.webView.url
+  }
+
+  getPath() {
+    return this.webView.path
+  }
+
+  getJsCore() {
+    return this.webView.jsCore
   }
 
   destroy() {
@@ -47,7 +55,6 @@ export default class MiniPage implements IBridge {
 
   loadUrl(url: string, openType: string) {
     if (!url) return
-    this.url = url
     this.openType = openType
     this.webView.loadUrl(url)
   }
@@ -59,23 +66,23 @@ export default class MiniPage implements IBridge {
     const params = {
       webviewId: this.getId(),
       openType: this.openType,
-      path: this.url,
+      path: this.getPath(),
     }
 
     try {
       this.listener.notifyServiceSubscribers(name, JSON.stringify(params), this.getId())
       return true
     } catch (err) {
-      console.error('[devtools]: onDomContentLoaded assembly params exception')
+      console.error('[devtools]: onDomContentLoaded assembly params exception', err)
       return false
     }
   }
 
-  subscribeHandler(event: string, params: string, viewIds: number[]) {
+  subscribeHandler(event: string, params: string, viewId: number) {
     console.log(
-      `[devtools]: subscribeHandler is called by native! event=${event}, params=${params}, viewIds=${viewIds}`,
+      `[devtools]: webView subscribeHandler is called! event=${event}, params=${params}, called by viewId=${viewId}`,
     )
-    this.webView.loadUrl(`javascript:subscribeHandler('${event}', ${params})`)
+    this.webView.loadUrl(`javascript:subscribeHandler('${event}', ${params}, ${viewId})`)
   }
 
   publish(event: string, params: string, viewIds: string) {

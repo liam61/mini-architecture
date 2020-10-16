@@ -10,7 +10,7 @@
     "sourceType": "module"
   },
   "globals": {
-    "ns": true
+    "ma": true
   },
   "rules": {
     "no-unused-vars": [

@@ -13,18 +13,22 @@ export default class AppConfig {
     let json: Record<string, any> = {}
     try {
       json = JSON.parse(config)
+      json.config = JSON.parse(json.config)
     } catch {}
-
     this.config = json.config || { window: {} }
   }
 
-  getPageUrl(url: string) {
-    return this.appPath + (url === 'root' ? this.config.root : url) + '.html'
+  getPagePath = (url: string) => {
+    return url === 'root' ? this.config.root : url
   }
 
-  getTitle(url: string) {
-    const { window } = this.config
-    if (!window.pages) return window.navigationBarTitleText || ''
-    return window.pages[url] || window.navigationBarTitleText || ''
+  getUrl = (path: string) => {
+    return this.appPath + (path !== 'service' ? this.getPagePath(path) : 'service') + '.html'
+  }
+
+  getTitle = (url: string) => {
+    const { window: cfg } = this.config
+    if (!cfg.pages) return cfg.navigationBarTitleText || ''
+    return cfg.pages[this.getPagePath(url)] || cfg.navigationBarTitleText || ''
   }
 }

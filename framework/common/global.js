@@ -5,6 +5,34 @@ const _global = new Function('return this;')()
 
 // devtools
 if (_global.env === 'devtools') {
+  const config = _global.location.href
+    .split('?')[1]
+    .split('&')
+    .reduce((obj, str) => {
+      const [k, v] = str.split('=')
+      obj[k] = v
+      return obj
+    }, {})
+
+  // view -> native
+  _global.jsCore = {
+    publish(...args) {
+      _global.parent.postMessage({ args, type: 'publish', ...config }, '*')
+    },
+    invoke(...args) {
+      _global.parent.postMessage({ args, type: 'invoke', ...config }, '*')
+    },
+  }
+
+  // native -> view
+  _global.addEventListener('message', ev => {
+    // console.log('call from devtools', ev)
+    const { data, origin } = ev
+    const { appId, userId, viewId, args = [], type } = data
+
+    if (appId !== config.appId || userId !== config.userId) return
+    _global[type](...args)
+  })
 }
 
 // android v8 worker

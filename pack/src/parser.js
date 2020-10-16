@@ -128,10 +128,10 @@ function addDynamicValue(page, type, value) {
 function genJsCode(events) {
   return [...events].reduce((tpl, name, i, arr) => {
     tpl += `_binder["${name}"] = function(ev) {
-      window.ns.publishPageEvent("${name.slice(PREFIX_EVENT.length)}", ev)
+      window.ma.publishPageEvent("${name.slice(PREFIX_EVENT.length)}", ev)
     };`
     if (i === arr.length - 1) {
-      tpl += 'Object.assign(_binder, window.ns.data || {});}'
+      tpl += 'Object.assign(_binder, window.ma.data || {});}'
     }
     return tpl
   }, 'function _bindData() {')

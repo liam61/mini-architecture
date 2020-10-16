@@ -57,7 +57,7 @@ const serviceApi = {
 function invokeRouteMethod(eventName, params) {
   const { success = noop, fail = noop, complete = noop, ...restParams } = params || {}
 
-  jsBridge.invoke(eventName, restParams, (res) => {
+  jsBridge.invoke(eventName, restParams, res => {
     try {
       typeof res === 'string' && (res = JSON.parse(res))
     } catch {
@@ -74,4 +74,4 @@ function invokeRouteMethod(eventName, params) {
 
 export { serviceApi }
 
-window.ns = serviceApi
+window.ma = serviceApi

@@ -27,9 +27,13 @@ export class LayoutStore {
     return this.webViews
   }
 
-  addView(page: MiniPage) {
-    this.webViews.push(page)
-    this.forceUpdate()
+  addView(page: MiniPage | AppService, type = 'webview') {
+    if (type === 'webview') {
+      this.webViews.push(page as MiniPage)
+      this.forceUpdate()
+    } else {
+      this.service = page as AppService
+    }
   }
 
   getChildAt(index: number) {

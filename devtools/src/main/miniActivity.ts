@@ -3,14 +3,13 @@ import AppConfig from '../config/appConfig'
 import ApiManager from '../api/apiManager'
 import PageManager from './pageManager'
 import AppService from '../service'
-import OpenLink from '../hostapi/openLink'
+import OpenLink from '../api/host/openLink'
 import { OnEventListener } from '../interfaces'
 
 class MiniActivity implements OnEventListener {
   static instance: MiniActivity
 
   miniConfig: MiniConfig
-  appConfig: AppConfig
   apiManager: ApiManager
   pageManager: PageManager
   appService: AppService
@@ -23,8 +22,8 @@ class MiniActivity implements OnEventListener {
     return this.instance
   }
 
-  static getExtendsApi() {
-    return MiniActivity.instance.miniConfig.getExtendsApi()
+  static getContext() {
+    return MiniActivity.instance
   }
 
   setContainer(container: any) {
@@ -34,17 +33,18 @@ class MiniActivity implements OnEventListener {
 
   launch(appId: string, userId: string, appPath: string) {
     console.log(`[devtools]: ${userId} open ${appId}`)
-    this.appConfig = new AppConfig(appId, userId, appPath)
+    window.appConfig = new AppConfig(appId, userId, appPath)
     this.miniConfig = MiniConfig.create().loadExtendsApi(new OpenLink(this.pageManager))
-    this.apiManager = new ApiManager(this, this.appConfig)
+    this.apiManager = new ApiManager(this, this.miniConfig)
 
-    this.loadPage()
+    // webview & service
+    this.appService = new AppService(this.container, this, this.apiManager)
+    this.pageManager = new PageManager(this.container, this)
   }
 
-  // webview & service
-  loadPage() {
-    this.pageManager = new PageManager(this.container, this, this.appConfig)
-    this.appService = new AppService(this, this.appConfig, this.apiManager)
+  getJsCoreById(id: string) {
+    if (+id === this.appService.getId()) return this.appService.getJsCore()
+    return this.pageManager.getJsCoreById(id)
   }
 
   // service publish serviceReady

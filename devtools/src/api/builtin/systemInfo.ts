@@ -18,7 +18,7 @@ export default class SystemInfo implements IApi {
 
   onCreate() {
     this.model = ''
-    this.pixelRatio = 2.75
+    this.pixelRatio = 2
     this.screenWidth = '375'
     this.screenHeight = '750'
     this.language = 'zh-CN'
@@ -40,7 +40,6 @@ export default class SystemInfo implements IApi {
       platform: this.platform,
       SDKVersion: this.SDKVersion,
     }
-
     callback.onSuccess(result)
   }
 

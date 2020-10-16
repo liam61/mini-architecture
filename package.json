@@ -8,7 +8,7 @@
     "build": "node index.js --cmd build",
     "run-framework": "cross-env BOOT_ENV=root yarn --cwd ./framework",
     "run-pack": "yarn --cwd ./pack",
-    "run-devtools": "yarn --cwd ./devtools",
+    "runa-devtools": "yarn --cwd ./devtools",
     "i-cli": "yarn --cwd ./cli install",
     "lint": "eslint && prettier --write"
   },
@@ -49,6 +49,7 @@
     "eslint": "^7.9.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.21.4",
     "eslint-plugin-standard": "^4.0.1",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.11",

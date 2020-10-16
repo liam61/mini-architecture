@@ -3,12 +3,10 @@ import { LayoutStore } from './store'
 
 import './index.less'
 
-interface LayoutProps {}
-
 export const LayoutContext = createContext<LayoutStore>({} as any)
 export * from './store'
 
-export default function Layout(props: LayoutProps) {
+export default function Layout() {
   const [, setTick] = useState(0)
   const forceUpdate = () => setTick(t => t + 1)
   const store = useContext(LayoutContext)
@@ -19,21 +17,22 @@ export default function Layout(props: LayoutProps) {
       {store.webViews.map((page, i) => {
         return (
           <iframe
+            key={page.getId()}
             // ref={page.getId()}
             name={page.getName()}
-            // pages/index
-            src={`http://localhost:3000/apps/miniDemo/${page.getUrl()}`}
+            src={page.getUrl()}
             style={{ zIndex: i + 1 }}
           />
         )
       })}
-      <iframe
-        className='g-hidden'
-        // ref={store.service.getId()}
-        name={store.service.getName()}
-        // service.html
-        src={`http://localhost:3000/apps/miniDemo/${store.service.getUrl()}`}
-      />
+      {store.service && (
+        <iframe
+          className='g-hidden'
+          // ref={store.service.getId()}
+          name={store.service.getName()}
+          src={store.service.getUrl()}
+        />
+      )}
     </div>
   )
 }

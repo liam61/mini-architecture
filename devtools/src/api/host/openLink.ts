@@ -12,6 +12,9 @@ export default class OpenLink implements IApi {
     let res = false
     try {
       const p = JSON.parse(params)
+      if (!p.url || !p.url.startsWith('http')) {
+        throw new Error('invalid params')
+      }
       res = this.pageManager.navigateToPage(p.url)
     } catch {}
 

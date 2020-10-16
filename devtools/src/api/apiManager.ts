@@ -1,8 +1,7 @@
-import AppConfig from 'src/config/appConfig'
-import { IApi, OnEventListener, IBridge, ICallback, IEvent } from '../interfaces'
 import Page from './builtin/page'
 import SystemInfo from './builtin/systemInfo'
-import MiniActivity from '../main/miniActivity'
+import MiniConfig from '../config/miniConfig'
+import { IApi, OnEventListener, IBridge, ICallback, IEvent } from '../interfaces'
 
 /**
  * 所有 api 统一入口
@@ -10,7 +9,7 @@ import MiniActivity from '../main/miniActivity'
 export default class ApiManager {
   private apis = new Map<string, IApi>()
 
-  constructor(public listener: OnEventListener, public appConfig: AppConfig) {
+  constructor(public listener: OnEventListener, public miniConfig: MiniConfig) {
     this.initSdkApi()
   }
 
@@ -58,7 +57,7 @@ export default class ApiManager {
 
     if (!api) {
       // 看 extendsApi 中是否存在
-      const extendsApi = MiniActivity.getExtendsApi()
+      const extendsApi = this.miniConfig.getExtendsApi()
       api = extendsApi.get(event.name)
     }
 
