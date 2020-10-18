@@ -17,14 +17,14 @@ public class JsBridge {
     }
 
     @JavascriptInterface
-    public void publish(final String event, final String params, final String viewIds) {
-        Log.d("MiniDemo", String.format("publish bridge is called! event=%s, params=%s, viewIds=%s",
-                event, params, viewIds));
+    public void publish(final String event, final String params, final String viewId) {
+        Log.d("MiniDemo", String.format("publish bridge is called! event=%s, params=%s, called by viewId=%s",
+                event, params, viewId));
         mHandler.post(new Runnable() {
             @Override
             public void run() {
                 if (mBridge != null) {
-                    mBridge.publish(event, params, viewIds);
+                    mBridge.publish(event, params, viewId);
                 }
             }
         });

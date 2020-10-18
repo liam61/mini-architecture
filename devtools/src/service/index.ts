@@ -45,7 +45,7 @@ export default class AppService implements IBridge {
     this.service.loadUrl(`javascript:subscribeHandler('${event}', ${params}, ${viewId})`)
   }
 
-  publish(event: string, params: string, viewIds: string) {
+  publish(event: string, params: string, viewId: string) {
     if (!this.listener) return
 
     // prefix 在 framework 中拼接
@@ -54,7 +54,7 @@ export default class AppService implements IBridge {
       this.listener.onServiceReady()
     } else {
       // custom_event_appDataChange | custom_event_nativeAlert
-      this.listener.notifyPageSubscribers(event, params, JSON.parse(viewIds))
+      this.listener.notifyPageSubscribers(event, params, JSON.parse(viewId))
     }
   }
 

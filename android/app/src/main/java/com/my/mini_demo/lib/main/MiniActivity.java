@@ -16,7 +16,6 @@ import com.my.mini_demo.lib.service.AppService;
 import com.my.mini_demo.lib.service.AppService2;
 import com.my.mini_demo.lib.utils.FileUtil;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 public class MiniActivity extends AppCompatActivity implements OnEventListener {
@@ -27,7 +26,8 @@ public class MiniActivity extends AppCompatActivity implements OnEventListener {
     private ConstraintLayout mLayout;
     private AppConfig mAppConfig;
     private ApiManager mApiManager;
-    private AppService2 mAppService;
+    // private AppService mAppService;
+   private AppService2 mAppService;
     private PageManager mPageManager;
 
 
@@ -64,6 +64,10 @@ public class MiniActivity extends AppCompatActivity implements OnEventListener {
     }
 
     private void loadPage() {
+        // mAppService = new AppService(this, this, mAppConfig, mApiManager);
+        // mLayout.addView(mAppService, new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT,
+        //         ConstraintLayout.LayoutParams.MATCH_PARENT));
+
         mPageManager = new PageManager(this, this, mAppConfig);
         mLayout.addView(mPageManager.getContainer(), new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT,
                 ConstraintLayout.LayoutParams.MATCH_PARENT));
@@ -78,8 +82,8 @@ public class MiniActivity extends AppCompatActivity implements OnEventListener {
     }
 
     @Override
-    public void notifyPageSubscribers(String event, String params, int[] viewIds) {
-        mPageManager.subscribeHandler(event, params, viewIds);
+    public void notifyPageSubscribers(String event, String params, int viewId) {
+        mPageManager.subscribeHandler(event, params, viewId);
     }
 
     @Override
@@ -95,7 +99,7 @@ public class MiniActivity extends AppCompatActivity implements OnEventListener {
     @Override
     protected void onDestroy() {
         mApiManager.onDestroy();
-        mAppService.onDestroy();
+       mAppService.onDestroy();
         super.onDestroy();
     }
 

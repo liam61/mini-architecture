@@ -1,8 +1,8 @@
-import PageManager from '../../main/pageManager'
 import { ICallback, IApi } from '../../interfaces'
+import MiniActivity from '../../main/miniActivity'
 
 export default class OpenLink implements IApi {
-  constructor(public pageManager: PageManager) {}
+  constructor(public context: MiniActivity) {}
 
   apis() {
     return ['openLink']
@@ -15,7 +15,7 @@ export default class OpenLink implements IApi {
       if (!p.url || !p.url.startsWith('http')) {
         throw new Error('invalid params')
       }
-      res = this.pageManager.navigateToPage(p.url)
+      res = this.context.pageManager.navigateToPage(p.url)
     } catch {}
 
     if (res) {

@@ -93,15 +93,11 @@ public class PageManager {
         return true;
     }
 
-    public void subscribeHandler(String event, String params, int[] viewIds) {
-        if (viewIds == null || viewIds.length == 0) {
-            return;
-        }
-
+    public void subscribeHandler(String event, String params, int viewId) {
         int count = getPageCount();
         for (int i = 0; i < count; i++) {
             MiniPage page = (MiniPage) mContainer.getChildAt(i);
-            page.subscribeHandler(event, params, viewIds);
+            page.subscribeHandler(event, params, viewId);
         }
     }
 

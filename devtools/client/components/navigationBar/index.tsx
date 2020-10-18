@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { LayoutContext } from '../layout'
 import backIcon from './back.svg'
 
@@ -16,7 +16,12 @@ export * from './store'
 
 // https://developers.weixin.qq.com/community/develop/doc/000c8664d906981f02e9947315ac00
 export default function NavigationBar() {
-  const { navBar } = useContext(LayoutContext)
+  const [, setTick] = useState(0)
+  const forceUpdate = () => setTick(t => t + 1)
+  const store = useContext(LayoutContext)
+  store.setNavUpdate(forceUpdate)
+
+  const { navBar } = store
 
   return (
     <div className='ma-header'>

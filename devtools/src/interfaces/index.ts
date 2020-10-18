@@ -2,7 +2,7 @@ export interface IBridge {
   /**
    * 发布事件，由 Service 层或 View 层的 jSBridge 调用
    */
-  publish: (event: string, params: string, viewIds: string) => void
+  publish: (event: string, params: string, viewId: string) => void
 
   /**
    * 调用事件，由 Service 层或 View 层的 jSBridge 调用
@@ -58,7 +58,7 @@ export interface OnEventListener {
   /**
    * Service 层触发，通知 View 层的 Subscriber
    */
-  notifyPageSubscribers: (event: string, params: string, viewIds: number[]) => void
+  notifyPageSubscribers: (event: string, params: string, viewId: number) => void
 
   /**
    * Page 层触发，通知 Service 层的 Subscriber

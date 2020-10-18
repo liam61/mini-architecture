@@ -54,7 +54,6 @@ export default class ApiManager {
     }
 
     let api = this.apis.get(event.name)
-
     if (!api) {
       // 看 extendsApi 中是否存在
       const extendsApi = this.miniConfig.getExtendsApi()

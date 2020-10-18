@@ -3,7 +3,8 @@ import MiniPage from '../../../src/page'
 import { NavigationBarStore } from '../navigationBar'
 
 export class LayoutStore {
-  forceUpdate: () => void
+  layoutUpdate: () => void
+  navUpdate: () => void
 
   webViews: MiniPage[] = []
   service: AppService
@@ -12,15 +13,27 @@ export class LayoutStore {
 
   constructor() {
     this.navBar = new NavigationBarStore(this)
-    this.setTitle = this.navBar.setTitle
-  }
-
-  init(fn: () => void) {
-    this.forceUpdate = fn
+    this.setTitle = (title: string) => {
+      this.navBar.setTitle(title)
+      this.navUpdate()
+    }
   }
 
   get length() {
     return this.webViews.length
+  }
+
+  setLayoutUpdate(fn: () => void) {
+    this.layoutUpdate = fn
+  }
+
+  setNavUpdate(fn: () => void) {
+    this.navUpdate = fn
+  }
+
+  forceUpdate() {
+    this.navUpdate()
+    this.layoutUpdate()
   }
 
   getWebViews() {
@@ -52,7 +65,7 @@ export class LayoutStore {
     this.webViews = this.webViews.filter((page, i) => {
       const drop = i + delta >= this.length
       drop && page.destroy()
-      return drop
+      return !drop
     })
     // this.webviews = this.webviews.slice(0, this.length - delta)
     this.forceUpdate()

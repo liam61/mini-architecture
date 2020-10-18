@@ -11,7 +11,7 @@ const maPath = path.join(__dirname, '../..')
 const commands = ['dev', 'build', 'devtools']
 
 module.exports = function run(config) {
-  const { mode, entry = '', framework = '', install = '', output = '', zip } = config || {}
+  const { mode, entry = '', framework = '', install = '', output = '', watch, zip } = config || {}
 
   if (!commands.includes(mode)) {
     console.log(chalk.red('invalid mode type...'))
@@ -40,7 +40,7 @@ module.exports = function run(config) {
       : `${homedir()}/.ma-dev`)
   process.env.MINI_ZIP = zip
 
-  if (isDev) {
+  if (watch) {
     nodemon({
       script: require.resolve('./pack.js'),
       // https://github.com/remy/nodemon/blob/master/lib/config/defaults.js#L15

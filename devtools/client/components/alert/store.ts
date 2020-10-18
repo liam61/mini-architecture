@@ -14,7 +14,7 @@ export class AlertStore {
     this.forceUpdate()
   }
 
-  show = (message: string, delay = 2000) => {
+  show = (message: string, delay = 1800) => {
     this.message = message
     this.timer = setTimeout(() => {
       this.isOpen && this.close()

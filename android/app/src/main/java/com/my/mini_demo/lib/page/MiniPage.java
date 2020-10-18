@@ -160,31 +160,26 @@ public class MiniPage extends LinearLayout implements IBridge {
         return false;
     }
 
-    public void subscribeHandler(String event, String params, int[] viewIds) {
-        if (viewIds == null || viewIds.length == 0) {
-            return;
-        }
-        Log.d("MiniDemo", String.format("subscribeHandler is called by native! event=%s, params=%s, viewIds=%s",
-                event, params, Arrays.toString(viewIds)));
+    public void subscribeHandler(String event, String params, int viewId) {
+        Log.d("MiniDemo", String.format("subscribeHandler is called! event=%s, params=%s, called by viewId=%d",
+                event, params, viewId));
 
         int count = mWebLayout.getChildCount();
         for (int i = 0; i < count; i++) {
             MyWebView webView = (MyWebView) mWebLayout.getChildAt(i);
 
-            for (int viewId : viewIds) {
-                if (viewId == webView.getViewId()) {
-                    // native -> client
-                    String jsFun = String.format("javascript:subscribeHandler('%s', %s)",
-                            event, params);
-                    webView.loadUrl(jsFun);
-                    break;
-                }
+            if (viewId == webView.getViewId()) {
+                // native -> client
+                String jsFun = String.format("javascript:subscribeHandler('%s', %s)",
+                        event, params);
+                webView.loadUrl(jsFun);
+                break;
             }
         }
     }
 
     @Override
-    public void publish(String event, String params, String viewIds) {
+    public void publish(String event, String params, String viewId) {
         if ("custom_event_DOMContentLoaded".equals(event)) {
             onDomContentLoaded();
         } else {

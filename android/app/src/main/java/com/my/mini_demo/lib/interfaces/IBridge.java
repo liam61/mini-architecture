@@ -5,7 +5,7 @@ public interface IBridge {
     /**
      * 发布事件，由 Service 层或 View 层的 jSBridge 调用
      */
-    void publish(String event, String params, String viewIds);
+    void publish(String event, String params, String viewId);
 
     /**
      * 调用事件，由 Service 层或 View 层的 jSBridge 调用

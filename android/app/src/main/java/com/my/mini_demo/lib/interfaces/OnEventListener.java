@@ -10,7 +10,7 @@ public interface OnEventListener {
     /**
      * Service 层触发，通知 View 层的 Subscriber
      */
-    void notifyPageSubscribers(String event, String params, int[] viewIds);
+    void notifyPageSubscribers(String event, String params, int viewId);
 
     /**
      * Page 层触发，通知 Service 层的 Subscriber

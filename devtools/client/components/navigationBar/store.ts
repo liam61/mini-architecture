@@ -3,9 +3,7 @@ import { LayoutStore } from '../layout'
 export class NavigationBarStore {
   title: string
 
-  constructor(private layout: LayoutStore) {
-    this.title = layout.length !== 0 ? layout.getTopPage().title : 'demo'
-  }
+  constructor(private layout: LayoutStore) {}
 
   get canGoBack() {
     return this.layout.length > 1
@@ -15,7 +13,7 @@ export class NavigationBarStore {
     this.title = title
   }
 
-  onBack() {
+  onBack = () => {
     this.layout.removeViewsByDelta(1)
   }
 

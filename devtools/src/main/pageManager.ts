@@ -66,11 +66,9 @@ export default class PageManager {
     return true
   }
 
-  subscribeHandler(event: string, params: string, viewIds: number[]) {
-    if (!viewIds.length) return
-
+  subscribeHandler(event: string, params: string, viewId: number) {
     this.container.getWebViews().forEach((page: MiniPage) => {
-      viewIds.includes(page.getId()) && page.subscribeHandler(event, params, page.getId())
+      viewId === page.getId() && page.subscribeHandler(event, params, page.getId())
     })
   }
 
@@ -82,13 +80,13 @@ export default class PageManager {
 
     if (event === 'navigateTo') {
       const path = p.url || ''
-      return this.navigateToPage(path + '.html')
+      return this.navigateToPage(path)
     } else if (event === 'navigateBack') {
       return this.navigateBackPage(p.delta || 1)
     } else if (event === 'redirectTo' || event === 'reLaunch') {
       return false
     } else if (event === 'setNavigationBarTitle') {
-      return this.setNavigationBarTitle(p.title || '')
+      return this.setNavigationBarTitle(p.title)
     }
     return false
   }

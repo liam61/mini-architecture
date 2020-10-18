@@ -85,7 +85,7 @@ export default class MiniPage implements IBridge {
     this.webView.loadUrl(`javascript:subscribeHandler('${event}', ${params}, ${viewId})`)
   }
 
-  publish(event: string, params: string, viewIds: string) {
+  publish(event: string, params: string, viewId: string) {
     if (event === 'custom_event_DOMContentLoaded') {
       this.onDomContentLoaded()
     } else {

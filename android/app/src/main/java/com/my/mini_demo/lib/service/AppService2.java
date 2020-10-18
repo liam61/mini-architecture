@@ -75,7 +75,7 @@ public class AppService2 implements IBridge, JavaCallback {
      * 不会再走 JavascriptInterface 中调用
      */
     @Override
-    public void publish(String event, String params, String viewIds) {
+    public void publish(String event, String params, String viewId) {
         if (mListener == null) {
             return;
         }
@@ -86,7 +86,7 @@ public class AppService2 implements IBridge, JavaCallback {
             mListener.onServiceReady();
         } else {
             // custom_event_appDataChange | custom_event_nativeAlert
-            mListener.notifyPageSubscribers(event, params, JsonUtil.parse2IntArray(viewIds));
+            mListener.notifyPageSubscribers(event, params, Integer.parseInt(viewId));
         }
     }
 

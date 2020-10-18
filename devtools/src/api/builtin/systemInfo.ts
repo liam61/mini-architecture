@@ -22,7 +22,7 @@ export default class SystemInfo implements IApi {
     this.screenWidth = '375'
     this.screenHeight = '750'
     this.language = 'zh-CN'
-    this.version = '0.0.2'
+    this.version = '0.0.3'
     this.system = 10
     this.platform = 'devtools'
     this.SDKVersion = MiniConfig.version

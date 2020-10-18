@@ -1,7 +1,7 @@
 import { IApi } from '../interfaces'
 
 export default class MiniConfig {
-  static version = '0.0.3'
+  static version = '0.0.5-beta1'
   static instance: MiniConfig
   private extendsApi: Map<string, IApi>
 
@@ -26,7 +26,6 @@ export default class MiniConfig {
     api.apis().forEach(name => {
       name && this.extendsApi.set(name, api)
     })
-
     return MiniConfig.instance
   }
 }

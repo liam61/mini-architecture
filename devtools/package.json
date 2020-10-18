@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "yarn core && parcel serve client/index.html --no-cache",
-    "build": "rm -rf dist && yarn core && parcel build client/index.html -d dist --public-url /client && ts-node server",
-    "cli": "rm -rf ./_dev && ../cli/bin/index.js -m devtools -e @mini -o ./_dev --no-zip",
-    "core": "rollup -c"
+    "base": "rm -rf ./_dev && ../cli/bin/index.js -m devtools -e @mini -o ./_dev --no-zip",
+    "client": "parcel serve client/index.html --no-cache",
+    "dev": "yarn build && yarn server",
+    "build": "rm -rf dist && rollup -c && parcel build client/index.html -d dist --public-url /client",
+    "server": "ts-node server"
   },
   "author": "lawler61",
   "license": "ISC",
@@ -32,6 +33,7 @@
     "@typescript-eslint/parser": "^4.3.0",
     "babel-preset-minify": "^0.5.1",
     "less": "^3.12.2",
+    "nodemon": "^2.0.4",
     "parcel-bundler": "^1.12.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

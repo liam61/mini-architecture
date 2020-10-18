@@ -31,7 +31,7 @@ const serviceApi = {
   },
   alert(message) {
     const instance = serviceApi.getCurPageInstance()
-    jsBridge.publish('nativeAlert', { message }, [instance.webviewId])
+    jsBridge.publish('nativeAlert', { message }, instance.webviewId)
   },
   openLink(url) {
     invokeRouteMethod('openLink', { url })
@@ -39,7 +39,7 @@ const serviceApi = {
   onAppRoute(callback = noop) {
     appRouteCallbacks.push(callback)
   },
-  setAppData(params, webviewIds = []) {
+  setAppData(params, webviewId) {
     const { data, callback } = params || {}
     callbackMap[++callbackIndex] = callback
 
@@ -49,7 +49,7 @@ const serviceApi = {
         data,
         callbackId: callbackIndex,
       },
-      webviewIds,
+      webviewId,
     )
   },
 }

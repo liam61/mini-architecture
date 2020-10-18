@@ -39,6 +39,9 @@
     "mini/**/*.js": [
       "yarn lint"
     ],
+    "devtools/**/*.{ts,js}": [
+      "yarn lint"
+    ],
     "*.{css,html}": [
       "prettier --write"
     ]

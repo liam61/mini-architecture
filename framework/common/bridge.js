@@ -58,19 +58,18 @@ function subscribeHandler(event, params, webviewId) {
   }
 }
 
-function publish(event, params, webviewIds = []) {
+function publish(event, params, webviewId) {
   const paramStr = JSON.stringify(params || {})
   event = EVENT_PREFIX + event
-  webviewIds = JSON.stringify(webviewIds)
 
   if (isIOS) {
     _global.webkit.messageHandlers.publish.postMessage({
       event: event,
       paramsString: paramStr,
-      webviewIds: webviewIds,
+      webviewId,
     })
   } else {
-    _global.jsCore.publish(event, paramStr, webviewIds)
+    _global.jsCore.publish(event, paramStr, webviewId)
   }
 }
 

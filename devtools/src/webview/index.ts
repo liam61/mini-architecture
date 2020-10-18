@@ -51,11 +51,11 @@ export default class WebView {
     // client window.addEventListener('message') 调用
     // 每个 webview 一个隔离的 jsCore
     this.jsCore = {
-      publish(event: string, params: string, viewIds: string) {
+      publish(event: string, params: string, viewId: string) {
         console.log(
-          `[devtools]: publish bridge is called! event=${event}, params=${params}, viewIds=${viewIds}`,
+          `[devtools]: publish bridge is called! event=${event}, params=${params}, viewId=${viewId}`,
         )
-        that.bridge.publish(event, params, viewIds)
+        that.bridge.publish(event, params, viewId)
       },
       invoke(event: string, params: string, callbackId: string) {
         console.log(

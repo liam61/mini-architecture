@@ -47,7 +47,7 @@ public class AppService extends LinearLayout implements IBridge {
     }
 
     @Override
-    public void publish(String event, String params, String viewIds) {
+    public void publish(String event, String params, String viewId) {
         if (mListener == null) {
             return;
         }
@@ -58,7 +58,7 @@ public class AppService extends LinearLayout implements IBridge {
             mListener.onServiceReady();
         } else {
             // custom_event_appDataChange | custom_event_nativeAlert
-            mListener.notifyPageSubscribers(event, params, JsonUtil.parse2IntArray(viewIds));
+            mListener.notifyPageSubscribers(event, params, Integer.parseInt(viewId));
         }
     }
 

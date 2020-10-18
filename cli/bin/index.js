@@ -17,6 +17,7 @@ program
     '-o, --output [path]',
     'output path (default: "~/.ma-dev" or "{install}/app/src/main/assets" when given `install` parameter)',
   )
+  .option('-w, --watch', 'hot build')
   .option('--no-zip', 'not zip outputs')
 program.parse(process.argv)
 

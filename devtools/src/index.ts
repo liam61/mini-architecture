@@ -15,7 +15,13 @@ window.addEventListener('containerReady', (ev: any) => {
     const [event, params, rest] = args
     // console.log(data)
 
-    MiniActivity.getContext().getJsCoreById(viewId)[type](event, params, rest)
+    // 简单判断了，service -> native，不用再像 android 一样发到 webview
+    if (event.includes('nativeAlert')) {
+      const p = JSON.parse(params)
+      alert(p.message)
+    } else {
+      MiniActivity.getContext().getJsCoreById(viewId)[type](event, params, rest)
+    }
   })
 
   MiniActivity.create().setContainer(maContainer).launch(appId, userId, appPath)

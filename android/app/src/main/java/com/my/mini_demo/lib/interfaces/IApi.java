@@ -24,9 +24,4 @@ public interface IApi {
      * Activity onDestroy 时回调
      */
     void onDestroy();
-
-    /**
-     * Activity onActivityResult 时回调
-     */
-    void onActivityResult(int requestCode, int resultCode, Intent data, ICallback callback);
 }

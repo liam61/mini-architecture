@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import com.my.mini_demo.lib.api.BaseApi;
+import com.my.mini_demo.lib.interfaces.IApi;
 import com.my.mini_demo.lib.interfaces.ICallback;
 
 import org.json.JSONObject;
@@ -13,12 +13,11 @@ import org.json.JSONObject;
 /**
  * custom api：打开链接
  */
-public class OpenLink extends BaseApi {
+public class OpenLink implements IApi {
 
     private Context mContext;
 
     public OpenLink(Context context) {
-        super(context);
         mContext = context;
     }
 
@@ -45,5 +44,15 @@ public class OpenLink extends BaseApi {
         } else {
             callback.onFail();
         }
+    }
+
+    @Override
+    public void onCreate() {
+
+    }
+
+    @Override
+    public void onDestroy() {
+
     }
 }

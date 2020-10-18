@@ -1,0 +1,6 @@
+{
+  "exec": "yarn dev",
+  "watch": ["_dev", "client", "src", "server"],
+  "ext": "*",
+  "delay": "600"
+}

@@ -4,14 +4,16 @@ import android.content.Context;
 import android.os.Build;
 import android.util.DisplayMetrics;
 
-import com.my.mini_demo.lib.api.BaseApi;
 import com.my.mini_demo.lib.config.MiniConfig;
+import com.my.mini_demo.lib.interfaces.IApi;
 import com.my.mini_demo.lib.interfaces.ICallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class SystemInfo extends BaseApi {
+public class SystemInfo implements IApi {
+    public Context mContext;
+
     private String model;
     private float pixelRatio;
     private int screenWidth;
@@ -23,7 +25,7 @@ public class SystemInfo extends BaseApi {
     private String SDKVersion;
 
     public SystemInfo(Context context) {
-        super(context);
+        mContext = context;
     }
 
     @Override
@@ -33,9 +35,7 @@ public class SystemInfo extends BaseApi {
 
     @Override
     public void onCreate() {
-        super.onCreate();
-
-        DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
+        DisplayMetrics dm = mContext.getResources().getDisplayMetrics();
 
         this.model = Build.MODEL;
         this.pixelRatio = dm.density;
@@ -66,5 +66,10 @@ public class SystemInfo extends BaseApi {
         }  catch (JSONException e) {
             callback.onFail();
         }
+    }
+
+    @Override
+    public void onDestroy() {
+
     }
 }

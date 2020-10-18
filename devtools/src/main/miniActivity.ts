@@ -34,7 +34,7 @@ class MiniActivity implements OnEventListener {
   launch(appId: string, userId: string, appPath: string) {
     console.log(`[devtools]: ${userId} open ${appId}`)
     window.appConfig = new AppConfig(appId, userId, appPath)
-    this.miniConfig = MiniConfig.create().loadExtendsApi(new OpenLink(this.pageManager))
+    this.miniConfig = MiniConfig.create().loadExtendsApi(new OpenLink(this))
     this.apiManager = new ApiManager(this, this.miniConfig)
 
     // webview & service
@@ -52,8 +52,8 @@ class MiniActivity implements OnEventListener {
     this.pageManager.launchHomePage()
   }
 
-  notifyPageSubscribers(event: string, params: string, viewIds: number[]) {
-    this.pageManager.subscribeHandler(event, params, viewIds)
+  notifyPageSubscribers(event: string, params: string, viewId: number) {
+    this.pageManager.subscribeHandler(event, params, viewId)
   }
 
   notifyServiceSubscribers(event: string, params: string, viewId: number) {

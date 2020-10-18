@@ -10,7 +10,7 @@ export default function Layout() {
   const [, setTick] = useState(0)
   const forceUpdate = () => setTick(t => t + 1)
   const store = useContext(LayoutContext)
-  store.init(forceUpdate)
+  store.setLayoutUpdate(forceUpdate)
 
   return (
     <div className='ma-page-container'>
