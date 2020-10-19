@@ -13,7 +13,6 @@ import com.my.mini_demo.lib.interfaces.IBridge;
 import com.my.mini_demo.lib.interfaces.OnEventListener;
 import com.my.mini_demo.lib.utils.Event;
 import com.my.mini_demo.lib.utils.FileUtil;
-import com.my.mini_demo.lib.utils.JsonUtil;
 
 import java.io.File;
 
@@ -57,7 +56,7 @@ public class AppService2 implements IBridge, JavaCallback {
     }
 
     public void subscribeHandler(String event, String params, int viewId) {
-        Log.d("MiniDemo", String.format("subscribeHandler is called by native! event=%s, params=%s, viewId=%s",
+        Log.d("MiniDemo", String.format("service subscribeHandler is called by native! event=%s, params=%s, viewId=%s",
                 event, params, viewId));
 
         V8Array arguments = new V8Array(mServiceWorker);
@@ -105,7 +104,7 @@ public class AppService2 implements IBridge, JavaCallback {
     }
 
     public void onDestroy() {
-        mServiceWorker.release(true);
+        mServiceWorker.release(false);
     }
 
     @Override

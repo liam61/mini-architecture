@@ -1,7 +1,6 @@
 package com.my.mini_demo.lib.api.module;
 
 import android.content.Context;
-import android.content.Intent;
 
 import com.my.mini_demo.lib.interfaces.IApi;
 import com.my.mini_demo.lib.interfaces.ICallback;

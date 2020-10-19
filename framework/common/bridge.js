@@ -58,7 +58,7 @@ function subscribeHandler(event, params, webviewId) {
   }
 }
 
-function publish(event, params, webviewId) {
+function publish(event, params, webviewId = 0) {
   const paramStr = JSON.stringify(params || {})
   event = EVENT_PREFIX + event
 
@@ -69,7 +69,7 @@ function publish(event, params, webviewId) {
       webviewId,
     })
   } else {
-    _global.jsCore.publish(event, paramStr, webviewId)
+    _global.jsCore.publish(event, paramStr, webviewId + '')
   }
 }
 

@@ -10,7 +10,6 @@ import com.my.mini_demo.lib.config.AppConfig;
 import com.my.mini_demo.lib.interfaces.IBridge;
 import com.my.mini_demo.lib.interfaces.OnEventListener;
 import com.my.mini_demo.lib.utils.Event;
-import com.my.mini_demo.lib.utils.JsonUtil;
 import com.my.mini_demo.lib.web.MyWebView;
 
 import java.io.File;
@@ -38,7 +37,7 @@ public class AppService extends LinearLayout implements IBridge {
     }
 
     public void subscribeHandler(String event, String params, int viewId) {
-        Log.d("MiniDemo", String.format("subscribeHandler is called by native! event=%s, params=%s, viewId=%s",
+        Log.d("MiniDemo", String.format("service subscribeHandler is called! event=%s, params=%s, called by viewId=%s",
                 event, params, viewId));
         
         String jsFun = String.format("javascript:subscribeHandler('%s', %s, %s)",

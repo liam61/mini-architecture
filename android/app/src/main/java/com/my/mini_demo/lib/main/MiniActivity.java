@@ -26,8 +26,8 @@ public class MiniActivity extends AppCompatActivity implements OnEventListener {
     private ConstraintLayout mLayout;
     private AppConfig mAppConfig;
     private ApiManager mApiManager;
-    // private AppService mAppService;
-   private AppService2 mAppService;
+//    private AppService mAppService; // 改 loadPage，onDestroy
+    private AppService2 mAppService;
     private PageManager mPageManager;
 
 
@@ -64,9 +64,9 @@ public class MiniActivity extends AppCompatActivity implements OnEventListener {
     }
 
     private void loadPage() {
-        // mAppService = new AppService(this, this, mAppConfig, mApiManager);
-        // mLayout.addView(mAppService, new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT,
-        //         ConstraintLayout.LayoutParams.MATCH_PARENT));
+//        mAppService = new AppService(this, this, mAppConfig, mApiManager);
+//        mLayout.addView(mAppService, new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT,
+//                 ConstraintLayout.LayoutParams.MATCH_PARENT));
 
         mPageManager = new PageManager(this, this, mAppConfig);
         mLayout.addView(mPageManager.getContainer(), new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT,
@@ -99,7 +99,7 @@ public class MiniActivity extends AppCompatActivity implements OnEventListener {
     @Override
     protected void onDestroy() {
         mApiManager.onDestroy();
-       mAppService.onDestroy();
+        mAppService.onDestroy();
         super.onDestroy();
     }
 

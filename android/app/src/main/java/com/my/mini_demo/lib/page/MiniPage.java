@@ -20,7 +20,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.util.Arrays;
 
 /**
  * 小程序 View 层，加载相应的 xxxPage.html
@@ -161,7 +160,7 @@ public class MiniPage extends LinearLayout implements IBridge {
     }
 
     public void subscribeHandler(String event, String params, int viewId) {
-        Log.d("MiniDemo", String.format("subscribeHandler is called! event=%s, params=%s, called by viewId=%d",
+        Log.d("MiniDemo", String.format("webview subscribeHandler is called! event=%s, params=%s, called by viewId=%s",
                 event, params, viewId));
 
         int count = mWebLayout.getChildCount();

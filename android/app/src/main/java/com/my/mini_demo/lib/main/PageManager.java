@@ -125,7 +125,7 @@ public class PageManager {
         int count = getPageCount();
 
         if (delta <= 0 || delta >= count) {
-            Log.e("MiniDemo", "removePages by delta " + delta + " failed");
+            Log.e("MiniDemo", "removePages by delta " + delta + " stopped, current page count " + count);
             return false;
         }
 

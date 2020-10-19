@@ -24,6 +24,6 @@ Page({
     })
   },
   setPageTitle() {
-    ma.setNavigationBarTitle(`you changed title ${Math.random().toFixed(3)}`)
+    ma.setNavigationBarTitle(`title changed: ${Math.random().toFixed(3)}`)
   },
 })

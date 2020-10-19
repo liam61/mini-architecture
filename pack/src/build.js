@@ -77,7 +77,7 @@ function transformService() {
 
   if (process.env.MINI_ENV === 'devtools') {
     const content = serviceHtmlTpl({
-      __ENV__: 'devtools',
+      __ENV__: process.env.MINI_ENV,
       __CONFIG__: `'${JSON.stringify(miniConfig)}'`,
     })
 
