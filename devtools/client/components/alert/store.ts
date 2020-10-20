@@ -1,5 +1,5 @@
 export class AlertStore {
-  forceUpdate: () => void
+  forceUpdate = () => {}
 
   isOpen = false
   message = ''

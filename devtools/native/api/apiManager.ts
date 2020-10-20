@@ -63,7 +63,7 @@ export default class ApiManager {
     api && api.invoke(event.name, event.params, callback)
   }
 
-  assembleResult(data: Record<string, any>, event: string, status: string) {
+  assembleResult(data: Record<string, any> | null, event: string, status: string) {
     data = Object.assign({}, data, {
       status: `${event}:${status}`,
       success: status === 'ok',

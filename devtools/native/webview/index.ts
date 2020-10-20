@@ -12,7 +12,7 @@ export default class WebView {
     invoke: (...args: any[]) => void
     subscribeHandler: (event: string, params: string, viewId: number) => void
     callbackHandler: (callbackId: string, result: string) => void
-  }
+  } | null
 
   constructor(private bridge: IBridge, public type: 'webView' | 'service' = 'webView') {
     this.id = ++_id

@@ -1,7 +1,7 @@
 import { LayoutStore } from '../layout'
 
 export class NavigationBarStore {
-  title: string
+  title = ''
 
   constructor(private layout: LayoutStore) {}
 

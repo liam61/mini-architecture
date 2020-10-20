@@ -4,11 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "base": "rm -rf ./_dev && ../cli/bin/index.js -m devtools -e @mini -o ./_dev --no-zip",
-    "client": "parcel serve client/index.html --no-cache",
-    "dev": "yarn build && yarn server",
-    "build": "rm -rf dist && rollup -c && parcel build client/index.html -d dist --public-url /client",
-    "server": "ts-node server"
+    "pack:mini": "rm -rf build/mini && ../cli/bin/index.js -m devtools -e @mini -o build/mini --no-zip",
+    "client:build": "rm -rf build/client && parcel build client/index.html -d build/client --no-cache",
+    "postinstall": "yarn pack:mini",
+    "devWithParcelServe": "yarn client:dev & nodemon",
+    "dev": "yarn pack:mini && rm -rf _dev && nodemon",
+    "build": "yarn pack:mini && yarn client:build"
   },
   "author": "lawler61",
   "license": "ISC",
@@ -21,24 +22,17 @@
   },
   "devDependencies": {
     "@babel/core": "^7.11.6",
-    "@babel/plugin-proposal-class-properties": "^7.10.4",
-    "@babel/preset-env": "^7.11.5",
-    "@babel/preset-typescript": "^7.12.0",
-    "@rollup/plugin-babel": "^5.0.4",
-    "@rollup/plugin-commonjs": "^13.0.0",
-    "@rollup/plugin-node-resolve": "^8.1.0",
     "@types/express": "^4.17.8",
     "@types/react-modal": "^3.10.6",
     "@typescript-eslint/eslint-plugin": "^4.3.0",
     "@typescript-eslint/parser": "^4.3.0",
-    "babel-preset-minify": "^0.5.1",
+    "babel-plugin-module-resolver": "^4.0.0",
     "less": "^3.12.2",
     "nodemon": "^2.0.4",
     "parcel-bundler": "^1.12.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-modal": "^3.11.2",
-    "rollup": "^2.30.0",
     "ts-node": "^9.0.0"
   }
 }

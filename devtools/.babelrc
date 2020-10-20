@@ -1,0 +1,18 @@
+{
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "root": [
+          "./"
+        ],
+        "alias": {
+          "@": "./",
+          // "@/comp": "./client/components" // 不支持，可用 package.alias
+          "@comp": "./client/components", // package.alias 不支持
+          "comp": "./client/components"
+        }
+      }
+    ]
+  ]
+}

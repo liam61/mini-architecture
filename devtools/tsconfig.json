@@ -1,30 +1,47 @@
 {
   "compilerOptions": {
     "baseUrl": "./",
-    "target": "es2017",
+    "rootDir": "./",
+    "target": "esnext",
     "module": "commonjs",
     "moduleResolution": "node",
+    "jsx": "react",
     "lib": [
       "dom",
       "esnext"
     ],
-    "typeRoots": [
-      "typings"
-    ],
-    "jsx": "react",
+    /* tsconfig.paths only check */
+    "paths": {
+      "@/*": [
+        "./*"
+      ],
+      "@comp/*": [
+        "./client/components/*"
+      ],
+      "comp/*": [
+        "./client/components/*"
+      ]
+    },
+    "noEmit": true,
     "noUnusedLocals": true,
     "noImplicitAny": false,
     "noImplicitThis": true,
     "esModuleInterop": true,
     "declaration": true,
-    "emitDeclarationOnly": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "outDir": "dist",
     "sourceMap": false,
+    "strictPropertyInitialization": false,
     "allowSyntheticDefaultImports": true
   },
+  "include": [
+    "client",
+    "native",
+    "server",
+    "typings"
+  ],
   "exclude": [
     "node_modules"
   ]

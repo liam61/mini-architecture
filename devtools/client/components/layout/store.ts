@@ -1,15 +1,15 @@
-import AppService from '../../../src/service'
-import MiniPage from '../../../src/page'
+import AppService from '@/native/service'
+import MiniPage from '@/native/page'
 import { NavigationBarStore } from '../navigationBar'
 
 export class LayoutStore {
-  layoutUpdate: () => void
-  navUpdate: () => void
+  layoutUpdate = () => {}
+  navUpdate = () => {}
 
   webViews: MiniPage[] = []
   service: AppService
   navBar: NavigationBarStore
-  setTitle: (title?: string) => void
+  setTitle: (title: string) => void
 
   constructor() {
     this.navBar = new NavigationBarStore(this)

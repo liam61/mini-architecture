@@ -21,7 +21,7 @@ export default class MiniConfig {
   }
 
   loadExtendsApi(api: IApi) {
-    if (!api || !api.apis().length) return
+    if (!api || !api.apis().length) return MiniConfig.instance
 
     api.apis().forEach(name => {
       name && this.extendsApi.set(name, api)

@@ -3,9 +3,9 @@ import MiniActivity from './main/miniActivity'
 window.addEventListener('containerReady', (ev: any) => {
   const { maContainer } = ev.detail
 
-  const appId = 'mini1'
+  const appId = 'miniDemo'
   const userId = 'lawler61'
-  const appPath = 'http://localhost:3000/apps/miniDemo/'
+  const appPath = `http://localhost:3000/mini/apps/${appId}/`
 
   window.addEventListener('message', (ev: any) => {
     const { data, origin } = ev
@@ -20,7 +20,8 @@ window.addEventListener('containerReady', (ev: any) => {
       const p = JSON.parse(params)
       alert(p.message)
     } else {
-      MiniActivity.getContext().getJsCoreById(viewId)[type](event, params, rest)
+      const jsCore = MiniActivity.getContext().getJsCoreById(viewId)
+      jsCore && jsCore[type](event, params, rest)
     }
   })
 

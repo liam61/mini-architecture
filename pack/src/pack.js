@@ -44,7 +44,7 @@ function packFramework() {
 
     // copy from 'framework/dist' to 'android/app/src/main/assets/framework'
     resolve({ from: frameworkPath, to, copy: true })
-  }).then(handlerFiles)
+  }).then(handleFiles)
 }
 
 function packMini({}) {
@@ -74,7 +74,7 @@ function packMini({}) {
 
     // move from 'pack/_temp' to 'android/app/src/main/assets/miniDemo'
     resolve({ from: temp, to })
-  }).then(handlerFiles)
+  }).then(handleFiles)
 }
 
 function copyOthers(source, targetPath) {
@@ -118,7 +118,7 @@ function zipFiles(sourcePath, name, callback) {
   archive.finalize()
 }
 
-function handlerFiles({ from, to, copy }) {
+function handleFiles({ from, to, copy }) {
   fs.existsSync(to) && fs.removeSync(to)
 
   return fs[copy ? 'copy' : 'move'](from, to).then(() => {

@@ -1,7 +1,7 @@
 import React from 'react'
-import Alert, { AlertContext, alertStore } from '../components/alert'
-import Layout, { LayoutContext, layoutStore } from '../components/layout'
-import NavigationBar from '../components/navigationBar'
+import Alert, { AlertContext, alertStore } from '@/client/components/alert'
+import Layout, { LayoutContext, layoutStore } from '@comp/layout'
+import NavigationBar from 'comp/navigationBar'
 
 import './index.less'
 

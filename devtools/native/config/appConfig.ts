@@ -18,7 +18,7 @@ export default class AppConfig {
     this.config = json.config || { window: {} }
   }
 
-  getPagePath = (url: string) => {
+  getPagePath = (url: string): string => {
     return url === 'root' ? this.config.root : url
   }
 
@@ -26,7 +26,7 @@ export default class AppConfig {
     return this.appPath + (path !== 'service' ? this.getPagePath(path) : 'service') + '.html'
   }
 
-  getTitle = (url: string) => {
+  getTitle = (url: string): string => {
     const { window: cfg } = this.config
     if (!cfg.pages) return cfg.navigationBarTitleText || ''
     return cfg.pages[this.getPagePath(url)] || cfg.navigationBarTitleText || ''
