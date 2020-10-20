@@ -10,8 +10,8 @@ const { validate } = require('./utils')
 const maPath = path.join(__dirname, '../..')
 const commands = ['dev', 'build', 'devtools']
 
-module.exports = function run(config) {
-  const { mode, entry = '', framework = '', install = '', output = '', watch, zip } = config || {}
+module.exports = function run(config = {}) {
+  const { mode, entry = '', framework = '', install = '', output = '', watch, zip = false } = config
 
   if (!commands.includes(mode)) {
     console.log(chalk.red('invalid mode type...'))

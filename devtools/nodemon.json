@@ -1,7 +1,16 @@
 {
   "exec": "parcel build client/index.html -d _dev --cache-dir _dev/.cache && ts-node server",
-  "watch": ["build/mini", "client", "native", "server"],
-  "watchWithParcelServe": ["build/mini", "build/client", "server"],
+  "watch": [
+    "build/mini",
+    "client",
+    "native",
+    "server"
+  ],
+  "watchWithParcelServe": [
+    "build/mini",
+    "build/client",
+    "server"
+  ],
   "ext": "*",
   "delay": "600"
 }

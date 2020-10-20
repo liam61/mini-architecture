@@ -18,6 +18,10 @@
     "access": "public",
     "registry": "https://registry.npmjs.org"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lawler61/mini-architecture.git"
+  },
   "dependencies": {
     "@polymer/polymer": "^3.4.1",
     "core-js": "^3.6.5",

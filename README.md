@@ -14,6 +14,8 @@ a full mini app architecture demo
 
 - [cli](https://github.com/lawler61/mini-architecture/tree/master/cli) 🔥mini-architecture cli
 
+- [devtools](https://github.com/lawler61/mini-architecture/tree/master/devtools) 🔥 a tool for developing like [weixin devtools](https://developers.weixin.qq.com/miniprogram/dev/devtools/devtools.html)
+
 ## Start
 
 ### 1. required environment
@@ -30,7 +32,7 @@ a full mini app architecture demo
 
 1. `yarn global add @mini-architecture/cli`
 
-2. `ma-cli -m build -e @mini -w --no-zip`
+2. `ma-cli -m build -e @mini -w`
 
 before you run, don't forget to connect mobile to you computer. It may be slow for the first time while you running
 

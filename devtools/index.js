@@ -7,7 +7,7 @@ const newFlags = ChromeLauncher.Launcher.defaultFlags().filter(flag => !ignoreFl
 getPort({ port: 50942 }).then(port => {
   ChromeLauncher.launch({
     port,
-    startingUrl: 'https://google.com',
+    startingUrl: 'http://localhost:3000',
     ignoreDefaultFlags: true,
     chromeFlags: [
       '--lang=zh-CN',

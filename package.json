@@ -1,7 +1,7 @@
 {
   "name": "@mini-architecture/home",
-  "version": "0.0.4-beta1",
-  "description": "mini-architecture home page",
+  "version": "0.0.4-beta2",
+  "description": "",
   "scripts": {
     "bootstrap": "yarn && node index.js --cmd install",
     "dev": "node index.js --cmd dev",
@@ -23,7 +23,6 @@
     "type": "git",
     "url": "git+https://github.com/lawler61/mini-architecture.git"
   },
-  "homepage": "https://github.com/lawler61/mini-architecture#readme",
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"

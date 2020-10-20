@@ -1,18 +1,25 @@
 {
-  "name": "devtools",
+  "name": "@mini-architecture/devtools",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "pack:mini": "rm -rf build/mini && ../cli/bin/index.js -m devtools -e @mini -o build/mini --no-zip",
+    "pack:mini": "rm -rf build/mini && ../cli/bin/index.js -m devtools -e @mini -o build/mini",
     "client:build": "rm -rf build/client && parcel build client/index.html -d build/client --no-cache",
-    "postinstall": "yarn pack:mini",
     "devWithParcelServe": "yarn client:dev & nodemon",
     "dev": "yarn pack:mini && rm -rf _dev && nodemon",
     "build": "yarn pack:mini && yarn client:build"
   },
   "author": "lawler61",
   "license": "ISC",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lawler61/mini-architecture.git"
+  },
   "dependencies": {
     "chrome-launcher": "^0.13.4",
     "express": "^4.17.1",
