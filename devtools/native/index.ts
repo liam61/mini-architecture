@@ -3,9 +3,10 @@ import MiniActivity from './main/miniActivity'
 window.addEventListener('containerReady', (ev: any) => {
   const { maContainer } = ev.detail
 
+  const { host = 'localhost', port = 3000, path = '/' } = window.serverConfig
   const appId = 'miniDemo'
   const userId = 'lawler61'
-  const appPath = `http://localhost:3000/mini/apps/${appId}/`
+  const appPath = `http://${host}:${port}${path}${appId}/`
 
   window.addEventListener('message', (ev: any) => {
     const { data, origin } = ev

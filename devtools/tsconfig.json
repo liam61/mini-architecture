@@ -10,7 +10,7 @@
       "dom",
       "esnext"
     ],
-    /* tsconfig.paths only check */
+    /* tsconfig.paths check only */
     "paths": {
       "@/*": [
         "./*"
@@ -23,7 +23,7 @@
       ]
     },
     "noEmit": true,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "noImplicitAny": false,
     "noImplicitThis": true,
     "esModuleInterop": true,

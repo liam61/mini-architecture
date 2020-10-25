@@ -4,13 +4,22 @@ body {
 }
 
 #app {
-  position: relative;
-  display: flex;
-  flex-direction: column;
   width: 100vw;
   height: 100vh;
   overflow: hidden auto;
+  background-color: rgba(66, 66, 66, 0.97);
   // overflow-y: auto;
+}
+
+.ma {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 375px;
+  height: calc(100% - 80px);
+  margin: 0 auto;
+  transform: translateY(40px);
+  background-color: #fff;
 }
 
 .g-center {

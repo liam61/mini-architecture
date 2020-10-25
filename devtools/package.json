@@ -7,7 +7,7 @@
     "pack:mini": "rm -rf build/mini && ../cli/bin/index.js -m devtools -e @mini -o build/mini",
     "client:build": "rm -rf build/client && parcel build client/index.html -d build/client --no-cache",
     "devWithParcelServe": "yarn client:dev & nodemon",
-    "dev": "yarn pack:mini && rm -rf _dev && nodemon",
+    "dev": "yarn pack:mini && rm -rf build/client && nodemon",
     "build": "yarn pack:mini && yarn client:build"
   },
   "author": "lawler61",
@@ -22,9 +22,13 @@
   },
   "dependencies": {
     "chrome-launcher": "^0.13.4",
+    "chrome-remote-interface": "^0.28.2",
+    "ejs": "^3.1.3",
     "express": "^4.17.1",
     "express-ws": "^4.0.0",
     "get-port": "^5.1.1",
+    "glob": "^7.1.6",
+    "node-fetch": "^2.6.1",
     "ws": "^7.3.1"
   },
   "devDependencies": {

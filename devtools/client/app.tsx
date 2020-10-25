@@ -4,9 +4,9 @@ import Page from './page'
 
 export default function App() {
   return (
-    <>
+    <div className='ma'>
       <Top />
       <Page />
-    </>
+    </div>
   )
 }

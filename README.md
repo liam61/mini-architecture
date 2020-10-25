@@ -93,3 +93,9 @@ install form [built apk](./mini-demo.apk)
 3. [EMP — 基于 Vue.js 的小程序引擎底层框架实现](https://zhaomenghuan.js.org/blog/what-is-emp.html)
 
 4. [Polymer](https://polymer-library.polymer-project.org/3.0/docs/about_30)
+
+5. [Chrome DevTools Frontend 运行原理浅析](https://zhaomenghuan.js.org/blog/chrome-devtools-frontend-analysis-of-principle.html)
+
+6. [Getting Started with Headless Chrome](https://developers.google.com/web/updates/2017/04/headless-chrome)
+
+7. [Chrome DevTools Protocol](https://chromedevtools.github.io/devtools-protocol/)

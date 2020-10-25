@@ -44,6 +44,13 @@ function transformView() {
     const targetDir = path.join(output, page.slice(0, -6))
     fs.mkdirSync(targetDir, { recursive: true })
     fs.writeFileSync(targetDir + '/index.html', isDev ? content : minify(content, minifyConfig))
+
+    if (process.env.MINI_ENV === 'devtools') {
+      // 拷贝 page 源文件
+      // const html = fs.readFileSync(path.join(miniPath, page + '.html'), 'utf-8')
+      // const originContent = `<style>${appCss}\n${css}</style>\n${html}`
+      // fs.writeFileSync(targetDir + '/origin.html', originContent)
+    }
   })
 }
 

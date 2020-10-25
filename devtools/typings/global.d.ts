@@ -8,4 +8,10 @@ interface Window {
     userId: string
     appPath: string
   }
+
+  serverConfig: {
+    host: string
+    port: string
+    path: string
+  }
 }

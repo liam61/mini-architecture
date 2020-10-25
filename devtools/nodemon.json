@@ -1,5 +1,5 @@
 {
-  "exec": "parcel build client/index.html -d _dev --cache-dir _dev/.cache && ts-node server",
+  "exec": "parcel build client/index.html -d build/client && ts-node server",
   "watch": [
     "build/mini",
     "client",

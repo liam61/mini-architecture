@@ -5,9 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>devtools client</title>
+    <base href="/" />
   </head>
   <body>
-    <div id="app" class="ma"></div>
+    <div id="app"></div>
+    <script>
+      window.serverConfig = {
+        host: '<%= __HOST__ %>',
+        port: '<%= __PORT__ %>',
+        path: '<%- __PUBLIC_PATH__ %>',
+      }
+    </script>
     <script src="../native/index.ts"></script>
     <script src="./index.tsx"></script>
   </body>

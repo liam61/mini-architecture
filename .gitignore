@@ -30,4 +30,5 @@ pack/_dev.js
 
 devtools/dist
 devtools/build
-devtools/_dev
+devtools/.cache
+devtools/frontend

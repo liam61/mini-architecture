@@ -1,16 +1,51 @@
 import express from 'express'
 import path from 'path'
+import fs from 'fs'
+import getPort from 'get-port'
+import glob from 'glob'
+import ejs from 'ejs'
 
-const app = express()
-const port = 3000
+async function startServer(): Promise<number> {
+  const port = await getPort({ port: 3000 })
 
-app.use('/mini', express.static(path.join(__dirname, '../build/mini')))
-app.use(express.static(path.join(__dirname, '../_dev')))
+  return new Promise(resolve => {
+    const app = express()
 
-// app.get('/json', () => {
-// res.status(200).json(retJson);
-// })
+    app.use('/mini', express.static(path.join(__dirname, '../build/mini')))
+    // app.use(express.static(path.join(__dirname, '../build/client')))
+    app.use('/devtools', express.static(path.join(__dirname, '../frontend')))
+    app.use('/pages', express.static(path.join(__dirname, '../build/mini/apps/miniDemo/pages')))
 
-// http://localhost:3000/mini/apps/miniDemo/pages/index
-// http://localhost:3000/mini/apps/miniDemo/service.html
-app.listen(port, () => console.log(`\nserver is running at http://localhost:${port}`))
+    const clientDir = path.join(__dirname, '../build/client')
+    const allFiles = glob.sync(`${clientDir}/*`, { ignore: ['**/*.map'] })
+
+    // client static
+    app.get('*', (req, res) => {
+      const url = req.url === '/' ? 'index.html' : req.url
+      const filePath = allFiles.find(file => file.includes(url))
+
+      if (url === 'index.html') {
+        const content = ejs.render(fs.readFileSync(filePath, 'utf-8'), {
+          __HOST__: req.hostname,
+          __PORT__: port,
+          __PUBLIC_PATH__: '/mini/apps/',
+        })
+        res.type('html').send(content)
+      } else if (filePath) {
+        res.sendFile(filePath)
+      } else {
+        res.sendStatus(404)
+      }
+    })
+
+    // http://localhost:3000/mini/apps/miniDemo/pages/index
+    // http://localhost:3000/mini/apps/miniDemo/service.html
+    app.listen(port, () => {
+      console.log(`\nserver is running at http://localhost:${port}`)
+      resolve(port)
+    })
+  })
+}
+
+// startServer()
+export default startServer
