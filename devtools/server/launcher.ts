@@ -1,14 +1,14 @@
 import * as ChromeLauncher from 'chrome-launcher'
-// import CDP from 'chrome-remote-interface'
+import CDP from 'chrome-remote-interface'
 import getPort from 'get-port'
 import fetch from 'node-fetch'
 import { homedir } from 'os'
-import startStaticServer from './index'
+import startStaticServer from './static'
 import { Deferred } from '../utils'
 
-init()
+start()
 
-async function init() {
+async function start() {
   const deferred = new Deferred<number[]>()
   Promise.all([startStaticServer(), getPort({ port: 9222 }), getPort({ port: 9232 })]).then(
     deferred.resolve,
@@ -40,29 +40,30 @@ async function init() {
       ...newFlags,
     ],
   })
+  console.log(`client is running at http://localhost:${clientChrome.port}`)
 
   const targets = await fetch(`http://localhost:${clientPort}/json`).then(res => res.json())
   const { id, devtoolsFrontendUrl, url, webSocketDebuggerUrl } = targets[0]
   console.log(targets)
 
-  // const devtoolsChrome = await ChromeLauncher.launch({
-  //   port: devtoolsPort,
-  //   // /devtools/inspector.html?ws=localhost:9222/devtools/page/xxxx
-  //   startingUrl: `http://localhost:${clientPort}${devtoolsFrontendUrl}`,
-  //   ignoreDefaultFlags: true,
-  //   chromeFlags: [
-  //     '--lang=zh-CN',
-  //     '--window-size=830,826',
-  //     '--window-position=760,100',
-  //     `--user-data-dir=${cacheDir}/devtools`,
-  //     `--crash-dumps-dir=${cacheDir}/devtools`,
-  //     ...newFlags,
-  //   ],
-  // })
+  const devtoolsChrome = await ChromeLauncher.launch({
+    port: devtoolsPort,
+    // /devtools/inspector.html?ws=localhost:9222/devtools/page/xxxx
+    // startingUrl: `http://localhost:${clientPort}${devtoolsFrontendUrl}`,
+    ignoreDefaultFlags: true,
+    chromeFlags: [
+      '--lang=zh-CN',
+      '--window-size=830,826',
+      '--window-position=760,100',
+      `--user-data-dir=${cacheDir}/devtools`,
+      `--crash-dumps-dir=${cacheDir}/devtools`,
+      ...newFlags,
+    ],
+  })
+  console.log(`devtools is running at http://localhost:${devtoolsChrome.port}`)
 
-  // const version = await CDP.Version({ port: clientChrome.port })
-  console.log(`client is running at http://localhost:${clientChrome.port}`)
-  // console.log(version)
-
-  // console.log(`devtools is running at http://localhost:${devtoolsChrome.port}`)
+  const cdp = await CDP({ port: devtoolsChrome.port })
+  cdp.Page.navigate({
+    url: `devtools://devtools/bundled/devtools_app.html${devtoolsFrontendUrl.slice(24)}`,
+  })
 }

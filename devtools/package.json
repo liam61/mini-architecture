@@ -1,13 +1,12 @@
 {
   "name": "@mini-architecture/devtools",
-  "version": "0.0.1",
+  "version": "0.0.1-beta1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "pack:mini": "rm -rf build/mini && ../cli/bin/index.js -m devtools -e @mini -o build/mini",
     "client:build": "rm -rf build/client && parcel build client/index.html -d build/client --no-cache",
-    "devWithParcelServe": "yarn client:dev & nodemon",
-    "dev": "yarn pack:mini && rm -rf build/client && nodemon",
+    "dev": "yarn pack:mini && rm -rf build/client && scripts/dev.js",
     "build": "yarn pack:mini && yarn client:build"
   },
   "author": "lawler61",
@@ -34,12 +33,15 @@
   "devDependencies": {
     "@babel/core": "^7.11.6",
     "@types/express": "^4.17.8",
+    "@types/nodemon": "^1.19.0",
+    "@types/parcel-bundler": "^1.12.1",
     "@types/react-modal": "^3.10.6",
     "@typescript-eslint/eslint-plugin": "^4.3.0",
     "@typescript-eslint/parser": "^4.3.0",
     "babel-plugin-module-resolver": "^4.0.0",
     "less": "^3.12.2",
     "nodemon": "^2.0.4",
+    "open": "^7.3.0",
     "parcel-bundler": "^1.12.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

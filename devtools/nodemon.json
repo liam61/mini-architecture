@@ -1,16 +1,12 @@
 {
-  "exec": "parcel build client/index.html -d build/client && ts-node server",
+  "exec": "ts-node index.ts",
   "watch": [
-    "build/mini",
-    "client",
-    "native",
-    "server"
+    "server",
+    "./index.ts"
   ],
-  "watchWithParcelServe": [
-    "build/mini",
-    "build/client",
-    "server"
-  ],
-  "ext": "*",
-  "delay": "600"
+  "events": {
+    "restart": ""
+  },
+  "ext": ".ts",
+  "delay": "400"
 }

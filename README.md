@@ -14,7 +14,7 @@ a full mini app architecture demo
 
 - [cli](https://github.com/lawler61/mini-architecture/tree/master/cli) 🔥mini-architecture cli
 
-- [devtools](https://github.com/lawler61/mini-architecture/tree/master/devtools) 🔥 a tool for developing like [weixin devtools](https://developers.weixin.qq.com/miniprogram/dev/devtools/devtools.html)
+- [devtools](https://github.com/lawler61/mini-architecture/tree/master/devtools) 🔥 a tool for developing, like [weixin devtools](https://developers.weixin.qq.com/miniprogram/dev/devtools/devtools.html)
 
 ## Start
 
@@ -38,7 +38,35 @@ before you run, don't forget to connect mobile to you computer. It may be slow f
 
 see [@mini-architecture/cli](https://github.com/lawler61/mini-architecture/tree/master/cli) for more details
 
-### 3. dev
+### 3. mini [DSL](https://en.wikipedia.org/wiki/Domain-specific_language)
+
+```js
+// index.html
+<view>
+  <button bindtap="bindEvent" class="btn">click me</button>
+  <view class="{{bindCls}}">bind-data: {{hello}}</view>
+  <view bindtap="goNext">go next page</view>
+</view>
+
+// index.js
+Page({
+  data: {
+    hello: 'hello world',
+    bindCls: 'view',
+  },
+  bindEvent() {
+    this.setData({ hello: 'hello again' })
+  },
+  goNext() {
+    ma.navigateTo({
+      url: 'pages/demo/index',
+      success() {},
+    })
+  },
+})
+```
+
+### 4. dev
 
 1. `git clone git@github.com:lawler61/mini-architecture.git && cd mini-architecture`
 
@@ -48,7 +76,7 @@ see [@mini-architecture/cli](https://github.com/lawler61/mini-architecture/tree/
 
 4. `yarn dev / build` for dev or build
 
-### 4. Quick install
+### 5. quick install
 
 install form [built apk](./mini-demo.apk)
 

@@ -32,3 +32,7 @@ export class Deferred<T> {
 }
 
 export function noop() {}
+
+export function wait(delay = 500, data?: any) {
+  return new Promise(resolve => setTimeout(() => resolve(data), delay))
+}
