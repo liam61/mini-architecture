@@ -1,6 +1,6 @@
 {
   "name": "@mini-architecture/home",
-  "version": "0.0.4",
+  "version": "0.0.4-beta2",
   "description": "",
   "scripts": {
     "bootstrap": "yarn && node index.js --cmd install",

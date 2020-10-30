@@ -2,17 +2,29 @@ import * as ChromeLauncher from 'chrome-launcher'
 import CDP from 'chrome-remote-interface'
 import getPort from 'get-port'
 import fetch from 'node-fetch'
+import path from 'path'
 import { homedir } from 'os'
 import startStaticServer from './static'
-import { Deferred } from '../utils'
+import { Deferred, normalizePath } from '../utils'
 
-start()
+export interface LaunchOptions {
+  /**
+   * preferred static server port
+   */
+  port?: number | string
+}
 
-async function start() {
-  const deferred = new Deferred<number[]>()
-  Promise.all([startStaticServer(), getPort({ port: 9222 }), getPort({ port: 9232 })]).then(
-    deferred.resolve,
-  )
+const rootPath = path.join(__dirname, '../..')
+const miniPath = normalizePath('MINI_OUTPUT', path.join(rootPath, 'devtools/dev/mini'))
+
+export default async function launcher(options?: LaunchOptions) {
+  const { port } = options || {}
+  const deferred = new Deferred<[{ port: number }, number, number]>()
+  Promise.all([
+    startStaticServer({ miniPath, port }),
+    getPort({ port: 9222 }),
+    getPort({ port: 9232 }),
+  ]).then(deferred.resolve)
 
   const cacheDir = `${homedir()}/.ma-dev`
   const ignoreFlags = ['--disable-extensions', '--disable-features=TranslateUI']
@@ -20,7 +32,7 @@ async function start() {
     flag => !ignoreFlags.includes(flag),
   )
 
-  const [staticPort, clientPort, devtoolsPort] = await deferred.promise
+  const [{ port: staticPort }, clientPort, devtoolsPort] = await deferred.promise
 
   const clientChrome = await ChromeLauncher.launch({
     port: clientPort,
@@ -44,11 +56,11 @@ async function start() {
 
   const targets = await fetch(`http://localhost:${clientPort}/json`).then(res => res.json())
   const { id, devtoolsFrontendUrl, url, webSocketDebuggerUrl } = targets[0]
-  console.log(targets)
+  // /devtools/inspector.html?ws=localhost:9222/devtools/page/xxxx
+  // console.log(targets)
 
   const devtoolsChrome = await ChromeLauncher.launch({
     port: devtoolsPort,
-    // /devtools/inspector.html?ws=localhost:9222/devtools/page/xxxx
     // startingUrl: `http://localhost:${clientPort}${devtoolsFrontendUrl}`,
     ignoreDefaultFlags: true,
     chromeFlags: [
@@ -60,10 +72,13 @@ async function start() {
       ...newFlags,
     ],
   })
-  console.log(`devtools is running at http://localhost:${devtoolsChrome.port}`)
+  console.log(`devtools is running at http://localhost:${devtoolsChrome.port}\n`)
 
   const cdp = await CDP({ port: devtoolsChrome.port })
   cdp.Page.navigate({
+    // TODO: 定制化的 devtools
     url: `devtools://devtools/bundled/devtools_app.html${devtoolsFrontendUrl.slice(24)}`,
   })
 }
+
+export const staticServer = startStaticServer

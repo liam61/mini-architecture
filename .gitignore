@@ -17,7 +17,6 @@ captures
 node_modules
 npm-debug.log
 yarn-error.log
-yarn.lock
 package-lock.json
 .npmrc
 
@@ -29,6 +28,8 @@ pack/_temp
 pack/_dev.js
 
 devtools/dist
-devtools/build
+devtools/dev
 devtools/.cache
 devtools/frontend
+
+cli/dist

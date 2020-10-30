@@ -2,8 +2,8 @@ export class Deferred<T> {
   promise: Promise<T>
   resolve: (res: any) => void
   reject: (err: any) => void
-  onComplete: () => void
-  timer: NodeJS.Timeout
+  private onComplete: () => void
+  private timer: NodeJS.Timeout
 
   constructor() {
     this.promise = new Promise((resolve, reject) => {
@@ -35,4 +35,19 @@ export function noop() {}
 
 export function wait(delay = 500, data?: any) {
   return new Promise(resolve => setTimeout(() => resolve(data), delay))
+}
+
+export function normalizePath(envName: string, localPath: string) {
+  const envPath = process.env[envName]
+  return typeof envPath === 'string' ? envPath : localPath
+}
+
+export function normalizeBoolean(envName: string, localBool: string) {
+  const envBool = process.env[envName]
+  // 'true' | 'other/string'
+  return typeof envBool === 'string'
+    ? ['true', 'false'].includes(envBool)
+      ? JSON.parse(envBool)
+      : !!envBool
+    : localBool
 }

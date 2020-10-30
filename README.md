@@ -32,7 +32,7 @@ a full mini app architecture demo
 
 1. `yarn global add @mini-architecture/cli`
 
-2. `ma-cli -m build -e @mini -w`
+2. `ma-cli pack -m build -e @mini -w`
 
 before you run, don't forget to connect mobile to you computer. It may be slow for the first time while you running
 

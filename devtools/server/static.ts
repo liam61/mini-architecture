@@ -6,22 +6,42 @@ import glob from 'glob'
 import ejs from 'ejs'
 import { Deferred } from '../utils'
 
+const rootPath = path.join(__dirname, '../')
+const isDev = process.env.DEVTOOLS_ENV === 'develop'
+
 let app: Express
+let port = 3000
+let allFiles: string[] | null = null
 
-async function startServer(): Promise<number> {
+export interface ServerOptions {
+  /**
+   * mini project path
+   */
+  miniPath: string
+  /**
+   * preferred static server port
+   */
+  port?: number | string
+}
+
+export default async function startServer(options: ServerOptions) {
+  const { miniPath, port: preferredPort } = options
+
+  if (preferredPort && !isNaN(+preferredPort)) {
+    port = +preferredPort
+  }
+
   const deferred = new Deferred<number>()
-  getPort({ port: 3000 }).then(deferred.resolve)
+  getPort({ port }).then(deferred.resolve)
 
-  const port = await deferred.promise
+  port = await deferred.promise
   app = express()
 
-  app.use('/mini', express.static(path.join(__dirname, '../build/mini')))
-  // app.use(express.static(path.join(__dirname, '../build/client')))
+  app.use('/mini', express.static(miniPath))
   app.use('/devtools', express.static(path.join(__dirname, '../frontend')))
-  app.use('/pages', express.static(path.join(__dirname, '../build/mini/apps/miniDemo/pages')))
 
-  const clientDir = path.join(__dirname, '../build/client')
-  const allFiles = glob.sync(`${clientDir}/*`, { ignore: ['**/*.map'] })
+  const clientDir = path.join(rootPath, isDev ? 'dev/client' : 'client')
+  allFiles = glob.sync(`${clientDir}/*`, { ignore: ['**/*.map'] })
 
   // client static
   app.get('*', (req, res) => {
@@ -45,11 +65,8 @@ async function startServer(): Promise<number> {
   // http://localhost:3000/mini/apps/miniDemo/pages/index
   // http://localhost:3000/mini/apps/miniDemo/service.html
   app.listen(port, () => {
-    console.log(`\nserver is running at http://localhost:${port}`)
+    console.log(`\nstatic server is running at http://localhost:${port}`)
   })
 
-  return port
+  return { server: app, port }
 }
-
-// startServer()
-export default startServer

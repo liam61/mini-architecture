@@ -10,8 +10,8 @@ const rootPath = path.join(__dirname, '../..')
 const miniPath = normalizePath('MINI_ENTRY', path.join(rootPath, 'mini/dist'))
 const frameworkPath = normalizePath('MINI_FRAMEWORK', path.join(rootPath, 'framework/dist'))
 const outputPath = normalizePath('MINI_OUTPUT', path.join(rootPath, 'android/app/src/main/assets'))
-const isZip = normalizeBoolean('MINI_ZIP', true)
-const isDev = process.env.NODE_ENV !== 'production'
+const isZip = normalizeBoolean('MINI_INSTALL', true)
+const isDev = process.env.MINI_ENV !== 'build'
 
 module.exports = function pack() {
   return packFramework()
@@ -51,7 +51,7 @@ function packMini({}) {
   return new Promise(resolve => {
     const name = `miniDemo${isZip ? '.zip' : ''}`
     const temp = path.join(rootPath, 'pack/_temp')
-    const to = path.join(outputPath, process.env.MINI_ENV === 'devtools' ? 'apps' : '', name)
+    const to = path.join(outputPath, process.env.MINI_PLATFORM === 'devtools' ? 'apps' : '', name)
     const miniConfig = JSON.parse(fs.readFileSync(path.join(miniPath, 'app.json'), 'utf-8'))
 
     if (fs.existsSync(temp)) {
@@ -61,7 +61,7 @@ function packMini({}) {
     builder.transform({
       miniPath,
       frameworkPath,
-      templatePath: path.join(rootPath, 'pack/template'),
+      templatePath: path.join(rootPath, 'pack/templates'),
       output: temp,
       miniConfig,
     })

@@ -1,16 +1,17 @@
 {
   "name": "@mini-architecture/pack",
-  "version": "0.0.5-beta2",
+  "version": "0.0.6-beta2",
   "description": "",
   "main": "src/pack.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=develop nodemon",
-    "build": "cross-env NODE_ENV=production node index.js"
+    "dev": "cross-env MINI_ENV=dev nodemon",
+    "pack:mini": "cross-env MINI_ENV=build node index.js"
   },
   "author": "lawler61",
   "license": "ISC",
   "files": [
-    "src"
+    "src",
+    "templates"
   ],
   "publishConfig": {
     "access": "public",

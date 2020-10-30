@@ -1,13 +1,17 @@
 {
   "name": "@mini-architecture/cli",
-  "version": "0.0.5-beta2",
+  "version": "0.0.6-beta2",
   "description": "",
-  "main": "src/index.js",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "rm -rf dist && tsc -p . -w",
+    "build": "rm -rf dist && tsc -p ."
+  },
   "bin": {
     "ma-cli": "bin/index.js"
   },
   "files": [
-    "src"
+    "dist"
   ],
   "author": "lawler61",
   "license": "ISC",
@@ -20,9 +24,10 @@
     "url": "git+https://github.com/lawler61/mini-architecture.git"
   },
   "dependencies": {
-    "@mini-architecture/framework": "^0.0.4-beta2",
-    "@mini-architecture/mini": "^0.0.3-beta2",
-    "@mini-architecture/pack": "^0.0.5-beta1",
+    "@mini-architecture/devtools": "^0.0.1-beta2",
+    "@mini-architecture/framework": "^0.0.5-beta1",
+    "@mini-architecture/mini": "^0.0.3",
+    "@mini-architecture/pack": "^0.0.6-beta2",
     "chalk": "^4.1.0",
     "commander": "^6.1.0",
     "fs-extra": "^9.0.1",

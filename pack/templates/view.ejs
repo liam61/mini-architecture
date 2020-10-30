@@ -13,7 +13,7 @@
     <style>
       <%- __CSS__ %>
     </style>
-    <%- __ENV__ == 'devtools' ? '<script>window.env = "devtools";</script>' : '' %>
+    <%- __PLATFORM__ == 'devtools' ? '<script>window.platform = "devtools";</script>' : '' %>
     <script src="../../../../framework/webview.js"></script>
   </head>
   <body>

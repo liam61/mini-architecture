@@ -1,8 +1,8 @@
 {
-  "exec": "ts-node index.ts",
+  "exec": "ts-node index.client.ts",
   "watch": [
     "server",
-    "./index.ts"
+    "./index.client.ts"
   ],
   "events": {
     "restart": ""

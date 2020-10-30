@@ -6,7 +6,7 @@ const parse = require('./parser')
 const Concat = require('concat-with-sourcemaps')
 const { minify } = require('html-minifier')
 
-const isDev = process.env.NODE_ENV !== 'production'
+const isDev = process.env.MINI_ENV !== 'build'
 const minifyConfig = {
   preserveLineBreaks: true,
   collapseWhitespace: true,
@@ -33,7 +33,7 @@ function transformView() {
     const cssPath = path.join(miniPath, page + '.css')
     const css = fs.existsSync(cssPath) ? fs.readFileSync(cssPath, 'utf-8') : ''
     const content = viewTpl({
-      __ENV__: process.env.MINI_ENV,
+      __PLATFORM__: process.env.MINI_PLATFORM,
       __APP_CSS__: appCss,
       __HTML__: code,
       __JS__: js,
@@ -45,7 +45,7 @@ function transformView() {
     fs.mkdirSync(targetDir, { recursive: true })
     fs.writeFileSync(targetDir + '/index.html', isDev ? content : minify(content, minifyConfig))
 
-    if (process.env.MINI_ENV === 'devtools') {
+    if (process.env.MINI_PLATFORM === 'devtools') {
       // 拷贝 page 源文件
       // const html = fs.readFileSync(path.join(miniPath, page + '.html'), 'utf-8')
       // const originContent = `<style>${appCss}\n${css}</style>\n${html}`
@@ -82,9 +82,9 @@ function transformService() {
   const jsCode = concatFiles(sourceArr)
   miniConfig.root = miniConfig.root || miniConfig.pages[0]
 
-  if (process.env.MINI_ENV === 'devtools') {
+  if (process.env.MINI_PLATFORM === 'devtools') {
     const content = serviceHtmlTpl({
-      __ENV__: process.env.MINI_ENV,
+      __PLATFORM__: process.env.MINI_PLATFORM,
       __CONFIG__: `'${JSON.stringify(miniConfig)}'`,
     })
 

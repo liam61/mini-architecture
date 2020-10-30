@@ -1,3 +1,4 @@
+import path from 'path'
 import open from 'open'
 import startStaticServer from './server/static'
 
@@ -9,7 +10,7 @@ const appNames = {
 }
 
 ;(async () => {
-  const port = await startStaticServer()
+  const { port } = await startStaticServer({ miniPath: path.join(__dirname, './dev/mini') })
 
   if (process.env.NODEMON_PROCESS_STAGE === '1') {
     open(`http://localhost:${port}`, {

@@ -3,7 +3,7 @@ const { default: generator } = require('@babel/generator') // by @babel/core
 const fs = require('fs-extra')
 const Concat = require('concat-with-sourcemaps')
 
-const isDev = process.env.NODE_ENV !== 'production'
+const isDev = process.env.MINI_ENV !== 'build'
 const PREFIX_ELEMENT = 'my-'
 const PREFIX_BIND = 'bind'
 const PREFIX_EVENT = '_bind'

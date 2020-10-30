@@ -1,11 +1,8 @@
-const fs = require('fs-extra')
-const chalk = require('chalk')
-const childProcess = require('child_process')
-const { execSync, spawnSync } = childProcess
+import fs from 'fs-extra'
+import chalk from 'chalk'
+import { execSync, spawnSync } from 'child_process'
 
-installApp()
-
-function installApp() {
+export default function installApp() {
   const androidPath = process.env.MINI_INSTALL
   process.chdir(androidPath)
   execSync('adb start-server')

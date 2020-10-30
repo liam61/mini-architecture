@@ -12,19 +12,34 @@ ma-cli -h
 ma-cli -m build -e @mini -w
 ```
 
-## Parameters
+## Commands
+
+### ma-cli pack -h
 
 ```bash
-Usage: ma-cli [options]
+Usage: ma-cli pack [options]
 
 Options:
-  -V, --version           output the version number
-  -m, --mode [type]       [required] "dev" / "build" / "devtools"
-  -e, --entry [path]      [required] mini project path. Pass "@mini" to run example miniapp
+  -m, --mode [type]       [required] pack mode: "dev" / "build"
+  -e, --entry [path]      [required] miniapp path. Pass "@mini" to run example miniapp
+  -p, --platform          running on: "mobile" / "devtools" (default: "mobile")
   -f, --framework [path]  mini framework path
-  -i, --install [path]    android path. Use "-i" as bool to install with builtin android
-  -o, --output [path]     output path (default: "~/.ma-dev" or "{install}/app/src/main/assets" when given `install` parameter)
-  -w, --watch             hot build
-  -z, --zip               zip outputs (useful when installing app)
+  -i, --install [path]    android path. Pass "-i" as bool to install with builtin android
+  -o, --output [path]     output path (default: "~/.ma-dev" or "{install}/app/src/main/assets"
+                          when given `install` option)
+  -w, --watch             pack files (default: process.env.NODE_ENV === "development")
   -h, --help              display help for command
+```
+
+### ma-cli devtools -h
+
+```bash
+Usage: ma-cli devtools [options]
+
+Options:
+  -m, --mode [type]    [required] pack mode: "dev" / "build"
+  -e, --entry [path]   [required] mini project path. Pass "@mini" to run example miniapp
+  -o, --output [path]  output path (default: "~/.ma-dev" or "{install}/app/src/main/assets"
+                       when given `install` parameter)
+  -h, --help           display help for command
 ```

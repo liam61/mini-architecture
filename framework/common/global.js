@@ -3,8 +3,7 @@ import 'regenerator-runtime/runtime'
 
 const _global = new Function('return this;')()
 
-// devtools
-if (_global.env === 'devtools') {
+if (_global.platform === 'devtools') {
   const config = _global.location.href
     .split('?')[1]
     .split('&')
