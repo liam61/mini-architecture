@@ -27,4 +27,11 @@ window.addEventListener('containerReady', (ev: any) => {
   })
 
   MiniActivity.create().setContainer(maContainer).launch(appId, userId, appPath)
+
+  if (process.env.DEVTOOLS_ENV === 'develop') {
+    window.maContainer = maContainer
+    window.pageManager = MiniActivity.getContext().pageManager
+  }
+
+  // TODO: new websocket
 })

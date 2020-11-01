@@ -2,7 +2,7 @@ import { serviceApi } from './api'
 import { _Page } from './_page'
 
 const pageOptionsMap = {}
-const pageStack = []
+let pageStack = []
 let currentPage = null
 
 function Page(options) {
@@ -23,12 +23,7 @@ function createPage(route, webviewId, query) {
   }
   pageStack.push(currentPage)
 
-  serviceApi.setAppData(
-    {
-      data: page.data,
-    },
-    [webviewId],
-  )
+  serviceApi.setAppData({ data: page.data }, [webviewId])
 }
 
 function recoverPage(route, webviewId) {
@@ -39,15 +34,39 @@ function recoverPage(route, webviewId) {
       currentPage = p
       pageStack.splice(i + 1, pageStack.length)
 
-      serviceApi.setAppData(
-        {
-          data: p.data,
-        },
-        [webviewId],
-      )
+      serviceApi.setAppData({ data: p.data }, [webviewId])
       break
     }
   }
+}
+
+function updatePage(route, webviewId, query) {
+  const options = pageOptionsMap[route]
+  const page = new _Page(options, webviewId, route)
+
+  currentPage = {
+    page,
+    webviewId,
+    route,
+  }
+  const index = pageStack.findIndex(page => page.webviewId === webviewId)
+  pageStack.splice(index, 1, currentPage)
+
+  serviceApi.setAppData({ data: page.data }, [webviewId])
+}
+
+function reLaunchApp(route, webviewId, query) {
+  const options = pageOptionsMap[route]
+  const page = new _Page(options, webviewId, route)
+
+  currentPage = {
+    page,
+    webviewId,
+    route,
+  }
+  pageStack = [currentPage]
+
+  serviceApi.setAppData({ data: page.data }, [webviewId])
 }
 
 export function getCurrentPages() {
@@ -62,7 +81,7 @@ export function getCurPageInstance() {
 serviceApi.getCurrentPages = getCurrentPages
 serviceApi.getCurPageInstance = getCurPageInstance
 
-serviceApi.onAppRoute((params) => {
+serviceApi.onAppRoute(params => {
   const { webviewId, path, query, openType } = params
 
   switch (openType) {
@@ -74,8 +93,10 @@ serviceApi.onAppRoute((params) => {
       recoverPage(path, webviewId)
       break
     case 'redirectTo':
+      updatePage(path, webviewId, query)
       break
     case 'reLaunch':
+      reLaunchApp(path, webviewId, query)
       break
   }
 })

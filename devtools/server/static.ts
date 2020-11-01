@@ -4,14 +4,8 @@ import fs from 'fs'
 import getPort from 'get-port'
 import glob from 'glob'
 import ejs from 'ejs'
+import expressWs from 'express-ws'
 import { Deferred } from '../utils'
-
-const rootPath = path.join(__dirname, '../')
-const isDev = process.env.DEVTOOLS_ENV === 'develop'
-
-let app: Express
-let port = 3000
-let allFiles: string[] | null = null
 
 export interface ServerOptions {
   /**
@@ -24,6 +18,19 @@ export interface ServerOptions {
   port?: number | string
 }
 
+export interface StaticServer extends Express {
+  send(data: Record<string, any>): void
+}
+
+const rootPath = path.join(__dirname, '../')
+const isDev = process.env.DEVTOOLS_ENV === 'develop'
+
+let app: StaticServer
+let port = 3000
+let allFiles: string[] | null = null
+const sockPath = '/'
+const clientMap = new Map()
+
 export default async function startServer(options: ServerOptions) {
   const { miniPath, port: preferredPort } = options
 
@@ -35,7 +42,7 @@ export default async function startServer(options: ServerOptions) {
   getPort({ port }).then(deferred.resolve)
 
   port = await deferred.promise
-  app = express()
+  app = express() as any
 
   app.use('/mini', express.static(miniPath))
   app.use('/devtools', express.static(path.join(__dirname, '../frontend')))
@@ -50,6 +57,7 @@ export default async function startServer(options: ServerOptions) {
 
     if (url === 'index.html') {
       const content = ejs.render(fs.readFileSync(filePath, 'utf-8'), {
+        __ENV__: process.env.DEVTOOLS_ENV,
         __HOST__: req.hostname,
         __PORT__: port,
         __PUBLIC_PATH__: '/mini/apps/',
@@ -61,6 +69,31 @@ export default async function startServer(options: ServerOptions) {
       res.sendStatus(404)
     }
   })
+
+  expressWs(app)
+  ;(app as any).ws(sockPath, (ws, req) => {
+    console.log('[staticServer]: a client connected')
+    ws._id = Math.random().toString(36).slice(-8)
+    clientMap.set(ws._id, ws)
+
+    ws.on('message', data => {
+      // console.log('message', data.toString())
+      const _message = JSON.parse(data.toString())
+    })
+
+    // ws.on('close', code => {
+    //   clientMap.delete(ws._id)
+    //   ws.terminate()
+    //   console.log(`[staticServer]: a client disconnected, code: ${code}\n`)
+    // })
+  })
+
+  app.send = function (data: Record<string, any>) {
+    clientMap.forEach(client => {
+      if (client.readyState === 1) return
+      client.send(JSON.stringify(data))
+    })
+  }
 
   // http://localhost:3000/mini/apps/miniDemo/pages/index
   // http://localhost:3000/mini/apps/miniDemo/service.html

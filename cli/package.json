@@ -1,6 +1,6 @@
 {
   "name": "@mini-architecture/cli",
-  "version": "0.0.6-beta2",
+  "version": "0.0.6-beta3",
   "description": "",
   "main": "dist/index.js",
   "scripts": {

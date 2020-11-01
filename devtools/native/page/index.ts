@@ -37,26 +37,23 @@ export default class MiniPage implements IBridge {
     this.webView.onDestroy()
   }
 
+  private loadUrl(url: string, openType: string) {
+    if (!url) return
+    this.openType = openType
+    this.webView.loadUrl(url, openType === 'redirectTo')
+    return true
+  }
+
   /**
-   * 导航回到此界面
+   * 返回到此界面
    */
-  onNavigateBack() {
+  onRecover() {
     this.openType = 'navigateBack'
     return this.onDomContentLoaded()
   }
 
-  onRedirectTo(url: string) {
-    return false
-  }
-
-  onReLaunch(url: string) {
-    return false
-  }
-
-  loadUrl(url: string, openType: string) {
-    if (!url) return
-    this.openType = openType
-    this.webView.loadUrl(url)
+  onRedirectTo(url: string | undefined) {
+    return this.loadUrl(url || this.getPath(), 'redirectTo')
   }
 
   onDomContentLoaded() {

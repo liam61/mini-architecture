@@ -21,8 +21,16 @@ const serviceApi = {
     }
     invokeRouteMethod('navigateBack', params)
   },
-  redirectTo(params) {},
-  reLaunch(params) {},
+  redirectTo(params) {
+    if (params.url) {
+      invokeRouteMethod('redirectTo', params)
+    }
+  },
+  reLaunch(params) {
+    if (params.url) {
+      invokeRouteMethod('reLaunch', params)
+    }
+  },
   setNavigationBarTitle(title = '') {
     invokeRouteMethod('setNavigationBarTitle', { title })
   },

@@ -14,4 +14,7 @@ interface Window {
     port: string
     path: string
   }
+
+  maContainer: any
+  pageManager: any
 }

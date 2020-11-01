@@ -27,18 +27,25 @@ export default class WebView {
    * - javascript:xxx
    * - http://xxx
    */
-  loadUrl(url: string) {
+  loadUrl(url: string, reload = false) {
     // native -> view
     if (url.startsWith('javascript:')) {
       return eval(url.replace('javascript:', 'this.jsCore.'))
     } else if (url.startsWith('http')) {
       this.url = url
       return
+    } else if (url === this.path && reload) {
+      window[this.name].location.reload(true)
+      return
     }
 
     const { appId, userId, getPagePath, getUrl } = window.appConfig
     this.path = getPagePath(url)
     this.url = concatQuery(getUrl(this.path), { appId, userId, viewId: this.id })
+
+    if (reload) {
+      window[this.name].location.href = this.url
+    }
   }
 
   onDestroy() {

@@ -25,6 +25,11 @@ Page({
       },
     })
   },
+  reLaunchDemo() {
+    ma.reLaunch({
+      url: 'pages/demo/index',
+    })
+  },
   jsAlert() {
     ma.alert('这是利用 jsAlert 建立的 jsBridge')
   },

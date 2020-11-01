@@ -4,7 +4,7 @@ import getPort from 'get-port'
 import fetch from 'node-fetch'
 import path from 'path'
 import { homedir } from 'os'
-import startStaticServer from './static'
+import startStaticServer, { StaticServer } from './static'
 import { Deferred, normalizePath } from '../utils'
 
 export interface LaunchOptions {
@@ -19,7 +19,7 @@ const miniPath = normalizePath('MINI_OUTPUT', path.join(rootPath, 'devtools/dev/
 
 export default async function launcher(options?: LaunchOptions) {
   const { port } = options || {}
-  const deferred = new Deferred<[{ port: number }, number, number]>()
+  const deferred = new Deferred<[{ server: StaticServer; port: number }, number, number]>()
   Promise.all([
     startStaticServer({ miniPath, port }),
     getPort({ port: 9222 }),
@@ -32,7 +32,7 @@ export default async function launcher(options?: LaunchOptions) {
     flag => !ignoreFlags.includes(flag),
   )
 
-  const [{ port: staticPort }, clientPort, devtoolsPort] = await deferred.promise
+  const [{ server, port: staticPort }, clientPort, devtoolsPort] = await deferred.promise
 
   const clientChrome = await ChromeLauncher.launch({
     port: clientPort,
@@ -79,6 +79,12 @@ export default async function launcher(options?: LaunchOptions) {
     // TODO: 定制化的 devtools
     url: `devtools://devtools/bundled/devtools_app.html${devtoolsFrontendUrl.slice(24)}`,
   })
+  // cdp2.Page.reload({ ignoreCache: true })
+
+  return {
+    server,
+    cdp,
+  }
 }
 
 export const staticServer = startStaticServer

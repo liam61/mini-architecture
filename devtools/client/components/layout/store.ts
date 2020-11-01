@@ -49,6 +49,10 @@ export class LayoutStore {
     }
   }
 
+  updateView(page: MiniPage) {
+    // handled by iframe self
+  }
+
   getChildAt(index: number) {
     if (index < 0) {
       index += this.length
@@ -62,6 +66,8 @@ export class LayoutStore {
   }
 
   removeViewsByDelta(delta: number) {
+    if (this.length <= delta) return false
+
     this.webViews = this.webViews.filter((page, i) => {
       const drop = i + delta >= this.length
       drop && page.destroy()
@@ -69,14 +75,15 @@ export class LayoutStore {
     })
     // this.webviews = this.webviews.slice(0, this.length - delta)
     this.forceUpdate()
+    return true
   }
 
-  removeAllViews() {
+  removeAllViews(reRender = true) {
     if (!this.webViews.length) return
 
     this.webViews.forEach(page => page.destroy())
     this.webViews = []
-    this.forceUpdate()
+    reRender && this.forceUpdate()
   }
 }
 

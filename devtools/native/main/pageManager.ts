@@ -11,10 +11,6 @@ export default class PageManager {
     return page
   }
 
-  getTopPage(): MiniPage {
-    return this.container.getTopPage()
-  }
-
   getJsCoreById(id: string) {
     const page: MiniPage = this.container
       .getWebViews()
@@ -43,22 +39,41 @@ export default class PageManager {
 
   navigateBackPage(delta: number) {
     try {
-      this.container.removeViewsByDelta(delta)
-      const page = this.getTopPage()
+      if (!this.container.removeViewsByDelta(delta)) return false
+      const page = this.container.getTopPage()
       // 获取 back 到的界面并显示
-      page.onNavigateBack()
+      page.onRecover()
       return true
     } catch {
       return false
     }
   }
 
-  redirectToPage(url: string) {
-    return false
+  /**
+   * @param url 不传是刷新
+   */
+  redirectToPage(url: string | undefined) {
+    try {
+      const page = this.container.getTopPage()
+      page.onRedirectTo(url)
+      this.container.updateView(page)
+      return true
+    } catch {
+      return false
+    }
   }
 
-  reLaunchPage(url: string) {
-    return false
+  /**
+   * @param url 不传是 root
+   */
+  reLaunchPage(url: string | undefined) {
+    try {
+      this.container.removeAllViews(false)
+      this.createPage(url || 'root', 'reLaunch')
+      return true
+    } catch {
+      return false
+    }
   }
 
   setNavigationBarTitle(title: string) {
@@ -83,8 +98,10 @@ export default class PageManager {
       return this.navigateToPage(path)
     } else if (event === 'navigateBack') {
       return this.navigateBackPage(p.delta || 1)
-    } else if (event === 'redirectTo' || event === 'reLaunch') {
-      return false
+    } else if (event === 'redirectTo') {
+      return this.redirectToPage(p.url)
+    } else if (event === 'reLaunch') {
+      return this.reLaunchPage(p.url)
     } else if (event === 'setNavigationBarTitle') {
       return this.setNavigationBarTitle(p.title)
     }

@@ -12,3 +12,7 @@ export function validate(key: string, value: any, types: string | string[]) {
   }
   return true
 }
+
+export function wait(delay = 500, data?: any) {
+  return new Promise(resolve => setTimeout(() => resolve(data), delay))
+}

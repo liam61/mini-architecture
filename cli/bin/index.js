@@ -1,7 +1,6 @@
 #! /usr/bin/env node
 const program = require('commander')
 const bootstrap = require('../dist')
-
 const { modes, platforms } = bootstrap
 
 program.version('0.0.6-beta2')
@@ -16,7 +15,7 @@ program
     '-e, --entry [path]',
     '[required] miniapp path. Pass "@mini" to run example miniapp',
   )
-  .option('-p, --platform', `running on: "${platforms.join('" / "')}" (default: "mobile")`)
+  .option('-p, --platform [path]', `running on: "${platforms.join('" / "')}"`, 'mobile')
   .option('-f, --framework [path]', 'mini framework path')
   .option('-i, --install [path]', 'android path. Pass "-i" as bool to install with builtin android')
   .option(

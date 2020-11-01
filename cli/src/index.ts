@@ -3,7 +3,7 @@ import { homedir } from 'os'
 import chalk from 'chalk'
 import nodemon from 'nodemon'
 import { directories } from 'ignore-by-default'
-import { validate } from './utils'
+import { validate, wait } from './utils'
 
 // global add cli 和 mini、pack 在同一级目录
 const maPath = path.join(__dirname, '../..')
@@ -20,18 +20,8 @@ export interface Options {
   watch?: boolean
 }
 
-interface DevtoolsOptions extends Pick<Options, 'mode' | 'entry' | 'output'> {}
-
 function initEnv(options: Options) {
-  let {
-    mode,
-    entry = '',
-    platform = 'mobile',
-    framework = '',
-    install = '',
-    output = '',
-    watch,
-  } = options
+  let { mode, entry = '', platform, framework = '', install = '', output = '', watch } = options
   watch = typeof watch === 'boolean' ? watch : process.env.NODE_ENV === 'development'
 
   if (!modes.includes(mode)) {
@@ -39,7 +29,6 @@ function initEnv(options: Options) {
     return
   }
 
-  // @ts-ignore
   if (!platforms.includes(platform)) {
     console.log(chalk.red('invalid platform type...'))
     return
@@ -71,7 +60,7 @@ function initEnv(options: Options) {
   return true
 }
 
-export default function bootstrap(type = 'pack', options: Options) {
+export default async function bootstrap(type = 'pack', options: Options) {
   options = options || ({} as any)
   if (type === 'devtools') {
     options = {
@@ -96,10 +85,19 @@ export default function bootstrap(type = 'pack', options: Options) {
       ext: '*',
       delay: 500,
     })
+      .on('start', () => {})
+      .on('restart', () => {
+        // TODO: server.send
+        // options.platform === 'devtools'
+      })
     // 设置完 env 再引入
-    options.platform === 'devtools' &&
-      setTimeout(require('@mini-architecture/devtools').default, 1500)
+    if (options.platform === 'devtools') {
+      const { default: launcher } = await import('../../devtools')
+      await wait(1500)
+      console.log(launcher)
+      // const { server, cdp } = await launcher()
+    }
   } else {
-    require('./pack')
+    import('./pack')
   }
 }
