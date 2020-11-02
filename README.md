@@ -36,16 +36,16 @@ a full mini app architecture demo
 
 before you run, don't forget to connect mobile to you computer. It may be slow for the first time while you running
 
-see [@mini-architecture/cli](https://github.com/lawler61/mini-architecture/tree/master/cli) for more details
+find more at [@mini-architecture/cli](https://github.com/lawler61/mini-architecture/tree/master/cli)
 
-### 3. mini [DSL](https://en.wikipedia.org/wiki/Domain-specific_language)
+### 3. mini example
 
 ```js
 // index.html
 <view>
   <button bindtap="bindEvent" class="btn">click me</button>
   <view class="{{bindCls}}">bind-data: {{hello}}</view>
-  <view bindtap="goNext">go next page</view>
+  <button bindtap="goNext">go next page</button>
 </view>
 
 // index.js
@@ -65,6 +65,8 @@ Page({
   },
 })
 ```
+
+find more at [@mini-architecture/framework](https://github.com/lawler61/mini-architecture/tree/master/framework)
 
 ### 4. dev
 
@@ -106,9 +108,13 @@ install form [built apk](./mini-demo.apk)
 
 - [ ] devtools
 
+- [ ] worker service in devtools
+
+- [ ] maybe custom components
+
 - [ ] v8 thread worker
 
-- [ ] v8 thread debug tool
+- [ ] v8 thread debug tool with Android
 
 - [ ] all view page build in one html
 

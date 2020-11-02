@@ -3,9 +3,9 @@ import { html, PolymerElement } from '@polymer/polymer/polymer-element'
 const TAP = 'my-tap'
 const TAP_UP = 'my-tapup'
 
-class MyButton extends PolymerElement {
+class MaButton extends PolymerElement {
   static get is() {
-    return 'my-button'
+    return 'ma-button'
   }
 
   static get template() {
@@ -93,7 +93,7 @@ class MyButton extends PolymerElement {
     if (typeof this.bindtap === 'function') {
       if (type === TAP_UP) {
         shouldTrigger = true
-      } else if (Array.isArray(srcEvent.path) && srcEvent.path.some((el) => el === this)) {
+      } else if (Array.isArray(srcEvent.path) && srcEvent.path.some(el => el === this)) {
         // panend
         shouldTrigger = true
       }
@@ -107,4 +107,4 @@ class MyButton extends PolymerElement {
   }
 }
 
-window.customElements.define(MyButton.is, MyButton)
+window.customElements.define(MaButton.is, MaButton)

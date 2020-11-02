@@ -8,7 +8,7 @@
     "dev:client": "yarn pack:mini && rm -rf dev/client && scripts/dev.js",
     "dev:launcher": "cross-env DEVTOOLS_ENV=develop ts-node index.launch.ts",
     "build:client": "parcel build client/index.html -d dist/client --no-cache",
-    "build:launcher": "rm -rf dist && tsc -p tsconfig.build.json",
+    "build:server": "rm -rf dist && tsc -p tsconfig.build.json",
     "build": "tsc -p . && yarn build:launcher && yarn build:client"
   },
   "author": "lawler61",

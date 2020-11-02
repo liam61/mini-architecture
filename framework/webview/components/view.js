@@ -1,8 +1,8 @@
 import { html, PolymerElement } from '@polymer/polymer/polymer-element'
 
-class MyView extends PolymerElement {
+class MaView extends PolymerElement {
   static get is() {
-    return 'my-view'
+    return 'ma-view'
   }
 
   static get template() {
@@ -24,4 +24,4 @@ class MyView extends PolymerElement {
   }
 }
 
-window.customElements.define(MyView.is, MyView)
+window.customElements.define(MaView.is, MaView)

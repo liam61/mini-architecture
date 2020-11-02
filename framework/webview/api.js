@@ -7,7 +7,7 @@ const webviewApi = {
   publish: jsBridge.publish,
   subscribe: jsBridge.subscribe,
   navigateTo(params) {
-    // for my-navigator component, but not implement
+    // for ma-navigator component, but not implement
     jsBridge.publish('invokeMethod', {
       eventName: 'navigateTo',
       ...params,

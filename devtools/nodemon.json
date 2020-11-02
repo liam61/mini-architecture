@@ -7,6 +7,6 @@
   "events": {
     "restart": ""
   },
-  "ext": ".ts",
+  "ext": "ts",
   "delay": "400"
 }

@@ -1,20 +1,31 @@
-const { types: t, parse, traverse, transform } = require('@babel/core')
-const { default: generator } = require('@babel/generator') // by @babel/core
-const fs = require('fs-extra')
-const Concat = require('concat-with-sourcemaps')
+import { types as t, parse, traverse, transform } from '@babel/core'
+import { default as generator } from '@babel/generator' // by @babel/core
+import fs from 'fs-extra'
+import Concat from 'concat-with-sourcemaps'
 
 const isDev = process.env.MINI_ENV !== 'build'
-const PREFIX_ELEMENT = 'my-'
+const PREFIX_ELEMENT = 'ma-'
 const PREFIX_BIND = 'bind'
 const PREFIX_EVENT = '_bind'
 const REG_DYNAMIC = /\{\{([^}]+)\}\}/g
 const dynamicMap = {}
 
-function parseFile(params) {
+interface ParserConfig {
+  fullPath: string
+  page?: string
+}
+
+export interface ParseResult {
+  code: string | Buffer
+  js?: string
+  map?: string
+}
+
+export default function parseFile(params: ParserConfig) {
   const { fullPath, page } = params
   const output = fs.readFileSync(fullPath, 'utf-8')
   const isJsx = /\.html$/.test(fullPath)
-  let result = null
+  let result: ParseResult | null = null
 
   if (isJsx) {
     const ast = parse(output, {
@@ -88,7 +99,8 @@ function parseFile(params) {
     result = { code: code.slice(0, -1), js: jsCode }
   } else {
     const source = transform(output, {
-      presets: ['@babel/preset-env', !isDev && 'minify'].filter(Boolean), // isJsx && ['@babel/preset-react', { pragma: '_l' }]
+      // isJsx && ['@babel/preset-react', { pragma: '_l' }]
+      presets: ['@babel/preset-env', !isDev && 'minify'].filter(Boolean),
       sourceMaps: isDev,
       sourceRoot: process.cwd(),
       sourceFileName: fullPath,
@@ -115,17 +127,17 @@ function parseFile(params) {
   return result
 }
 
-function addDynamicValue(page, type, value) {
+function addDynamicValue(page: string, type: 'data' | 'event', value: string) {
   if (!dynamicMap[page]) {
     dynamicMap[page] = {
-      data: new Set(),
-      event: new Set(),
+      data: new Set<string>(),
+      event: new Set<string>(),
     }
   }
   dynamicMap[page][type].add(value)
 }
 
-function genJsCode(events) {
+function genJsCode(events: string[]) {
   return [...events].reduce((tpl, name, i, arr) => {
     tpl += `_binder["${name}"] = function(ev) {
       window.ma.publishPageEvent("${name.slice(PREFIX_EVENT.length)}", ev)
@@ -137,7 +149,7 @@ function genJsCode(events) {
   }, 'function _bindData() {')
 }
 
-function getShortPath(path) {
+function getShortPath(path: string) {
   const arr = path.split('/')
   const idx = arr.findIndex(dir => dir === 'mini')
   return arr.slice(idx).join('/')
@@ -147,5 +159,3 @@ function getShortPath(path) {
 //   fullPath: path.join(rootPath, 'mini/dist/pages/index/index.html'),
 //   page: 'pages/index/index',
 // })
-
-module.exports = parseFile

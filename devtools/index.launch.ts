@@ -1,1 +1,1 @@
-require('./server/launch')()
+require('./server/launch').default()

@@ -1,10 +1,24 @@
-const path = require('path')
-const fs = require('fs-extra')
-const ejs = require('ejs')
-const glob = require('glob')
-const parse = require('./parser')
-const Concat = require('concat-with-sourcemaps')
-const { minify } = require('html-minifier')
+import path from 'path'
+import fs from 'fs-extra'
+import ejs from 'ejs'
+import glob from 'glob'
+import parser, { ParseResult } from './parser'
+import Concat from 'concat-with-sourcemaps'
+import { minify } from 'html-minifier'
+
+export interface BuilderConfig {
+  miniPath: string
+  frameworkPath: string
+  templatePath: string
+  output: string
+  miniConfig: Record<string, any>
+}
+
+interface SourceItem {
+  code: string
+  map: string
+  path: string
+}
 
 const isDev = process.env.MINI_ENV !== 'build'
 const minifyConfig = {
@@ -20,7 +34,7 @@ const minifyConfig = {
     },
   },
 }
-const transformConfig = {}
+const transformConfig: BuilderConfig = {} as any
 
 function transformView() {
   const { miniPath, output, miniConfig } = transformConfig
@@ -28,8 +42,8 @@ function transformView() {
   const appCssPath = path.join(miniPath, 'app.css')
   let appCss = fs.existsSync(appCssPath) ? fs.readFileSync(appCssPath, 'utf-8') : ''
 
-  miniConfig.pages.forEach(page => {
-    const { code, js } = parse({ fullPath: path.join(miniPath, page + '.html'), page })
+  miniConfig.pages.forEach((page: string) => {
+    const { code, js } = parser({ fullPath: path.join(miniPath, page + '.html'), page })
     const cssPath = path.join(miniPath, page + '.css')
     const css = fs.existsSync(cssPath) ? fs.readFileSync(cssPath, 'utf-8') : ''
     const content = viewTpl({
@@ -56,14 +70,14 @@ function transformView() {
 
 function transformService() {
   const { miniPath, output, frameworkPath, miniConfig } = transformConfig
-  const jsFiles = glob.sync(`${miniPath}/**/*.js`, { ignore: [] })
+  const jsFiles: string[] = glob.sync(`${miniPath}/**/*.js`, { ignore: [] })
   const serviceHtmlTpl = loadTemplate('service')
   const serviceTpl = loadTemplate('service-worker')
   const frameworkJs = fs.readFileSync(path.join(frameworkPath, 'service.js'), 'utf-8')
 
   const sourceArr = jsFiles.map(file => {
     if (file.includes('app.js')) {
-      const res = parse({ fullPath: file })
+      const res = parser({ fullPath: file })
       return Object.assign(res, { path: '' })
     }
     // NOTE: 其他 js 懒得处理了
@@ -74,7 +88,7 @@ function transformService() {
     })
 
     if (path) {
-      const res = parse({ fullPath: file })
+      const res = parser({ fullPath: file })
       return Object.assign(res, { path })
     }
   })
@@ -101,13 +115,13 @@ function transformService() {
   }
 }
 
-function loadTemplate(name) {
+function loadTemplate(name: string) {
   const { templatePath } = transformConfig
   const template = fs.readFileSync(path.join(templatePath, `${name}.ejs`), 'utf-8')
   return ejs.compile(template, { cache: true, filename: name })
 }
 
-function concatFiles(sourceArr) {
+function concatFiles(sourceArr: (ParseResult & { path: string })[]) {
   const concat = new Concat(true, 'service.js', '\n')
 
   sourceArr.forEach(({ code, map, path }) => {
@@ -118,8 +132,8 @@ function concatFiles(sourceArr) {
   return concat.content.toString()
 }
 
-module.exports = {
-  transform(config) {
+export default {
+  transform(config: BuilderConfig) {
     Object.assign(transformConfig, config)
     transformView()
     transformService()
