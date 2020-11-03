@@ -2,9 +2,7 @@ import path from 'path'
 import fs from 'fs-extra'
 import archiver from 'archiver'
 import builder from './build'
-import chalk from 'chalk'
 import { normalizePath, normalizeBoolean } from './utils'
-chalk.level = 3
 
 const rootPath = path.join(__dirname, '../..')
 const miniPath = normalizePath('MINI_ENTRY', path.join(rootPath, 'mini/dist'))
@@ -18,7 +16,11 @@ export default async function pack() {
     await packFramework()
     await packMini()
   } catch (err) {
-    console.log(isDev ? err : chalk.red(err.stack))
+    if (isDev) {
+      throw err
+    } else {
+      console.log(err)
+    }
   }
 }
 
@@ -54,9 +56,7 @@ async function packMini() {
   const to = path.join(outputPath, process.env.MINI_PLATFORM === 'devtools' ? 'apps' : '', name)
   const miniConfig = JSON.parse(fs.readFileSync(path.join(miniPath, 'app.json'), 'utf-8'))
 
-  if (fs.existsSync(temp)) {
-    fs.removeSync(temp)
-  }
+  fs.existsSync(temp) && fs.removeSync(temp)
 
   builder.transform({
     miniPath,
@@ -102,7 +102,7 @@ function zipFiles(sourcePath: string, name: string): Promise<string> {
 
     stream.on('close', () => {
       const size = archive.pointer()
-      console.log(chalk.cyan(`\nsuccess zip ${name}, ${(size / 1024).toFixed(3)} kb...`))
+      console.log(`\nsuccess zip ${name}, ${(size / 1024).toFixed(3)} kb...`)
       resolve(output)
     })
 
@@ -133,7 +133,7 @@ async function handleFiles(config: {
   fs.existsSync(to) && fs.removeSync(to)
 
   return fs[copy ? 'copy' : 'move'](from, to).then(() => {
-    console.log(chalk.cyan(`\nsuccess create ${to}...`))
+    console.log(`\nsuccess create ${to}...`)
     return { from, to }
   })
 }

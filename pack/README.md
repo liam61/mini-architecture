@@ -15,7 +15,7 @@ a tool for packing user mini-app project and framework
 ```bash
 yarn global add @mini-architecture/cli
 
-ma-cli pack -m build -e @mini -w
+ma-cli pack -e @mini -w
 ```
 
 find more at [@mini-architecture/cli](https://github.com/lawler61/mini-architecture/tree/master/cli)

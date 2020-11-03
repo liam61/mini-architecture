@@ -71,8 +71,8 @@ function transformView() {
 function transformService() {
   const { miniPath, output, frameworkPath, miniConfig } = transformConfig
   const jsFiles: string[] = glob.sync(`${miniPath}/**/*.js`, { ignore: [] })
-  const serviceHtmlTpl = loadTemplate('service')
-  const serviceTpl = loadTemplate('service-worker')
+  const serviceTpl = loadTemplate('service')
+  const serviceWorkerTpl = loadTemplate('service-worker')
   const frameworkJs = fs.readFileSync(path.join(frameworkPath, 'service.js'), 'utf-8')
 
   const sourceArr = jsFiles.map(file => {
@@ -97,7 +97,7 @@ function transformService() {
   miniConfig.root = miniConfig.root || miniConfig.pages[0]
 
   if (process.env.MINI_PLATFORM === 'devtools') {
-    const content = serviceHtmlTpl({
+    const content = serviceTpl({
       __PLATFORM__: process.env.MINI_PLATFORM,
       __CONFIG__: `'${JSON.stringify(miniConfig)}'`,
     })
@@ -105,7 +105,7 @@ function transformService() {
     fs.writeFileSync(path.join(output, 'app-service.js'), jsCode)
     fs.writeFileSync(path.join(output, 'service.html'), content)
   } else {
-    const content = serviceTpl({
+    const content = serviceWorkerTpl({
       __SERVICE__: frameworkJs,
       __JS__: isDev ? jsCode : minify(jsCode, minifyConfig),
       __CONFIG__: `'${JSON.stringify(miniConfig)}'`,

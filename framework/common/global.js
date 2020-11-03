@@ -2,6 +2,7 @@ import 'core-js/stable'
 import 'regenerator-runtime/runtime'
 
 const _global = new Function('return this;')()
+_global.version = '__VERSION__'
 
 if (_global.platform === 'devtools') {
   const config = _global.location.href

@@ -10,11 +10,11 @@ let type = 'pack'
 
 program
   .command('pack')
-  .requiredOption('-m, --mode [type]', `[required] pack mode: "${modes.join('" / "')}"`)
   .requiredOption(
     '-e, --entry [path]',
     '[required] miniapp path. Pass "@mini" to run example miniapp',
   )
+  .option('-m, --mode [type]', `pack mode: "${modes.join('" / "')}"`, 'build')
   .option('-p, --platform [path]', `running on: "${platforms.join('" / "')}"`, 'mobile')
   .option('-f, --framework [path]', 'mini framework path')
   .option('-i, --install [path]', 'android path. Pass "-i" as bool to install with builtin android')
@@ -29,11 +29,11 @@ program
 
 program
   .command('devtools')
-  .requiredOption('-m, --mode [type]', `[required] pack mode: "${modes.join('" / "')}"`)
   .requiredOption(
     '-e, --entry [path]',
     '[required] mini project path. Pass "@mini" to run example miniapp',
   )
+  .option('-m, --mode [type]', `pack mode: "${modes.join('" / "')}"`, 'build')
   .option(
     '-o, --output [path]',
     'output path (default: "~/.ma-dev" or "{install}/app/src/main/assets" when given `install` parameter)',

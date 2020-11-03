@@ -21,7 +21,6 @@ package-lock.json
 .npmrc
 
 framework/dist
-framework/dev
 
 pack/dist
 pack/_temp

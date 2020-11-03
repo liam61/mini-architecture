@@ -4,8 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "pack:dev": "cross-env MINI_ENV=dev nodemon",
-    "pack:build": "cross-env MINI_ENV=build nodemon",
+    "dev": "nodemon",
     "build": "rm -rf dist && tsc -p ."
   },
   "author": "lawler61",
@@ -27,7 +26,6 @@
     "@babel/preset-env": "^7.11.5",
     "archiver": "^4.0.1",
     "babel-preset-minify": "^0.5.1",
-    "chalk": "^4.1.0",
     "concat-with-sourcemaps": "^1.1.0",
     "ejs": "^3.1.3",
     "fs-extra": "^9.0.1",
@@ -36,7 +34,6 @@
   },
   "devDependencies": {
     "@types/node": "^14.14.6",
-    "cross-env": "^7.0.2",
     "nodemon": "^2.0.4",
     "ts-node": "^9.0.0"
   }

@@ -1,9 +1,8 @@
 import path from 'path'
 import { homedir } from 'os'
-import chalk from 'chalk'
 import nodemon from 'nodemon'
 import { directories } from 'ignore-by-default'
-import { validate, wait } from './utils'
+import { includes, validate, wait } from './utils'
 
 // global add cli 和 mini、pack 在同一级目录
 const maPath = path.join(__dirname, '../..')
@@ -21,21 +20,14 @@ export interface Options {
 }
 
 function initEnv(options: Options) {
-  let { mode, entry = '', platform, framework = '', install = '', output = '', watch } = options
+  // eslint-disable-next-line
+  let { entry = '', mode, platform, framework = '', install = '', output = '', watch } = options
   watch = typeof watch === 'boolean' ? watch : process.env.NODE_ENV === 'development'
-
-  if (!modes.includes(mode)) {
-    console.log(chalk.red('invalid mode type...'))
-    return
-  }
-
-  if (!platforms.includes(platform)) {
-    console.log(chalk.red('invalid platform type...'))
-    return
-  }
 
   if (
     !validate('entry', entry, 'string') ||
+    !includes('mode', mode, modes) ||
+    !includes('platform', platform, platforms) ||
     !validate('framework', framework, 'string') ||
     !validate('install', install, ['string', 'boolean']) ||
     !validate('output', output, 'string')
@@ -43,11 +35,10 @@ function initEnv(options: Options) {
     return
   }
 
-  const isDev = mode === 'dev'
   process.env.MINI_ENV = mode
   process.env.MINI_ENTRY = entry !== '@mini' ? entry : path.join(maPath, 'mini/dist')
   process.env.MINI_PLATFORM = platform
-  process.env.MINI_FRAMEWORK = framework || path.join(maPath, `framework/${isDev ? 'dev' : 'dist'}`)
+  process.env.MINI_FRAMEWORK = framework || path.join(maPath, `framework/dist`)
   process.env.MINI_INSTALL =
     install !== true ? (install as string) : path.join(maPath, 'cli/android')
   process.env.MINI_OUTPUT =

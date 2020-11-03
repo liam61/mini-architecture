@@ -18,8 +18,8 @@ ma-cli -h
 Usage: ma-cli pack [options]
 
 Options:
-  -m, --mode [type]       [required] pack mode: "dev" / "build"
   -e, --entry [path]      [required] miniapp path. Pass "@mini" to run example miniapp
+  -m, --mode [type]       pack mode: "dev" / "build" (default: "build")
   -p, --platform [path]   running on: "mobile" / "devtools" (default: "mobile")
   -f, --framework [path]  mini framework path
   -i, --install [path]    android path. Pass "-i" as bool to install with builtin android
@@ -34,8 +34,8 @@ Options:
 Usage: ma-cli devtools [options]
 
 Options:
-  -m, --mode [type]    [required] pack mode: "dev" / "build"
   -e, --entry [path]   [required] mini project path. Pass "@mini" to run example miniapp
+  -m, --mode [type]    pack mode: "dev" / "build" (default: "build")
   -o, --output [path]  output path (default: "~/.ma-dev" or "{install}/app/src/main/assets" when given `install` parameter)
   -h, --help           display help for command
 ```
