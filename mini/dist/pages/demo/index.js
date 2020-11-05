@@ -6,7 +6,7 @@ Page({
     pixelRatio: 'unknown',
   },
   goBack() {
-    ns.navigateBack({
+    ma.navigateBack({
       delta: 1,
       success() {
         console.log('success navigateTo demo page')
@@ -14,7 +14,7 @@ Page({
     })
   },
   getSystemInfo() {
-    ns.getSystemInfo({
+    ma.getSystemInfo({
       success(info) {
         this.setData(info)
       },
@@ -24,6 +24,6 @@ Page({
     })
   },
   setPageTitle() {
-    ns.setNavigationBarTitle(`you changed title ${Math.random().toFixed(3)}`)
+    ma.setNavigationBarTitle(`title changed: ${Math.random().toFixed(3)}`)
   },
 })

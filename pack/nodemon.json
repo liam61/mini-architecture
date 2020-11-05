@@ -1,7 +1,13 @@
 {
-  "ext": "js",
-  "ignore": [
-    "_temp"
+  "exec": "ts-node index.ts",
+  "watch": [
+    "src",
+    "./index.ts"
   ],
-  "delay": "600"
+  "env": {
+    "MINI_ENV": "dev"
+  },
+  "ignore": [],
+  "ext": "ts",
+  "delay": "500"
 }

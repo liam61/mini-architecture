@@ -1,0 +1,15 @@
+{
+  "watch": [
+    "server",
+    "./index.client.ts",
+    "./index.launch.ts"
+  ],
+  "env": {
+    "DEVTOOLS_ENV": "develop"
+  },
+  "events": {
+    "restart": ""
+  },
+  "ext": "ts",
+  "delay": "400"
+}

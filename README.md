@@ -14,6 +14,8 @@ a full mini app architecture demo
 
 - [cli](https://github.com/lawler61/mini-architecture/tree/master/cli) 🔥mini-architecture cli
 
+- [devtools](https://github.com/lawler61/mini-architecture/tree/master/devtools) 🔥 a tool for developing, like [weixin devtools](https://developers.weixin.qq.com/miniprogram/dev/devtools/devtools.html)
+
 ## Start
 
 ### 1. required environment
@@ -30,13 +32,43 @@ a full mini app architecture demo
 
 1. `yarn global add @mini-architecture/cli`
 
-2. `ma-cli -m build -e @mini --no-zip`
+2. `ma-cli pack -e @mini -w`
 
 before you run, don't forget to connect mobile to you computer. It may be slow for the first time while you running
 
-see [@mini-architecture/cli](https://github.com/lawler61/mini-architecture/tree/master/cli) for more details
+find more at [@mini-architecture/cli](https://github.com/lawler61/mini-architecture/tree/master/cli)
 
-### 3. dev
+### 3. mini example
+
+```js
+// index.html
+<view>
+  <button bindtap="bindEvent" class="btn">click me</button>
+  <view class="{{bindCls}}">bind-data: {{hello}}</view>
+  <button bindtap="goNext">go next page</button>
+</view>
+
+// index.js
+Page({
+  data: {
+    hello: 'hello world',
+    bindCls: 'view',
+  },
+  bindEvent() {
+    this.setData({ hello: 'hello again' })
+  },
+  goNext() {
+    ma.navigateTo({
+      url: 'pages/demo/index',
+      success() {},
+    })
+  },
+})
+```
+
+find more at [@mini-architecture/framework](https://github.com/lawler61/mini-architecture/tree/master/framework)
+
+### 4. dev
 
 1. `git clone git@github.com:lawler61/mini-architecture.git && cd mini-architecture`
 
@@ -46,7 +78,7 @@ see [@mini-architecture/cli](https://github.com/lawler61/mini-architecture/tree/
 
 4. `yarn dev / build` for dev or build
 
-### 4. Quick install
+### 5. quick install
 
 install form [built apk](./mini-demo.apk)
 
@@ -76,9 +108,13 @@ install form [built apk](./mini-demo.apk)
 
 - [ ] devtools
 
+- [ ] worker service in devtools
+
+- [ ] maybe custom components
+
 - [ ] v8 thread worker
 
-- [ ] v8 thread debug tool
+- [ ] v8 thread debug tool with Android
 
 - [ ] all view page build in one html
 
@@ -91,3 +127,9 @@ install form [built apk](./mini-demo.apk)
 3. [EMP — 基于 Vue.js 的小程序引擎底层框架实现](https://zhaomenghuan.js.org/blog/what-is-emp.html)
 
 4. [Polymer](https://polymer-library.polymer-project.org/3.0/docs/about_30)
+
+5. [Chrome DevTools Frontend 运行原理浅析](https://zhaomenghuan.js.org/blog/chrome-devtools-frontend-analysis-of-principle.html)
+
+6. [Getting Started with Headless Chrome](https://developers.google.com/web/updates/2017/04/headless-chrome)
+
+7. [Chrome DevTools Protocol](https://chromedevtools.github.io/devtools-protocol/)

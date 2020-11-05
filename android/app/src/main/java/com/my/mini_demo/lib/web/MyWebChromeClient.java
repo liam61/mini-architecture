@@ -1,7 +1,6 @@
 package com.my.mini_demo.lib.web;
 
 import android.text.TextUtils;
-import android.util.Log;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;

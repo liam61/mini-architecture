@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.Pair;
 
 import com.my.mini_demo.lib.api.module.Page;
 import com.my.mini_demo.lib.api.module.SystemInfo;
@@ -29,8 +28,7 @@ import java.util.Map;
 public class ApiManager {
 
     private Activity mActivity;
-    private final Map<String, IApi> APIS = new HashMap<>();
-    private final Map<Event, Pair<IApi, ICallback>> CALLING_APIS = new HashMap<>();
+    private final Map<String, IApi> apis = new HashMap<>();
 
     public ApiManager(Activity activity, OnEventListener listener, AppConfig appConfig) {
         mActivity = activity;
@@ -42,7 +40,7 @@ public class ApiManager {
      * Activity onCreate 时调用
      */
     public void onCreate() {
-        for (Map.Entry<String, IApi> entry : APIS.entrySet()) {
+        for (Map.Entry<String, IApi> entry : apis.entrySet()) {
             IApi api = entry.getValue();
             if (api != null) {
                 api.onCreate();
@@ -54,20 +52,19 @@ public class ApiManager {
      * Activity onDestroy 时调用
      */
     public void onDestroy() {
-        for (Map.Entry<String, IApi> entry : APIS.entrySet()) {
+        for (Map.Entry<String, IApi> entry : apis.entrySet()) {
             IApi api = entry.getValue();
             if (api != null) {
                 api.onDestroy();
             }
         }
 
-        APIS.clear();
-        CALLING_APIS.clear();
+        apis.clear();
     }
 
     public void invokeApi(Event event, IBridge bridge) {
         ICallback callback = new ApiCallback(event, bridge);
-        IApi api = APIS.get(event.getName());
+        IApi api = apis.get(event.getName());
 
         if (api == null) {
             // 看 extendsApi 中是否存在
@@ -79,7 +76,6 @@ public class ApiManager {
         }
 
         if (api != null) {
-            CALLING_APIS.put(event, Pair.create(api, callback));
             api.invoke(event.getName(), event.getParam(), callback);
         }
     }
@@ -95,7 +91,7 @@ public class ApiManager {
             String[] apiNames = api.apis();
             for (String name : apiNames) {
                 if (!TextUtils.isEmpty(name)) {
-                    APIS.put(name, api);
+                    apis.put(name, api);
                 }
             }
         }
@@ -118,7 +114,6 @@ public class ApiManager {
             String res = assembleResult(result, event.getName(), "ok");
             Log.d("MiniDemo", String.format("call api success! event=%s, result=%s",
                     event.getName(), res));
-            CALLING_APIS.remove(event);
 
             if (bridge != null) {
                 bridge.callback(event.getCallbackId(), res);
@@ -129,7 +124,6 @@ public class ApiManager {
         public void onFail() {
             Log.d("MiniDemo", String.format("call api fail! event=%s",
                     event.getName()));
-            CALLING_APIS.remove(event);
 
             if (bridge != null) {
                 bridge.callback(event.getCallbackId(),
@@ -139,8 +133,6 @@ public class ApiManager {
 
         @Override
         public void onCancel() {
-            CALLING_APIS.remove(event);
-
             if (bridge != null) {
                 bridge.callback(event.getCallbackId(),
                         assembleResult(null, event.getName(), "cancel"));
@@ -164,7 +156,7 @@ public class ApiManager {
             }
 
             try {
-                data.put("status", event + ", " + status);
+                data.put("status", event + ":" + status);
                 data.put("success", status.equals("ok"));
             } catch (JSONException e) {
                 e.printStackTrace();

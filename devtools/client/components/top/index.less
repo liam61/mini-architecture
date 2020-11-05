@@ -1,0 +1,49 @@
+.ma-top {
+  height: 20px;
+  line-height: 20px;
+  margin: 1px 0 2px;
+  text-align: center;
+  font-size: 14px;
+
+  &-name {
+    position: absolute;
+    display: inline-flex;
+    left: 10px;
+
+    .wifi {
+      width: 15px;
+      margin-right: 4px;
+    }
+  }
+
+  &-battery {
+    position: absolute;
+    display: inline-flex;
+    right: 10px;
+
+
+    .battery {
+      width: 22px;
+      margin-left: 4px;
+
+      &:before {
+        content: '';
+        width: 12px;
+        height: 6px;
+        transform: translateX(-1px);
+        background-color: black;
+      }
+
+      &:after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 0;
+        width: 18px;
+        height: 8px;
+        border: 1px solid;
+        border-radius: 2px;
+      }
+    }
+  }
+}

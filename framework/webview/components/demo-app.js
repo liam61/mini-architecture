@@ -18,17 +18,17 @@ class DemoApp extends PolymerElement {
         }
       </style>
       <h2>Hello {{ title}}!</h2>
-      <my-view
+      <ma-view
         class$="h-{{ cls}}"
         test="a{{cls}}"
         titlea$=" b{{cls }}"
         style="width: 200px; margin: 0 auto;"
       >
         {{title}}
-        <my-button bindtap="[[handleClick]]">click me</my-button>
-      </my-view>
+        <ma-button bindtap="[[handleClick]]">click me</ma-button>
+      </ma-view>
     `
-    // <my-button on-click="handleClick">click me</my-button>
+    // <ma-button on-click="handleClick">click me</ma-button>
   }
 
   static get properties() {

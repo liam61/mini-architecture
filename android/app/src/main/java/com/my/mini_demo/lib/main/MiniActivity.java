@@ -16,7 +16,6 @@ import com.my.mini_demo.lib.service.AppService;
 import com.my.mini_demo.lib.service.AppService2;
 import com.my.mini_demo.lib.utils.FileUtil;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 public class MiniActivity extends AppCompatActivity implements OnEventListener {
@@ -27,6 +26,7 @@ public class MiniActivity extends AppCompatActivity implements OnEventListener {
     private ConstraintLayout mLayout;
     private AppConfig mAppConfig;
     private ApiManager mApiManager;
+//    private AppService mAppService; // 改 loadPage，onDestroy
     private AppService2 mAppService;
     private PageManager mPageManager;
 
@@ -64,6 +64,10 @@ public class MiniActivity extends AppCompatActivity implements OnEventListener {
     }
 
     private void loadPage() {
+//        mAppService = new AppService(this, this, mAppConfig, mApiManager);
+//        mLayout.addView(mAppService, new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT,
+//                 ConstraintLayout.LayoutParams.MATCH_PARENT));
+
         mPageManager = new PageManager(this, this, mAppConfig);
         mLayout.addView(mPageManager.getContainer(), new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT,
                 ConstraintLayout.LayoutParams.MATCH_PARENT));
@@ -71,22 +75,19 @@ public class MiniActivity extends AppCompatActivity implements OnEventListener {
         mAppService = new AppService2(this, this, mAppConfig, mApiManager);
     }
 
+    // service publish serviceReady
     @Override
     public void onServiceReady() {
         mPageManager.launchHomePage(mAppConfig.getRootPath());
     }
 
     @Override
-    public void notifyPageSubscribers(String event, String params, int[] viewIds) {
-        Log.d("MiniDemo", String.format("notifyPageSubscribers %s, %s, %s",
-                event, params, Arrays.toString(viewIds)));
-        mPageManager.subscribeHandler(event, params, viewIds);
+    public void notifyPageSubscribers(String event, String params, int viewId) {
+        mPageManager.subscribeHandler(event, params, viewId);
     }
 
     @Override
     public void notifyServiceSubscribers(String event, String params, int viewId) {
-        Log.d("MiniDemo", String.format("notifyServiceSubscribers %s, %s, %s",
-                event, params, viewId));
         mAppService.subscribeHandler(event, params, viewId);
     }
 

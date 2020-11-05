@@ -21,8 +21,16 @@ const serviceApi = {
     }
     invokeRouteMethod('navigateBack', params)
   },
-  redirectTo(params) {},
-  reLaunch(params) {},
+  redirectTo(params) {
+    if (params.url) {
+      invokeRouteMethod('redirectTo', params)
+    }
+  },
+  reLaunch(params) {
+    if (params.url) {
+      invokeRouteMethod('reLaunch', params)
+    }
+  },
   setNavigationBarTitle(title = '') {
     invokeRouteMethod('setNavigationBarTitle', { title })
   },
@@ -31,7 +39,7 @@ const serviceApi = {
   },
   alert(message) {
     const instance = serviceApi.getCurPageInstance()
-    jsBridge.publish('nativeAlert', { message }, [instance.webviewId])
+    jsBridge.publish('nativeAlert', { message }, instance.webviewId)
   },
   openLink(url) {
     invokeRouteMethod('openLink', { url })
@@ -39,7 +47,7 @@ const serviceApi = {
   onAppRoute(callback = noop) {
     appRouteCallbacks.push(callback)
   },
-  setAppData(params, webviewIds = []) {
+  setAppData(params, webviewId) {
     const { data, callback } = params || {}
     callbackMap[++callbackIndex] = callback
 
@@ -49,7 +57,7 @@ const serviceApi = {
         data,
         callbackId: callbackIndex,
       },
-      webviewIds,
+      webviewId,
     )
   },
 }
@@ -57,7 +65,7 @@ const serviceApi = {
 function invokeRouteMethod(eventName, params) {
   const { success = noop, fail = noop, complete = noop, ...restParams } = params || {}
 
-  jsBridge.invoke(eventName, restParams, (res) => {
+  jsBridge.invoke(eventName, restParams, res => {
     try {
       typeof res === 'string' && (res = JSON.parse(res))
     } catch {
@@ -74,4 +82,4 @@ function invokeRouteMethod(eventName, params) {
 
 export { serviceApi }
 
-window.ns = serviceApi
+window.ma = serviceApi

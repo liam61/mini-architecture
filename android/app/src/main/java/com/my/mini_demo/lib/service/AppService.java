@@ -10,7 +10,6 @@ import com.my.mini_demo.lib.config.AppConfig;
 import com.my.mini_demo.lib.interfaces.IBridge;
 import com.my.mini_demo.lib.interfaces.OnEventListener;
 import com.my.mini_demo.lib.utils.Event;
-import com.my.mini_demo.lib.utils.JsonUtil;
 import com.my.mini_demo.lib.web.MyWebView;
 
 import java.io.File;
@@ -38,13 +37,16 @@ public class AppService extends LinearLayout implements IBridge {
     }
 
     public void subscribeHandler(String event, String params, int viewId) {
+        Log.d("MiniDemo", String.format("service subscribeHandler is called! event=%s, params=%s, called by viewId=%s",
+                event, params, viewId));
+        
         String jsFun = String.format("javascript:subscribeHandler('%s', %s, %s)",
                 event, params, viewId);
         mServiceWebView.loadUrl(jsFun);
     }
 
     @Override
-    public void publish(String event, String params, String viewIds) {
+    public void publish(String event, String params, String viewId) {
         if (mListener == null) {
             return;
         }
@@ -55,7 +57,7 @@ public class AppService extends LinearLayout implements IBridge {
             mListener.onServiceReady();
         } else {
             // custom_event_appDataChange | custom_event_nativeAlert
-            mListener.notifyPageSubscribers(event, params, JsonUtil.parse2IntArray(viewIds));
+            mListener.notifyPageSubscribers(event, params, Integer.parseInt(viewId));
         }
     }
 
@@ -67,7 +69,7 @@ public class AppService extends LinearLayout implements IBridge {
 
     @Override
     public void callback(String callbackId, String result) {
-        mServiceWebView.loadUrl(String.format("javascript:jsBridge.callbackHandler(%s, %s)",
+        mServiceWebView.loadUrl(String.format("javascript:callbackHandler(%s, %s)",
                 callbackId, result));
     }
 

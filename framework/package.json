@@ -1,22 +1,25 @@
 {
   "name": "@mini-architecture/framework",
-  "version": "0.0.4-beta2",
+  "version": "0.0.5-beta2",
   "description": "",
   "scripts": {
     "dev": "rm -rf dist && rollup -cw",
-    "build": "rm -rf dist && rm -rf dev && rollup -c",
+    "build": "rm -rf dist && rollup -c",
     "web": "polymer serve --npm"
   },
   "author": "lawler61",
   "license": "ISC",
   "files": [
     "dist",
-    "dev",
-    "template"
+    "dev"
   ],
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lawler61/mini-architecture.git"
   },
   "dependencies": {
     "@polymer/polymer": "^3.4.1",

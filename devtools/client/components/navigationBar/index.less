@@ -1,0 +1,85 @@
+.ma-header {
+  position: relative;
+  height: 40px;
+  line-height: 40px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+
+  &-back {
+    position: absolute;
+    padding: 0 10px;
+
+    .back {
+      width: 10px;
+      vertical-align: -3px;
+    }
+  }
+
+  &-title {
+    text-align: center;
+    font-weight: bold;
+    z-index: -1;
+  }
+
+  &-capsule {
+    position: absolute;
+    display: flex;
+    top: 6px;
+    right: 10px;
+    width: 85px;
+    height: 28px;
+    border-radius: 30px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+
+    .more {
+      position: relative;
+      flex: 1;
+
+      &:after {
+        content: '';
+        position: absolute;
+        right: 0;
+        width: 1px;
+        height: 18px;
+        background-color: rgba(0, 0, 0, 0.2);
+      }
+
+      &-dot {
+        width: 0;
+        height: 0;
+        border: 2px solid;
+        border-radius: 50%;
+
+        &:not(:last-child) {
+          margin-right: 2px;
+        }
+
+        &.large {
+          border-width: 3px;
+        }
+      }
+    }
+
+    .exit {
+      flex: 1;
+
+      &:before {
+        content: '';
+        width: 0;
+        height: 0;
+        border: 3px solid;
+        border-radius: 50%;
+      }
+
+      &:after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 0;
+        width: 10px;
+        height: 10px;
+        border: 2px solid;
+        border-radius: 50%;
+      }
+    }
+  }
+}

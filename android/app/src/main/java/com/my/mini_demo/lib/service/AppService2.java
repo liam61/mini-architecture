@@ -13,7 +13,6 @@ import com.my.mini_demo.lib.interfaces.IBridge;
 import com.my.mini_demo.lib.interfaces.OnEventListener;
 import com.my.mini_demo.lib.utils.Event;
 import com.my.mini_demo.lib.utils.FileUtil;
-import com.my.mini_demo.lib.utils.JsonUtil;
 
 import java.io.File;
 
@@ -57,6 +56,9 @@ public class AppService2 implements IBridge, JavaCallback {
     }
 
     public void subscribeHandler(String event, String params, int viewId) {
+        Log.d("MiniDemo", String.format("service subscribeHandler is called by native! event=%s, params=%s, viewId=%s",
+                event, params, viewId));
+
         V8Array arguments = new V8Array(mServiceWorker);
         arguments.push(event);
         arguments.push(params);
@@ -72,7 +74,7 @@ public class AppService2 implements IBridge, JavaCallback {
      * 不会再走 JavascriptInterface 中调用
      */
     @Override
-    public void publish(String event, String params, String viewIds) {
+    public void publish(String event, String params, String viewId) {
         if (mListener == null) {
             return;
         }
@@ -83,7 +85,7 @@ public class AppService2 implements IBridge, JavaCallback {
             mListener.onServiceReady();
         } else {
             // custom_event_appDataChange | custom_event_nativeAlert
-            mListener.notifyPageSubscribers(event, params, JsonUtil.parse2IntArray(viewIds));
+            mListener.notifyPageSubscribers(event, params, Integer.parseInt(viewId));
         }
     }
 
@@ -102,7 +104,7 @@ public class AppService2 implements IBridge, JavaCallback {
     }
 
     public void onDestroy() {
-        mServiceWorker.release(true);
+        mServiceWorker.release(false);
     }
 
     @Override

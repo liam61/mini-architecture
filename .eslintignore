@@ -1,4 +1,8 @@
 framework/common/insert.js
 framework/dist
+
 pack/_temp
 pack/dist
+
+devtools/dev
+devtools/dist

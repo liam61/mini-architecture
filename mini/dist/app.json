@@ -4,7 +4,7 @@
     "pages/demo/index"
   ],
   "window": {
-    "navigationBarTitleText": "default Title",
+    "navigationBarTitleText": "Default Title",
     "pages": {
       "pages/index/index": "Index Page",
       "pages/demo/index": "Demo Page"

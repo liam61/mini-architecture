@@ -1,6 +1,6 @@
 {
   "name": "@mini-architecture/mini",
-  "version": "0.0.3-beta1",
+  "version": "0.0.4-beta1",
   "description": "",
   "author": "lawler61",
   "license": "ISC",
@@ -10,5 +10,9 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lawler61/mini-architecture.git"
   }
 }

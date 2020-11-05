@@ -2,7 +2,7 @@ package com.my.mini_demo.lib.api.module;
 
 import android.content.Context;
 
-import com.my.mini_demo.lib.api.BaseApi;
+import com.my.mini_demo.lib.interfaces.IApi;
 import com.my.mini_demo.lib.interfaces.ICallback;
 import com.my.mini_demo.lib.interfaces.OnEventListener;
 
@@ -11,12 +11,11 @@ import org.json.JSONObject;
 /**
  * Page api（模拟原生 api）
  */
-public class Page extends BaseApi {
+public class Page implements IApi {
 
     private OnEventListener mListener;
 
     public Page(Context context, OnEventListener listener) {
-        super(context);
         mListener = listener;
     }
 
@@ -39,5 +38,15 @@ public class Page extends BaseApi {
         } else {
             callback.onFail();
         }
+    }
+
+    @Override
+    public void onCreate() {
+
+    }
+
+    @Override
+    public void onDestroy() {
+
     }
 }

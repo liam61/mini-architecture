@@ -1,13 +1,14 @@
 {
   "name": "@mini-architecture/home",
-  "version": "0.0.4-beta1",
-  "description": "mini-architecture home page",
+  "version": "0.0.4-beta2",
+  "description": "",
   "scripts": {
     "bootstrap": "yarn && node index.js --cmd install",
     "dev": "node index.js --cmd dev",
     "build": "node index.js --cmd build",
     "run-framework": "cross-env BOOT_ENV=root yarn --cwd ./framework",
     "run-pack": "yarn --cwd ./pack",
+    "runa-devtools": "yarn --cwd ./devtools",
     "i-cli": "yarn --cwd ./cli install",
     "lint": "eslint && prettier --write"
   },
@@ -22,7 +23,6 @@
     "type": "git",
     "url": "git+https://github.com/lawler61/mini-architecture.git"
   },
-  "homepage": "https://github.com/lawler61/mini-architecture#readme",
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
@@ -38,20 +38,28 @@
     "mini/**/*.js": [
       "yarn lint"
     ],
+    "devtools/**/*.{ts,js}": [
+      "yarn lint"
+    ],
     "*.{css,html}": [
       "prettier --write"
     ]
   },
   "devDependencies": {
+    "@types/node": "^14.14.6",
+    "@typescript-eslint/eslint-plugin": "^4.6.1",
+    "@typescript-eslint/parser": "^4.6.1",
     "commander": "^5.1.0",
     "cross-env": "^7.0.2",
     "eslint": "^7.9.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.21.4",
     "eslint-plugin-standard": "^4.0.1",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.11",
     "npm-run-all": "^4.1.5",
-    "prettier": "^2.0.5"
+    "prettier": "^2.0.5",
+    "typescript": "^4.0.3"
   }
 }

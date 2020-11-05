@@ -2,28 +2,40 @@
 
 want quick start? try me
 
-## Usage
+## Install
 
 ```bash
 yarn global add @mini-architecture/cli
 
 ma-cli -h
-
-ma-cli -m build -e @mini --no-zip
 ```
 
-## Parameters
+## Commands
+
+### ma-cli pack -h
 
 ```bash
-Usage: ma-cli [options]
+Usage: ma-cli pack [options]
 
 Options:
-  -V, --version           output the version number
-  -m, --mode [type]       (required) "dev" / "build"
-  -e, --entry [path]      (required) mini project path. Pass "@mini" to run example miniapp
-  -f, --framework [path]  mini framework path (default: "@mini-architecture/framework")
-  -i, --install [path]    android path. Use "-i" to install miniapp in example android
-  -o, --output [path]     output path (default: "~/.ma-dev" or "{install}/app/src/main/assets" when given `install` parameter)
-  --no-zip                not zip outputs
+  -e, --entry [path]      [required] miniapp path. Pass "@mini" to run example miniapp
+  -m, --mode [type]       pack mode: "dev" / "build" (default: "build")
+  -p, --platform [path]   running on: "mobile" / "devtools" (default: "mobile")
+  -f, --framework [path]  mini framework path
+  -i, --install [path]    android path. Pass "-i" as bool to install with builtin android
+  -o, --output [path]     output path (default: "~/.ma-dev" or "{install}/app/src/main/assets" when given `install` option)
+  -w, --watch             watch files (default: process.env.NODE_ENV === "development")
   -h, --help              display help for command
+```
+
+### ma-cli devtools -h
+
+```bash
+Usage: ma-cli devtools [options]
+
+Options:
+  -e, --entry [path]   [required] mini project path. Pass "@mini" to run example miniapp
+  -m, --mode [type]    pack mode: "dev" / "build" (default: "build")
+  -o, --output [path]  output path (default: "~/.ma-dev" or "{install}/app/src/main/assets" when given `install` parameter)
+  -h, --help           display help for command
 ```

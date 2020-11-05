@@ -93,15 +93,11 @@ public class PageManager {
         return true;
     }
 
-    public void subscribeHandler(String event, String params, int[] viewIds) {
-        if (viewIds == null || viewIds.length == 0) {
-            return;
-        }
-
+    public void subscribeHandler(String event, String params, int viewId) {
         int count = getPageCount();
         for (int i = 0; i < count; i++) {
             MiniPage page = (MiniPage) mContainer.getChildAt(i);
-            page.subscribeHandler(event, params, viewIds);
+            page.subscribeHandler(event, params, viewId);
         }
     }
 
@@ -129,7 +125,7 @@ public class PageManager {
         int count = getPageCount();
 
         if (delta <= 0 || delta >= count) {
-            Log.e("MiniDemo", "removePages by delta " + delta + " failed");
+            Log.e("MiniDemo", "removePages by delta " + delta + " stopped, current page count " + count);
             return false;
         }
 

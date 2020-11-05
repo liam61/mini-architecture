@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html" />
+    <title>Service</title>
+    <%- __PLATFORM__ == 'devtools' ? '<script>window.platform = "devtools";</script>' : '' %>
+    <script src="../../framework/service.js"></script>
+    <script src="app-service.js"></script>
+  </head>
+  <body>
+    <script>
+      if (typeof ma === 'object') {
+        ma.publish('serviceReady', { config: <%- __CONFIG__ %> })
+      }
+    </script>
+  </body>
+</html>

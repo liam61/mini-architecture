@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <title>Page</title>
+    <style>
+      <%- __APP_CSS__ %>
+    </style>
+    <style>
+      <%- __CSS__ %>
+    </style>
+    <%- __PLATFORM__ == 'devtools' ? '<script>window.platform = "devtools";</script>' : '' %>
+    <script src="../../../../framework/webview.js"></script>
+  </head>
+  <body>
+    <dom-bind id="_binder">
+      <template>
+        <ma-view id="app"><%- __HTML__ %></ma-view>
+      </template>
+    </dom-bind>
+    <script>
+      window._binder = document.getElementById("_binder");
+      <%- __JS__ %>
+    </script>
+  </body>
+</html>
