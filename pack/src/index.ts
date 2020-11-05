@@ -18,9 +18,8 @@ export default async function pack() {
   } catch (err) {
     if (isDev) {
       throw err
-    } else {
-      console.log(err)
     }
+    console.log(err)
   }
 }
 

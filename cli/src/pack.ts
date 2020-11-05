@@ -1,5 +1,5 @@
 import chalk from 'chalk'
-import pack from '@mini-architecture/pack'
+import pack from '../../pack'
 import installApp from './install'
 
 const isDev = process.env.MINI_ENV !== 'build'

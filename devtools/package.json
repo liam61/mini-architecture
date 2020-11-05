@@ -5,8 +5,8 @@
   "main": "dist/server/launch.js",
   "scripts": {
     "pack:mini": "rm -rf dev/mini && ../cli/bin/index.js pack -e @mini -m dev -p devtools -o dev/mini",
-    "dev:client": "yarn pack:mini && rm -rf dev/client && scripts/dev.js",
-    "dev:launcher": "cross-env DEVTOOLS_ENV=develop ts-node index.launch.ts",
+    "dev:client": "yarn pack:mini && rm -rf dev/client && scripts/client.ts",
+    "dev:launch": "scripts/launch.ts",
     "build:client": "parcel build client/index.html -d dist/client --no-cache",
     "build:server": "rm -rf dist && tsc -p tsconfig.build.json",
     "build": "tsc -p . && yarn build:launcher && yarn build:client"
@@ -42,7 +42,6 @@
     "@types/react-modal": "^3.10.6",
     "babel-plugin-module-resolver": "^4.0.0",
     "babel-preset-minify": "^0.5.1",
-    "cross-env": "^7.0.2",
     "less": "^3.12.2",
     "nodemon": "^2.0.4",
     "open": "^7.3.0",

@@ -72,6 +72,7 @@ export default class WebView {
       },
       subscribeHandler(event: string, params: string, viewId: number) {
         const { appId, userId } = window.appConfig
+        // native -> view
         window[that.name].postMessage(
           {
             args: [event, params, viewId],

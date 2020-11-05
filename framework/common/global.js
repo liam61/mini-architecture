@@ -31,6 +31,9 @@ if (_global.platform === 'devtools') {
     const { appId, userId, viewId, args = [], type } = data
 
     if (appId !== config.appId || userId !== config.userId) return
+    if (!_global[type]) {
+      throw new Error(`can not find ${type} of global in mini SDK`)
+    }
     _global[type](...args)
   })
 }

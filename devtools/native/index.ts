@@ -8,6 +8,7 @@ window.addEventListener('containerReady', (ev: any) => {
   const userId = 'lawler61'
   const appPath = `http://${host}:${port}${path}${appId}/`
 
+  // view -> native
   window.addEventListener('message', (ev: any) => {
     const { data, origin } = ev
     const { viewId, args = [], type } = data
@@ -22,7 +23,12 @@ window.addEventListener('containerReady', (ev: any) => {
       alert(p.message)
     } else {
       const jsCore = MiniActivity.getContext().getJsCoreById(viewId)
-      jsCore && jsCore[type](event, params, rest)
+      if (!jsCore || !jsCore[type]) {
+        throw new Error(
+          `can not find ${jsCore ? `${type} of jsCore` : 'jsCore'} in devtools, viewId: ${viewId}`,
+        )
+      }
+      jsCore[type](event, params, rest)
     }
   })
 

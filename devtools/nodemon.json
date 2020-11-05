@@ -1,9 +1,12 @@
 {
-  "exec": "ts-node index.client.ts",
   "watch": [
     "server",
-    "./index.client.ts"
+    "./index.client.ts",
+    "./index.launch.ts"
   ],
+  "env": {
+    "DEVTOOLS_ENV": "develop"
+  },
   "events": {
     "restart": ""
   },
