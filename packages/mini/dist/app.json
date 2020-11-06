@@ -1,0 +1,10 @@
+{
+  "pages": ["pages/index/index", "pages/demo/index"],
+  "window": {
+    "navigationBarTitleText": "Default Title",
+    "pages": {
+      "pages/index/index": "Index Page",
+      "pages/demo/index": "Demo Page"
+    }
+  }
+}

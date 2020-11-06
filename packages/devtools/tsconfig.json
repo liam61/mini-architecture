@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    /* tsconfig.paths check only */
+    "paths": {
+      "@/*": ["./*"],
+      "@comp/*": ["./client/components/*"],
+      "comp/*": ["./client/components/*"]
+    }
+  },
+  "include": ["server"]
+}

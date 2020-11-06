@@ -1,11 +1,10 @@
+.DS_Store
+
 *.iml
 .gradle
 local.properties
 .idea
-.DS_Store
-build
-android/app/build
-android/app/src/main/assets/*
+app/src/main/assets
 captures
 .externalNativeBuild
 .cxx
@@ -18,17 +17,15 @@ node_modules
 npm-debug.log
 yarn-error.log
 package-lock.json
+yarn.lock
 .npmrc
 
-framework/dist
+build
+dist
+!packages/mini/dist
 
-pack/dist
-pack/_temp
-pack/_dev.js
+packages/pack/_temp
+packages/pack/_dev.js
 
-devtools/dist
-devtools/dev
-devtools/.cache
-devtools/frontend
-
-cli/dist
+packages/devtools/dev
+packages/devtools/frontend

@@ -3,63 +3,80 @@
   "version": "0.0.4-beta2",
   "description": "",
   "scripts": {
-    "bootstrap": "yarn && node index.js --cmd install",
-    "dev": "node index.js --cmd dev",
-    "build": "node index.js --cmd build",
-    "run-framework": "cross-env BOOT_ENV=root yarn --cwd ./framework",
-    "run-pack": "yarn --cwd ./pack",
-    "runa-devtools": "yarn --cwd ./devtools",
-    "i-cli": "yarn --cwd ./cli install",
+    "bootstrap": "",
+    "build": "",
+    "release": "",
+    "framework": "cross-env BOOT_ENV=root yarn --cwd ./framework",
     "lint": "eslint && prettier --write"
   },
   "author": "lawler61",
   "license": "ISC",
   "files": [],
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org"
-  },
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lawler61/mini-architecture.git"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-publish": "yarn build"
     }
   },
   "lint-staged": {
-    "framework/**/*.js": [
+    "packages/cli/src/**/*.ts": [
       "yarn lint"
     ],
-    "pack/**/*.js": [
+    "packages/devtools/**/*.{js,ts,tsx}": [
       "yarn lint"
     ],
-    "mini/**/*.js": [
+    "packages/framework/**/*.{js,ts}": [
       "yarn lint"
     ],
-    "devtools/**/*.{ts,js}": [
+    "packages/mini/**/*.js": [
       "yarn lint"
     ],
-    "*.{css,html}": [
+    "packages/pack/src/*.ts": [
+      "yarn lint"
+    ],
+    "packages/**/*.{css,html,json}": [
       "prettier --write"
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.11.6",
+    "@babel/preset-env": "^7.11.5",
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
+    "@commitlint/config-lerna-scopes": "^11.0.0",
+    "@types/express": "^4.17.8",
     "@types/node": "^14.14.6",
+    "@types/nodemon": "^1.19.0",
+    "@types/parcel-bundler": "^1.12.1",
+    "@types/react-modal": "^3.10.6",
     "@typescript-eslint/eslint-plugin": "^4.6.1",
     "@typescript-eslint/parser": "^4.6.1",
-    "commander": "^5.1.0",
+    "babel-preset-minify": "^0.5.1",
+    "chalk": "^4.1.0",
+    "commander": "^6.1.0",
     "cross-env": "^7.0.2",
     "eslint": "^7.9.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.21.4",
     "eslint-plugin-standard": "^4.0.1",
+    "fs-extra": "^9.0.1",
     "husky": "^4.2.5",
+    "lerna": "^3.22.1",
     "lint-staged": "^10.2.11",
+    "nodemon": "^2.0.4",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.0.5",
+    "ts-node": "^9.0.0",
     "typescript": "^4.0.3"
   }
 }

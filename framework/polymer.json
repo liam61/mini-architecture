@@ -1,9 +1,0 @@
-{
-  "npm": true,
-  "lint": {
-    "rules": [
-      "polymer-3"
-    ]
-  },
-  "entrypoint": "web.html"
-}

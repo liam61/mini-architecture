@@ -1,8 +1,10 @@
-framework/common/insert.js
-framework/dist
+packages/cli/dist
 
-pack/_temp
-pack/dist
+packages/devtools/dev
+packages/devtools/dist
 
-devtools/dev
-devtools/dist
+packages/framework/common/insert.js
+packages/framework/dist
+
+packages/pack/_temp
+packages/pack/dist
