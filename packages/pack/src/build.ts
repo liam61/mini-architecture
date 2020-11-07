@@ -40,7 +40,7 @@ function transformView() {
   const { miniPath, output, miniConfig } = transformConfig
   const viewTpl = loadTemplate('view')
   const appCssPath = path.join(miniPath, 'app.css')
-  let appCss = fs.existsSync(appCssPath) ? fs.readFileSync(appCssPath, 'utf-8') : ''
+  const appCss = fs.existsSync(appCssPath) ? fs.readFileSync(appCssPath, 'utf-8') : ''
 
   miniConfig.pages.forEach((page: string) => {
     const { code, js } = parser({ fullPath: path.join(miniPath, page + '.html'), page })
@@ -76,8 +76,9 @@ function transformService() {
   const frameworkJs = fs.readFileSync(path.join(frameworkPath, 'service.js'), 'utf-8')
 
   const sourceArr = jsFiles.map(file => {
+    const res = parser({ fullPath: file })
+
     if (file.includes('app.js')) {
-      const res = parser({ fullPath: file })
       return Object.assign(res, { path: '' })
     }
     // NOTE: 其他 js 懒得处理了
@@ -87,10 +88,7 @@ function transformService() {
       return path
     })
 
-    if (path) {
-      const res = parser({ fullPath: file })
-      return Object.assign(res, { path })
-    }
+    return Object.assign(res, { path })
   })
 
   const jsCode = concatFiles(sourceArr)

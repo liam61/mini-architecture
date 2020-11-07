@@ -36,7 +36,7 @@ async function packFramework() {
     throw new Error(process.env.MINI_ENTRY ? 'invalid framework path...' : 'first pack...')
   }
 
-  let config = null
+  let config: any = null
   if (isZip) {
     // move from 'framework/_framework.zip' to 'android/app/src/main/assets/framework.zip'
     const fromPath = await zipFiles(frameworkPath, name)
@@ -66,7 +66,7 @@ async function packMini() {
   })
   copyOthers(miniPath, temp)
 
-  let config = null
+  let config: any = null
   if (isZip) {
     // move from 'pack/_miniDemo.zip to 'android/app/src/main/assets/miniDemo.zip'
     const fromPath = await zipFiles(temp, name)

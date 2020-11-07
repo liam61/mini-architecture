@@ -1,9 +1,9 @@
 export class Deferred<T> {
   promise: Promise<T>
-  resolve: (res: any) => void
-  reject: (err: any) => void
+  resolve!: ((res: any) => void) | null
+  reject!: ((err: any) => void) | null
   private onComplete: () => void
-  private timer: NodeJS.Timeout
+  private timer!: NodeJS.Timeout
 
   constructor() {
     this.promise = new Promise((resolve, reject) => {
@@ -18,7 +18,7 @@ export class Deferred<T> {
       }
 
       this.timer = setTimeout(() => {
-        this.reject('[friendlyError]: get frame timeout')
+        this.reject!('[friendlyError]: get frame timeout')
       }, 3 * 1000)
     })
 

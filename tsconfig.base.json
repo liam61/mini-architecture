@@ -8,7 +8,6 @@
       "dom",
       "esnext"
     ],
-    "jsx": "react",
     // "noEmit": true,
     // "allowJs": true,                          /* Allow javascript files to be compiled. */
     "strict": true,
@@ -20,7 +19,6 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "removeComments": true,
-    "outDir": "dist",
     "sourceMap": false,
     "esModuleInterop": true,
     "experimentalDecorators": true,

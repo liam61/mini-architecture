@@ -22,7 +22,7 @@ export interface ParseResult {
 }
 
 export default function parseFile(params: ParserConfig) {
-  const { fullPath, page } = params
+  const { fullPath, page = '' } = params
   const output = fs.readFileSync(fullPath, 'utf-8')
   const isJsx = /\.html$/.test(fullPath)
   let result: ParseResult | null = null

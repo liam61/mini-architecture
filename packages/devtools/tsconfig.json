@@ -1,12 +1,15 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    /* tsconfig.paths check only */
+    "jsx": "react",
+    // "jsxFactory": "_l",
+    // sconfig.paths check only
     "paths": {
       "@/*": ["./*"],
       "@comp/*": ["./client/components/*"],
       "comp/*": ["./client/components/*"]
-    }
+    },
+    "noEmit": true
   },
-  "include": ["server"]
+  "include": ["client", "native", "server", "typings", "scripts"]
 }

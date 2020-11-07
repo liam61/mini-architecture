@@ -23,7 +23,7 @@ const defaultPlugins = [
   commonjs(),
   babel({
     babelHelpers: 'bundled',
-    exclude: 'node_modules/**',
+    exclude: ['node_modules/**', '../../node_modules/**'],
     presets: [
       [
         '@babel/preset-env',

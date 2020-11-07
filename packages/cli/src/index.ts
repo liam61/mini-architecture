@@ -63,7 +63,7 @@ export default async function bootstrap(type = 'pack', options: Options) {
 
   if (!initEnv(options)) return
 
-  if (JSON.parse(process.env.MINI_WATCH)) {
+  if (JSON.parse(process.env.MINI_WATCH || '')) {
     const ignoreRoot = directories()
     nodemon({
       script: require.resolve('./pack'),
@@ -72,7 +72,7 @@ export default async function bootstrap(type = 'pack', options: Options) {
       watch: [
         process.env.MINI_ENTRY,
         options.platform !== 'devtools' && process.env.MINI_FRAMEWORK,
-      ].filter(Boolean),
+      ].filter(Boolean) as string[],
       ext: '*',
       delay: 500,
     })

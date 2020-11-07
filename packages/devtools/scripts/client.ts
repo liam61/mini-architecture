@@ -10,10 +10,10 @@ import path from 'path'
     outDir: 'dev/client',
     cacheDir: 'dev/.cache',
   })
-  bundler.on('bundled', bundle => {})
+  bundler.on('bundled', () => {})
   bundler.on('buildEnd', () => {})
 
-  const bundle = await bundler.bundle()
+  const _bundle = await bundler.bundle()
 
   // https://github.com/remy/nodemon/pull/1077. Why you didn't merge
   process.env.NODEMON_PROCESS_STAGE = '1'

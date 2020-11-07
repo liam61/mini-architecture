@@ -27,7 +27,7 @@ const isDev = process.env.DEVTOOLS_ENV === 'develop'
 
 let app: StaticServer
 let port = 3000
-let allFiles: string[] | null = null
+let allFiles: string[] = []
 const sockPath = '/'
 const clientMap = new Map()
 
@@ -53,7 +53,7 @@ export default async function startServer(options: ServerOptions) {
   // client static
   app.get('*', (req, res) => {
     const url = req.url === '/' ? 'index.html' : req.url
-    const filePath = allFiles.find(file => file.includes(url))
+    const filePath = allFiles.find(file => file.includes(url)) || ''
 
     if (url === 'index.html') {
       const content = ejs.render(fs.readFileSync(filePath, 'utf-8'), {
@@ -71,7 +71,7 @@ export default async function startServer(options: ServerOptions) {
   })
 
   expressWs(app)
-  ;(app as any).ws(sockPath, (ws, req) => {
+  ;(app as any).ws(sockPath, (ws, _req) => {
     console.log('[staticServer]: a client connected')
     ws._id = Math.random().toString(36).slice(-8)
     clientMap.set(ws._id, ws)
