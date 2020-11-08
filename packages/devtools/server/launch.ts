@@ -15,7 +15,7 @@ export interface LaunchOptions {
 }
 
 const rootPath = path.join(__dirname, '../..')
-const miniPath = normalizePath('MINI_OUTPUT', path.join(rootPath, 'devtools/dev/mini'))
+const miniPath = normalizePath('MINI_OUTPUT', path.join(rootPath, 'devtools/dist/mini'))
 
 export default async function launcher(options?: LaunchOptions) {
   const { port } = options || {}

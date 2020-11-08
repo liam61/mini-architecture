@@ -1,6 +1,6 @@
 {
   "name": "@mini-architecture/framework",
-  "version": "0.0.5-beta2",
+  "version": "0.0.4",
   "description": "",
   "scripts": {
     "dev": "rm -rf dist && rollup -cw",
@@ -10,8 +10,7 @@
   "author": "lawler61",
   "license": "ISC",
   "files": [
-    "dist",
-    "dev"
+    "dist"
   ],
   "repository": {
     "type": "git",

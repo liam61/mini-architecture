@@ -5,7 +5,7 @@ export default class AppConfig {
       pages: Record<string, any>
     }
     [k: string]: any
-  }
+  } = {} as any
 
   constructor(public appId: string, public userId: string, public appPath: string) {}
 

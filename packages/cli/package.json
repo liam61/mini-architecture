@@ -1,6 +1,6 @@
 {
   "name": "@mini-architecture/cli",
-  "version": "0.0.6-beta3",
+  "version": "0.0.5",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -20,10 +20,10 @@
     "url": "git+https://github.com/lawler61/mini-architecture.git"
   },
   "dependencies": {
-    "@mini-architecture/devtools": "^0.0.1-beta2",
-    "@mini-architecture/framework": "^0.0.5-beta1",
+    "@mini-architecture/devtools": "^0.0.0",
+    "@mini-architecture/framework": "^0.0.4",
     "@mini-architecture/mini": "^0.0.3",
-    "@mini-architecture/pack": "^0.0.6-beta2",
+    "@mini-architecture/pack": "^0.0.5",
     "commander": "^6.1.0",
     "chalk": "^4.1.0",
     "fs-extra": "^9.0.1",

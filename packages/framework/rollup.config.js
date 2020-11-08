@@ -14,8 +14,6 @@ chalk.level = 3
 
 const rootPath = path.join(__dirname, '..')
 const isDev = process.env.ROLLUP_WATCH
-const bootFromRoot = process.env.BOOT_ENV === 'root'
-
 const defaultPlugins = [
   resolve(),
   json(),
@@ -98,18 +96,14 @@ function myPlugin() {
   return {
     name: 'dev-plugin',
     options(options) {
-      bootFromRoot &&
-        console.log(
-          chalk.cyan(`[rollup] bundles ${options.input} → ${options.output[0].file}...\n`),
-        )
+      // console.log(options.input, options.output[0].file)
     },
-    // pack 中 nodemon watch ../framework 有问题，暂时没其他办法
     buildEnd() {
       if (!isDev) return
-      const _dev = path.join(rootPath, 'pack/_dev.js')
+      // rollup 和 pack nodemon 一起启动，监听 framework/dist 有问题，暂时没其他办法
+      const _dev = path.join(rootPath, 'pack/_dev.ts')
 
       !fs.existsSync(_dev) && fs.createFile(_dev)
-
       if (count++ !== 0) {
         fs.writeFileSync(_dev, `update: ${count}`, { encoding: 'utf-8' })
       } else {
@@ -117,9 +111,7 @@ function myPlugin() {
       }
     },
     outputOptions(options) {
-      if (!bootFromRoot) return
-      console.log(chalk.cyan(`[rollup] created ${options.file}\n`))
-      isDev && count > 2 && console.log('[rollup] waiting for changes...\n')
+      // console.log(options.file)
     },
   }
 }

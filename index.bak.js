@@ -1,3 +1,7 @@
+/**
+ * @deprecated use lerna instead
+ */
+
 const program = require('commander')
 const runAll = require('npm-run-all')
 const stream = require('stream')
@@ -27,7 +31,7 @@ class BufferStream extends stream.Writable {
 
 options.stdout = new BufferStream()
 
-runAll([`run-* {1}`, cmd === 'install' && 'i-cli'].filter(Boolean), options).then(res => {
+runAll([`run-* {1}`].filter(Boolean), options).then(res => {
   // console.log(res)
   // console.log(stdout.value)
 })

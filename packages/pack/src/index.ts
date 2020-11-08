@@ -16,7 +16,7 @@ export default async function pack() {
     await packFramework()
     await packMini()
   } catch (err) {
-    if (isDev) {
+    if (isDev && typeof err !== 'string') {
       throw err
     }
     console.log(err)
@@ -33,7 +33,7 @@ async function packFramework() {
     !fs.existsSync(path.join(frameworkPath, 'service.js'))
   ) {
     // by cli
-    throw new Error(process.env.MINI_ENTRY ? 'invalid framework path...' : 'first pack...')
+    throw process.env.MINI_ENTRY ? new Error('invalid framework path...') : 'first pack...'
   }
 
   let config: any = null

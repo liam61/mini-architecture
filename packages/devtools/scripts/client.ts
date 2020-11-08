@@ -7,8 +7,8 @@ import path from 'path'
   // https://en.parceljs.org/api.html
   const bundler = new Bundler(path.resolve('./client/index.html'), {
     watch: true,
-    outDir: 'dev/client',
-    cacheDir: 'dev/.cache',
+    outDir: 'dist/client',
+    cacheDir: 'dist/.cache',
   })
   bundler.on('bundled', () => {})
   bundler.on('buildEnd', () => {})

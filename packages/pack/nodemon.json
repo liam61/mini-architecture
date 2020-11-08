@@ -1,10 +1,9 @@
 {
   "exec": "ts-node index.ts",
-  "watch": ["src", "./index.ts"],
   "env": {
     "MINI_ENV": "dev"
   },
-  "ignore": [],
-  "ext": "ts",
+  "ignore": ["_temp", "dist"],
+  "ext": "ts ejs",
   "delay": "500"
 }

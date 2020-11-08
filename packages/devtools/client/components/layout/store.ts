@@ -7,7 +7,7 @@ export class LayoutStore {
   navUpdate = () => {}
 
   webViews: MiniPage[] = []
-  service: AppService
+  service!: AppService
   navBar: NavigationBarStore
   setTitle: (title: string) => void
 

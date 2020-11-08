@@ -3,9 +3,7 @@
     [
       "module-resolver",
       {
-        "root": [
-          "./"
-        ],
+        "root": ["./"],
         "alias": {
           "@": "./",
           // "@/comp": "./client/components" // 不支持，可用 package.alias

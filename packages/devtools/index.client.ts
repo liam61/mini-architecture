@@ -10,7 +10,7 @@ const appNames = {
 }
 
 ;(async () => {
-  const { port } = await startStaticServer({ miniPath: path.join(__dirname, './dev/mini') })
+  const { port } = await startStaticServer({ miniPath: path.join(__dirname, './dist/mini') })
 
   if (process.env.NODEMON_PROCESS_STAGE === '1') {
     open(`http://localhost:${port}`, {

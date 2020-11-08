@@ -1,10 +1,10 @@
 {
   "typescript.tsdk": "./node_modules/typescript/lib",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "search.exclude": {
     "**/dist": true,
     "packages/cli/android": true,
     "packages/devtools/frontend": true,
-    "packages/devtools/dev": true,
-    "packages/pack/_temp": true,
-  },
+    "packages/pack/_temp": true
+  }
 }

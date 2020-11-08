@@ -47,7 +47,7 @@ export default async function startServer(options: ServerOptions) {
   app.use('/mini', express.static(miniPath))
   app.use('/devtools', express.static(path.join(__dirname, '../frontend')))
 
-  const clientDir = path.join(rootPath, isDev ? 'dev/client' : 'client')
+  const clientDir = path.join(rootPath, isDev ? 'dist/client' : 'client')
   allFiles = glob.sync(`${clientDir}/*`, { ignore: ['**/*.map'] })
 
   // client static

@@ -14,12 +14,6 @@ export interface BuilderConfig {
   miniConfig: Record<string, any>
 }
 
-interface SourceItem {
-  code: string
-  map: string
-  path: string
-}
-
 const isDev = process.env.MINI_ENV !== 'build'
 const minifyConfig = {
   preserveLineBreaks: true,

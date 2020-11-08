@@ -1,4 +1,5 @@
 #! /usr/bin/env node
+
 const program = require('commander')
 const bootstrap = require('../dist')
 const { modes, platforms } = bootstrap

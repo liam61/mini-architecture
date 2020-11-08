@@ -1,18 +1,16 @@
 {
-  "packages": [
-    "packages/*"
-  ],
+  "packages": ["packages/*"],
   "version": "independent",
   "npmClient": "yarn",
   "useWorkspaces": true,
   "command": {
     "version": {
-      "message": "chore: dump version %s",
+      "message": "chore: dump new version",
       "conventionalCommits": true
     },
     "publish": {
       "registry": "https://registry.npmjs.org",
-      "message": "chore: dump version %s"
+      "message": "chore: dump new version"
     }
   }
 }

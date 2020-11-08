@@ -1,13 +1,9 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
     "target": "esnext",
     "module": "commonjs",
     "moduleResolution": "node",
-    "lib": [
-      "dom",
-      "esnext"
-    ],
+    "lib": ["dom", "esnext"],
     // "noEmit": true,
     // "allowJs": true,                          /* Allow javascript files to be compiled. */
     "strict": true,
@@ -24,7 +20,5 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true
   },
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
