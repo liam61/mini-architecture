@@ -11,11 +11,7 @@
     "prettier/@typescript-eslint",
     "plugin:prettier/recommended"
   ],
-  "plugins": [
-    "react",
-    "@typescript-eslint",
-    "prettier"
-  ],
+  "plugins": ["react", "@typescript-eslint", "prettier"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
@@ -23,9 +19,7 @@
     },
     "ecmaVersion": 2018,
     "sourceType": "module",
-    "project": [
-      "packages/**/tsconfig.json"
-    ]
+    "project": ["packages/**/tsconfig.json"]
   },
   "globals": {
     "ma": true

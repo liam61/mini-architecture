@@ -4,8 +4,9 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "nodemon",
-    "build": "rm -rf dist && tsc -p ."
+    "dev": "scripts/dev.ts",
+    "build": "rm -rf dist && tsc -p .",
+    "lint": "tsc --noEmit --skipLibCheck -p tsconfig.json"
   },
   "author": "lawler61",
   "license": "ISC",

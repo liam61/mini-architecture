@@ -9,7 +9,8 @@
     "launch": "yarn pack:mini && yarn build:client && scripts/launch.ts",
     "build:server": "rm -rf dist && tsc -p tsconfig.build.json",
     "build:client": "rm -rf dist/client && parcel build client/index.html -d dist/client --no-cache",
-    "build": "yarn build:server && yarn build:client"
+    "build": "yarn build:server && yarn build:client",
+    "lint": "tsc --noEmit --skipLibCheck -p tsconfig.json"
   },
   "author": "lawler61",
   "license": "ISC",

@@ -9,8 +9,6 @@
       "@/*": ["./*"],
       "@comp/*": ["./client/components/*"],
       "comp/*": ["./client/components/*"]
-    },
-    "noEmit": true
-  },
-  "include": ["client", "native", "server", "typings", "scripts"]
+    }
+  }
 }

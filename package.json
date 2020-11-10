@@ -1,16 +1,16 @@
 {
-  "name": "@mini-architecture/home",
-  "version": "0.0.4-beta2",
+  "name": "mini-architecture",
+  "version": "0.0.5",
   "description": "",
   "scripts": {
     "postinstall": "yarn build",
     "build": "lerna run build --parallel --ignore @mini-architecture/cli && lerna run build --scope @mini-architecture/cli",
-    "release": "yarn build && lerna version --conventional-commits --no-push",
-    "releasea": "yarn lerna publish from-git",
     "dev:pack": "lerna run dev --parallel --scope @mini-architecture/framework --scope @mini-architecture/pack",
     "dev:dt:client": "lerna run client --scope @mini-architecture/devtools --stream",
     "dev:dt:launch": "lerna run launch --scope @mini-architecture/devtools --stream",
-    "lint": "eslint && prettier --write"
+    "release": "yarn build && lerna version --conventional-commits --no-push",
+    "releasea": "yarn lerna publish from-git",
+    "lint": "lerna run lint --parallel && eslint && prettier --write ."
   },
   "author": "lawler61",
   "license": "ISC",
@@ -31,19 +31,7 @@
     }
   },
   "lint-staged": {
-    "packages/cli/src/**/*.ts": [
-      "yarn lint"
-    ],
-    "packages/devtools/**/*.{js,ts,tsx}": [
-      "yarn lint"
-    ],
-    "packages/framework/**/*.{js,ts}": [
-      "yarn lint"
-    ],
-    "packages/mini/**/*.js": [
-      "yarn lint"
-    ],
-    "packages/pack/src/*.ts": [
+    "packages/**/*.{js,ts,jsx,tsx}": [
       "yarn lint"
     ],
     "*.{css,html,json}": [

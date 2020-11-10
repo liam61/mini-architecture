@@ -6,8 +6,8 @@ export default class WebView {
   id: number
   name: string
   path = ''
-  url: string // 实际 url
-  jsCore: {
+  url = '' // 实际 url
+  jsCore!: {
     publish: (...args: any[]) => void
     invoke: (...args: any[]) => void
     subscribeHandler: (event: string, params: string, viewId: number) => void

@@ -2,15 +2,15 @@ import MiniConfig from '../../config/miniConfig'
 import { ICallback, IApi } from '../../interfaces'
 
 export default class SystemInfo implements IApi {
-  model: string
-  pixelRatio: number
-  screenWidth: string
-  screenHeight: string
-  language: string
-  version: string
-  system: number
-  platform: string
-  SDKVersion: string
+  model = ''
+  pixelRatio = 0
+  screenWidth = ''
+  screenHeight = ''
+  language = ''
+  version = ''
+  system = 0
+  platform = ''
+  SDKVersion = ''
 
   apis() {
     return ['getSystemInfo']
@@ -28,7 +28,7 @@ export default class SystemInfo implements IApi {
     this.SDKVersion = MiniConfig.version
   }
 
-  invoke(event: string, params: string, callback: ICallback) {
+  invoke(_event: string, _params: string, callback: ICallback) {
     const result = {
       model: this.model,
       pixelRatio: this.pixelRatio,

@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "dev": "rm -rf dist && tsc -p . -w",
-    "build": "rm -rf dist && tsc -p ."
+    "build": "rm -rf dist && tsc -p .",
+    "lint": "tsc --noEmit --skipLibCheck -p tsconfig.json"
   },
   "bin": {
     "ma-cli": "bin/index.js"

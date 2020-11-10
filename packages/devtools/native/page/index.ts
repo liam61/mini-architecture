@@ -5,7 +5,7 @@ import { IBridge, OnEventListener } from '../interfaces'
  * 小程序 View 层，加载相应的 xxxPage.html
  */
 export default class MiniPage implements IBridge {
-  openType: string
+  openType = ''
   private webView: WebView
 
   constructor(url: string, openType: string, public listener: OnEventListener) {
@@ -82,7 +82,7 @@ export default class MiniPage implements IBridge {
     this.webView.loadUrl(`javascript:subscribeHandler('${event}', ${params}, ${viewId})`)
   }
 
-  publish(event: string, params: string, viewId: string) {
+  publish(event: string, params: string, _viewId: string) {
     if (event === 'custom_event_DOMContentLoaded') {
       this.onDomContentLoaded()
     } else {
@@ -90,7 +90,7 @@ export default class MiniPage implements IBridge {
     }
   }
 
-  invoke(event: string, params: string, callbackId: string) {}
+  invoke(_event: string, _params: string, _callbackId: string) {}
 
-  callback(callbackId: string, result: string) {}
+  callback(_callbackId: string, _result: string) {}
 }

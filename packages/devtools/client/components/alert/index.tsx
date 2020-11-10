@@ -23,7 +23,7 @@ export default function Alert(props: AlertProps) {
         className='alert'
         ariaHideApp={false}
         isOpen={store.isOpen}
-        parentSelector={() => document.querySelector('.ma-page')}
+        parentSelector={() => document.querySelector('.ma-page') as any}
       >
         {store.message}
       </ReactModal>

@@ -4,7 +4,7 @@ a tool for developing, like [weixin devtools](https://developers.weixin.qq.com/m
 
 1. build devtools client with React
 
-2. load page by iframes and communicate with parent by `window.postMessage` 
+2. load page by iframes and communicate with parent by `window.postMessage`
 
 3. launch browser by [chrome app api](https://github.com/GoogleChrome/chrome-launcher)
 

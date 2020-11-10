@@ -8,7 +8,7 @@ export default class OpenLink implements IApi {
     return ['openLink']
   }
 
-  invoke(event: string, params: string, callback: ICallback) {
+  invoke(_event: string, params: string, callback: ICallback) {
     let res = false
     try {
       const p = JSON.parse(params)

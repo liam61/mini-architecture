@@ -49,7 +49,7 @@ export class LayoutStore {
     }
   }
 
-  updateView(page: MiniPage) {
+  updateView(_page: MiniPage) {
     // handled by iframe self
   }
 

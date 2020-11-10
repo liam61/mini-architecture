@@ -9,10 +9,10 @@ import { OnEventListener } from '../interfaces'
 class MiniActivity implements OnEventListener {
   static instance: MiniActivity
 
-  miniConfig: MiniConfig
-  apiManager: ApiManager
-  pageManager: PageManager
-  appService: AppService
+  miniConfig!: MiniConfig
+  apiManager!: ApiManager
+  pageManager!: PageManager
+  appService!: AppService
   container: any
 
   static create() {

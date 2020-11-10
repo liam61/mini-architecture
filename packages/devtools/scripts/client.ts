@@ -23,4 +23,14 @@ import path from 'path'
   }).once('restart', () => {
     process.env.NODEMON_PROCESS_STAGE = '2'
   })
+
+  process.once('SIGINT', () => {
+    console.log('process receive: SIGINT')
+    // https://github.com/parcel-bundler/parcel/blob/v2/packages/core/parcel-bundler/src/Bundler.js#L356
+    ;(bundler as any).stop()
+
+    // https://github.com/remy/nodemon/blob/master/lib/monitor/run.js#L465
+    nodemon.emit('quit', 130)
+    process.exit()
+  })
 })()
