@@ -18,4 +18,4 @@ yarn global add @mini-architecture/cli
 ma-cli devtools -e @mini
 ```
 
-find more at [@mini-architecture/cli](https://github.com/lawler61/mini-architecture/tree/master/cli)
+**find more at** [@mini-architecture/cli](https://github.com/lawler61/mini-architecture/tree/master/packages/cli)

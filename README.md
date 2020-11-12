@@ -36,7 +36,7 @@ a full mini app architecture demo
 
 before you run, don't forget to connect mobile to you computer. It may be slow for the first time while you running
 
-find more at [@mini-architecture/cli](https://github.com/lawler61/mini-architecture/tree/master/cli)
+**find more at** [@mini-architecture/cli](https://github.com/lawler61/mini-architecture/tree/master/packages/cli)
 
 ### 3. mini example
 
@@ -66,7 +66,7 @@ Page({
 })
 ```
 
-find more at [@mini-architecture/framework](https://github.com/lawler61/mini-architecture/tree/master/framework)
+**find more at** [@mini-architecture/framework](https://github.com/lawler61/mini-architecture/tree/master/packages/framework)
 
 ### 4. dev
 

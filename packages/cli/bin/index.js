@@ -19,12 +19,16 @@ program
   .option('-m, --mode [type]', `pack mode: "${modes.join('" / "')}"`, 'build')
   .option('-p, --platform [path]', `running on: "${platforms.join('" / "')}"`, 'mobile')
   .option('-f, --framework [path]', 'mini framework path')
-  .option('-i, --install [path]', 'android path. Pass "-i" as bool to install with builtin android')
+  .option(
+    '-i, --install [path]',
+    'android path. Pass "-i" as bool to install using builtin android',
+  )
   .option(
     '-o, --output [path]',
-    'output path (default: "~/.ma-dev" or "{install}/app/src/main/assets" when given `install` option)',
+    'output path (default: "~/.ma-dev" or "{install}/app/src/main/assets" when given `-i` option)',
   )
   .option('-w, --watch', 'watch files (default: process.env.NODE_ENV === "development")')
+  .option('-z, --zip', 'zip outputs (default: `false` or `true` when given `-i` option)')
   .action((command, _) => {
     options = command
   })

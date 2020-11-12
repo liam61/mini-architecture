@@ -8,7 +8,7 @@ const rootPath = path.join(__dirname, '../..')
 const miniPath = normalizePath('MINI_ENTRY', path.join(rootPath, 'mini/dist'))
 const frameworkPath = normalizePath('MINI_FRAMEWORK', path.join(rootPath, 'framework/dist'))
 const outputPath = normalizePath('MINI_OUTPUT', path.join(rootPath, 'android/app/src/main/assets'))
-const isZip = normalizeBoolean('MINI_INSTALL', true)
+const isZip = normalizeBoolean('MINI_ZIP', true)
 const isDev = process.env.MINI_ENV !== 'build'
 
 export default async function pack() {

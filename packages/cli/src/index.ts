@@ -18,12 +18,21 @@ export interface Options {
   install?: string | boolean
   output?: string
   watch?: boolean
+  zip?: boolean
 }
 
 function initEnv(options: Options) {
-  // eslint-disable-next-line
-  let { entry = '', mode, platform, framework = '', install = '', output = '', watch } = options
-  watch = typeof watch === 'boolean' ? watch : process.env.NODE_ENV === 'development'
+  const {
+    entry = '',
+    mode,
+    platform,
+    framework = '',
+    install = '',
+    output = '',
+    watch: _watch,
+    zip = false,
+  } = options
+  const watch = typeof _watch === 'boolean' ? _watch : process.env.NODE_ENV === 'development'
 
   if (
     !validate('entry', entry, 'string') ||
@@ -40,14 +49,14 @@ function initEnv(options: Options) {
   process.env.MINI_ENTRY = entry !== '@mini' ? entry : path.join(maPath, 'mini/dist')
   process.env.MINI_PLATFORM = platform
   process.env.MINI_FRAMEWORK = framework || path.join(maPath, `framework/dist`)
-  process.env.MINI_INSTALL =
-    install !== true ? (install as string) : path.join(maPath, 'cli/android')
+  process.env.MINI_INSTALL = install !== true ? install + '' : path.join(maPath, 'cli/android')
   process.env.MINI_OUTPUT =
     output ||
     (process.env.MINI_INSTALL
       ? path.join(process.env.MINI_INSTALL, 'app/src/main/assets')
       : `${homedir()}/.ma-dev`)
   process.env.MINI_WATCH = watch + ''
+  process.env.MINI_ZIP = (process.env.MINI_INSTALL ? true : zip) + ''
 
   return true
 }

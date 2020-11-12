@@ -7,8 +7,8 @@ an example of mini-app
 ```js
 // index.html
 <view>
-  <button bindtap="bindEvent" class="btn">click me</button>
-  <view class="{{bindCls}}">bind-data: {{hello}}</view>
+  <button bindtap="handleClick" class="btn">click me</button>
+  <view class="{{cls}}">bind-data: {{hello}}</view>
   <button bindtap="goNext">go next page</button>
 </view>
 
@@ -16,9 +16,9 @@ an example of mini-app
 Page({
   data: {
     hello: 'hello world',
-    bindCls: 'view',
+    cls: 'view',
   },
-  bindEvent() {
+  handleClick() {
     this.setData({ hello: 'hello again' })
   },
   goNext() {
@@ -30,4 +30,4 @@ Page({
 })
 ```
 
-find more at [@mini-architecture/framework](https://github.com/lawler61/mini-architecture/tree/master/framework)
+**find more at** [@mini-architecture/framework](https://github.com/lawler61/mini-architecture/tree/master/packages/framework)
