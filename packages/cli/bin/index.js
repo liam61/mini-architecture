@@ -2,9 +2,10 @@
 
 const program = require('commander')
 const bootstrap = require('../dist')
+const config = require('../package.json')
 const { modes, platforms } = bootstrap
 
-program.version('0.0.6-beta2')
+program.version(config.version)
 
 let options = {}
 let type = 'pack'

@@ -66,7 +66,8 @@ export default async function bootstrap(type = 'pack', options: Options) {
 
   if (JSON.parse(process.env.MINI_WATCH!)) {
     const ignoreRoot = directories()
-    let staticServer: StaticServer | Deferred = new Deferred()
+    const isDevtools = options.platform === 'devtools'
+    let staticServer: StaticServer | Deferred | null = isDevtools ? new Deferred() : null
 
     nodemon({
       script: require.resolve('./pack'),
@@ -77,27 +78,26 @@ export default async function bootstrap(type = 'pack', options: Options) {
         options.platform !== 'devtools' && process.env.MINI_FRAMEWORK,
       ].filter(Boolean) as string[],
       ext: '*',
-      delay: 400,
+      delay: 200,
     })
       .on('restart', () => {})
       .on('message', ev => {
         const { type, event } = ev || {}
-        if (options.platform === 'devtools' && type === 'pack' && event === 'packed') {
+        if (isDevtools && type === 'pack' && event === 'packed') {
           if (staticServer instanceof Deferred) {
             staticServer.resolve()
           } else {
-            staticServer.send({ type: 'reload' })
+            staticServer && staticServer.send({ type: 'reload' })
           }
         }
       })
     // 设置完 env 再引入
-    if (options.platform === 'devtools') {
-      // process.env.DEVTOOLS_ENV = 'develop'
+    if (isDevtools) {
       const { default: launcher } = await import('@mini-architecture/devtools')
 
       // wait until packed
-      if (staticServer.promise) {
-        await staticServer.promise
+      if (staticServer && staticServer.promise) {
+        await staticServer!.promise
       }
       const { server, cdp } = await launcher()
       staticServer = server

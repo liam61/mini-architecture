@@ -18,7 +18,7 @@ export class Deferred<T = any> {
       }
 
       this.timer = setTimeout(() => {
-        this.reject!('[friendlyError]: get frame timeout')
+        this.reject!('defer timeout')
       }, 3 * 1000)
     })
 

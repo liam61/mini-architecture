@@ -10,7 +10,8 @@
     "dev:dt:launch": "lerna run launch --scope @mini-architecture/devtools --stream",
     "dev:cli": "lerna run dev --scope @mini-architecture/cli --stream",
     "release": "yarn build && lerna version --conventional-commits --no-push",
-    "releasea": "yarn lerna publish from-git",
+    "release:pre": "lerna version --conventional-commits --conventional-prerelease=@mini-architecture/xxx --preid beta --no-push",
+    "rcnext": "lerna publish from-git",
     "lint": "lerna run lint --parallel && eslint && prettier --write ."
   },
   "author": "lawler61",
@@ -40,8 +41,6 @@
     ]
   },
   "devDependencies": {
-    "@babel/core": "^7.11.6",
-    "@babel/preset-env": "^7.11.5",
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",
     "@commitlint/config-lerna-scopes": "^11.0.0",
@@ -52,7 +51,6 @@
     "@types/react-modal": "^3.10.6",
     "@typescript-eslint/eslint-plugin": "^4.6.1",
     "@typescript-eslint/parser": "^4.6.1",
-    "babel-preset-minify": "^0.5.1",
     "chalk": "^4.1.0",
     "cross-env": "^7.0.2",
     "eslint": "^7.9.0",

@@ -7,5 +7,5 @@
     "restart": ""
   },
   "ext": "ts",
-  "delay": "400"
+  "delay": "300"
 }

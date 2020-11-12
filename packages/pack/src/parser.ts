@@ -2,6 +2,8 @@ import { types as t, parse, traverse, transform } from '@babel/core'
 import { default as generator } from '@babel/generator' // by @babel/core
 import fs from 'fs-extra'
 import Concat from 'concat-with-sourcemaps'
+import presetEnv from '@babel/preset-env'
+import presetMinify from 'babel-preset-minify'
 
 const isDev = process.env.MINI_ENV !== 'build'
 const PREFIX_ELEMENT = 'ma-'
@@ -100,7 +102,8 @@ export default function parseFile(params: ParserConfig) {
   } else {
     const source = transform(output, {
       // isJsx && ['@babel/preset-react', { pragma: '_l' }]
-      presets: ['@babel/preset-env', !isDev && 'minify'].filter(Boolean),
+      // 直接获取本地依赖，相对引用会有问题
+      presets: [presetEnv, !isDev && presetMinify].filter(Boolean),
       sourceMaps: isDev,
       sourceRoot: process.cwd(),
       sourceFileName: fullPath,
