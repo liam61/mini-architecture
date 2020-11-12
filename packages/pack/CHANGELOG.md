@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.7-beta.1](https://github.com/lawler61/mini-architecture/compare/@mini-architecture/pack@0.0.7-beta.0...@mini-architecture/pack@0.0.7-beta.1) (2020-11-12)
+
+
+### Bug Fixes
+
+* cli boot ([6f674f7](https://github.com/lawler61/mini-architecture/commit/6f674f756f2aa7901f41acf947c69b8ff35e31f5))
+
+
+
+
+
 ## [0.0.7-beta.0](https://github.com/lawler61/mini-architecture/compare/@mini-architecture/pack@0.0.6...@mini-architecture/pack@0.0.7-beta.0) (2020-11-12)
 
 
