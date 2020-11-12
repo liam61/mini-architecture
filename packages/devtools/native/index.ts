@@ -3,7 +3,7 @@ import MiniActivity from './main/miniActivity'
 window.addEventListener('containerReady', (ev: any) => {
   const { maContainer } = ev.detail
 
-  const { host = 'localhost', port = 3000, path = '/' } = window.serverConfig
+  const { host = 'localhost', port = 3000, path = '/', wsPath = '/' } = window.serverConfig
   const appId = 'miniDemo'
   const userId = 'lawler61'
   const appPath = `http://${host}:${port}${path}${appId}/`
@@ -34,10 +34,38 @@ window.addEventListener('containerReady', (ev: any) => {
 
   MiniActivity.create().setContainer(maContainer).launch(appId, userId, appPath)
 
+  const wsClient = initWebsocket({ host, port: +port, path: wsPath })
+
   if (process.env.DEVTOOLS_ENV === 'develop') {
     window.maContainer = maContainer
     window.pageManager = MiniActivity.getContext().pageManager
+    window.wsClient = wsClient
+  }
+})
+
+function initWebsocket(options: { host: string; port: number; path: string }) {
+  const { host, port, path } = options
+  const ws = new WebSocket(`ws://${host}:${port}${path}`)
+
+  ws.onopen = () => console.log('[devtoolsClient]: a client connect')
+  ws.onclose = () => console.log('[devtoolsClient]: a client disconnect')
+  ws.onerror = event => console.log('[devtoolsClient]: a client error', event)
+  ws.onmessage = event => {
+    // console.log('client', event.data)
+    const { type } = JSON.parse(event.data)
+
+    if (type === 'reload') {
+      window.location.reload(true)
+    }
   }
 
-  // TODO: new websocket
-})
+  return {
+    ws,
+    send(data: Record<string, any>) {
+      ws.send(JSON.stringify(data))
+    },
+    close() {
+      ws.close()
+    },
+  }
+}

@@ -7,7 +7,7 @@ import nodemon from 'nodemon'
 nodemon({})
 
 process.once('SIGINT', () => {
-  console.log('process receive: SIGINT')
+  console.log('\nprocess receive: SIGINT')
 
   // https://github.com/remy/nodemon/blob/master/lib/monitor/run.js#L465
   nodemon.emit('quit', 130)

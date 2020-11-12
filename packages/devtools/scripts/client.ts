@@ -25,7 +25,7 @@ import path from 'path'
   })
 
   process.once('SIGINT', () => {
-    console.log('process receive: SIGINT')
+    console.log('\nprocess receive: SIGINT')
     // https://github.com/parcel-bundler/parcel/blob/v2/packages/core/parcel-bundler/src/Bundler.js#L356
     ;(bundler as any).stop()
 

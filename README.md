@@ -106,7 +106,9 @@ install form [built apk](./mini-demo.apk)
 
 - [x] cli
 
-- [ ] devtools
+- [x] devtools
+
+- [ ] custom devtools front end
 
 - [ ] worker service in devtools
 

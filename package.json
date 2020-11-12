@@ -8,6 +8,7 @@
     "dev:pack": "lerna run dev --parallel --scope @mini-architecture/framework --scope @mini-architecture/pack",
     "dev:dt:client": "lerna run client --scope @mini-architecture/devtools --stream",
     "dev:dt:launch": "lerna run launch --scope @mini-architecture/devtools --stream",
+    "dev:cli": "lerna run dev --scope @mini-architecture/cli --stream",
     "release": "yarn build && lerna version --conventional-commits --no-push",
     "releasea": "yarn lerna publish from-git",
     "lint": "lerna run lint --parallel && eslint && prettier --write ."

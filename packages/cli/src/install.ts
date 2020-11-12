@@ -3,7 +3,7 @@ import chalk from 'chalk'
 import { execSync, spawnSync } from 'child_process'
 
 export default function installApp() {
-  const androidPath = process.env.MINI_INSTALL || ''
+  const androidPath = process.env.MINI_INSTALL!
   process.chdir(androidPath)
   execSync('adb start-server')
   const deviceInfo = execSync('adb devices', { encoding: 'utf-8' })

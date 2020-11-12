@@ -28,7 +28,7 @@ const isDev = process.env.DEVTOOLS_ENV === 'develop'
 let app: StaticServer
 let port = 3000
 let allFiles: string[] = []
-const sockPath = '/'
+const wsPath = '/'
 const clientMap = new Map()
 
 export default async function startServer(options: ServerOptions) {
@@ -38,7 +38,7 @@ export default async function startServer(options: ServerOptions) {
     port = +preferredPort
   }
 
-  const deferred = new Deferred<number>()
+  const deferred = new Deferred()
   getPort({ port }).then(deferred.resolve)
 
   port = await deferred.promise
@@ -46,6 +46,32 @@ export default async function startServer(options: ServerOptions) {
 
   app.use('/mini', express.static(miniPath))
   app.use('/devtools', express.static(path.join(__dirname, '../frontend')))
+
+  expressWs(app)
+  ;(app as any).ws(wsPath, (ws, _req) => {
+    console.log('[staticServer]: a client connected')
+    ws._id = Math.random().toString(36).slice(-8)
+    clientMap.set(ws._id, ws)
+
+    ws.on('message', data => {
+      // console.log('message', data.toString())
+      const message = JSON.parse(data.toString())
+      console.log(message)
+    })
+
+    ws.on('close', code => {
+      ws.terminate()
+      clientMap.delete(ws._id)
+      console.log(`[staticServer]: a client disconnected, code: ${code}\n`)
+    })
+  })
+
+  app.send = function (data: Record<string, any>) {
+    clientMap.forEach(client => {
+      if (client.readyState !== 1) return
+      client.send(JSON.stringify(data))
+    })
+  }
 
   const clientDir = path.join(rootPath, isDev ? 'dist/client' : 'client')
   allFiles = glob.sync(`${clientDir}/*`, { ignore: ['**/*.map'] })
@@ -61,6 +87,7 @@ export default async function startServer(options: ServerOptions) {
         __HOST__: req.hostname,
         __PORT__: port,
         __PUBLIC_PATH__: '/mini/apps/',
+        __WS_PATH__: wsPath,
       })
       res.type('html').send(content)
     } else if (filePath) {
@@ -69,31 +96,6 @@ export default async function startServer(options: ServerOptions) {
       res.sendStatus(404)
     }
   })
-
-  expressWs(app)
-  ;(app as any).ws(sockPath, (ws, _req) => {
-    console.log('[staticServer]: a client connected')
-    ws._id = Math.random().toString(36).slice(-8)
-    clientMap.set(ws._id, ws)
-
-    ws.on('message', data => {
-      // console.log('message', data.toString())
-      const _message = JSON.parse(data.toString())
-    })
-
-    // ws.on('close', code => {
-    //   clientMap.delete(ws._id)
-    //   ws.terminate()
-    //   console.log(`[staticServer]: a client disconnected, code: ${code}\n`)
-    // })
-  })
-
-  app.send = function (data: Record<string, any>) {
-    clientMap.forEach(client => {
-      if (client.readyState === 1) return
-      client.send(JSON.stringify(data))
-    })
-  }
 
   // http://localhost:3000/mini/apps/miniDemo/pages/index
   // http://localhost:3000/mini/apps/miniDemo/service.html

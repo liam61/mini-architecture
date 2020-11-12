@@ -5,5 +5,5 @@
   },
   "ignore": ["_temp", "dist"],
   "ext": "ts ejs",
-  "delay": "500"
+  "delay": "400"
 }

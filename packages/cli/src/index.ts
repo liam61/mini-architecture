@@ -2,7 +2,8 @@ import path from 'path'
 import { homedir } from 'os'
 import nodemon from 'nodemon'
 import { directories } from 'ignore-by-default'
-import { includes, validate, wait } from './utils'
+import { includes, validate, Deferred } from './utils'
+import { StaticServer } from '@mini-architecture/devtools'
 
 // global add cli 和 mini、pack 在同一级目录
 const maPath = path.join(__dirname, '../..')
@@ -63,8 +64,10 @@ export default async function bootstrap(type = 'pack', options: Options) {
 
   if (!initEnv(options)) return
 
-  if (JSON.parse(process.env.MINI_WATCH || '')) {
+  if (JSON.parse(process.env.MINI_WATCH!)) {
     const ignoreRoot = directories()
+    let staticServer: StaticServer | Deferred = new Deferred()
+
     nodemon({
       script: require.resolve('./pack'),
       // https://github.com/remy/nodemon/blob/master/lib/config/defaults.js#L15
@@ -74,20 +77,38 @@ export default async function bootstrap(type = 'pack', options: Options) {
         options.platform !== 'devtools' && process.env.MINI_FRAMEWORK,
       ].filter(Boolean) as string[],
       ext: '*',
-      delay: 500,
+      delay: 400,
     })
-      .on('start', () => {})
-      .on('restart', () => {
-        // TODO: server.send
-        // options.platform === 'devtools'
+      .on('restart', () => {})
+      .on('message', ev => {
+        const { type, event } = ev || {}
+        if (options.platform === 'devtools' && type === 'pack' && event === 'packed') {
+          if (staticServer instanceof Deferred) {
+            staticServer.resolve()
+          } else {
+            staticServer.send({ type: 'reload' })
+          }
+        }
       })
     // 设置完 env 再引入
     if (options.platform === 'devtools') {
+      // process.env.DEVTOOLS_ENV = 'develop'
       const { default: launcher } = await import('@mini-architecture/devtools')
-      await wait(1500)
-      console.log(launcher)
-      // const { server, cdp } = await launcher()
+
+      // wait until packed
+      if (staticServer.promise) {
+        await staticServer.promise
+      }
+      const { server, cdp } = await launcher()
+      staticServer = server
     }
+
+    process.once('SIGINT', () => {
+      console.log('\nprocess receive: SIGINT')
+
+      // https://github.com/remy/nodemon/blob/master/lib/monitor/run.js#L465
+      nodemon.emit('quit', 130)
+    })
   } else {
     import('./pack')
   }

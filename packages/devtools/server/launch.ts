@@ -7,6 +7,9 @@ import { homedir } from 'os'
 import startStaticServer, { StaticServer } from './static'
 import { Deferred, normalizePath } from '../utils'
 
+export * from './static'
+export const staticServer = startStaticServer
+
 export interface LaunchOptions {
   /**
    * preferred static server port
@@ -84,7 +87,8 @@ export default async function launcher(options?: LaunchOptions) {
   return {
     server,
     cdp,
+    stopDevtools() {
+      ChromeLauncher.killAll()
+    },
   }
 }
-
-export const staticServer = startStaticServer

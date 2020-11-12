@@ -1,7 +1,7 @@
-export class Deferred<T> {
+export class Deferred<T = any> {
   promise: Promise<T>
-  resolve!: ((res: any) => void) | null
-  reject!: ((err: any) => void) | null
+  resolve!: (res?: any) => void
+  reject!: (err?: any) => void
   private onComplete: () => void
   private timer!: NodeJS.Timeout
 
@@ -25,8 +25,8 @@ export class Deferred<T> {
     // for gc
     this.onComplete = () => {
       clearTimeout(this.timer)
-      this.resolve = null
-      this.reject = null
+      this.resolve = noop
+      this.reject = noop
     }
   }
 }

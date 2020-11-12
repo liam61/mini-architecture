@@ -13,8 +13,14 @@ interface Window {
     host: string
     port: string
     path: string
+    wsPath: string
   }
 
   maContainer: any
   pageManager: any
+  wsClient: {
+    ws?: WebSocket
+    send(data: Record<string, any>): void
+    close(): void
+  }
 }

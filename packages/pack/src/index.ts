@@ -15,6 +15,10 @@ export default async function pack() {
   try {
     await packFramework()
     await packMini()
+    // running in a child process
+    if (process.send) {
+      process.send!({ type: 'pack', event: 'packed' })
+    }
   } catch (err) {
     if (isDev && typeof err !== 'string') {
       throw err
