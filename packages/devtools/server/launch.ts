@@ -2,40 +2,29 @@ import * as ChromeLauncher from 'chrome-launcher'
 import CDP from 'chrome-remote-interface'
 import getPort from 'get-port'
 import fetch from 'node-fetch'
-import path from 'path'
 import { homedir } from 'os'
-import startStaticServer, { StaticServer } from './static'
-import { Deferred, normalizePath } from '../utils'
+import startStaticServer, { ServerOptions } from './static'
 
 export * from './static'
 export const staticServer = startStaticServer
 
-export interface LaunchOptions {
-  /**
-   * preferred static server port
-   */
-  port?: number | string
-}
+export interface LaunchOptions extends ServerOptions {}
 
-const rootPath = path.join(__dirname, '../..')
-const miniPath = normalizePath('MINI_OUTPUT', path.join(rootPath, 'devtools/dist/mini'))
+const isDev = process.env.DEVTOOLS_ENV === 'develop'
 
 export default async function launcher(options?: LaunchOptions) {
-  const { port } = options || {}
-  const deferred = new Deferred<[{ server: StaticServer; port: number }, number, number]>()
-  Promise.all([
+  const { miniPath, port } = options || {}
+  const [{ server, port: staticPort }, clientPort, devtoolsPort] = await Promise.all([
     startStaticServer({ miniPath, port }),
-    getPort({ port: 9222 }),
-    getPort({ port: 9232 }),
-  ]).then(deferred.resolve)
+    !isDev ? getPort({ port: 9222 }) : Promise.resolve(9222),
+    !isDev ? getPort({ port: 9232 }) : Promise.resolve(9232),
+  ])
 
   const cacheDir = `${homedir()}/.ma-dev`
   const ignoreFlags = ['--disable-extensions', '--disable-features=TranslateUI']
   const newFlags = ChromeLauncher.Launcher.defaultFlags().filter(
     flag => !ignoreFlags.includes(flag),
   )
-
-  const [{ server, port: staticPort }, clientPort, devtoolsPort] = await deferred.promise
 
   const clientChrome = await ChromeLauncher.launch({
     port: clientPort,
@@ -87,8 +76,8 @@ export default async function launcher(options?: LaunchOptions) {
   return {
     server,
     cdp,
-    stopDevtools() {
-      ChromeLauncher.killAll()
+    stopAll() {
+      return ChromeLauncher.killAll().then(server.close)
     },
   }
 }

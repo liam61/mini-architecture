@@ -38,6 +38,6 @@
     "lines-between-class-members": "off",
     "promise/no-return-wrap": "off",
     "prefer-promise-reject-errors": "off",
-    "prettier/prettier": "warn"
+    "prettier/prettier": "off"
   }
 }

@@ -12,7 +12,6 @@ import fs from 'fs-extra'
 import chalk from 'chalk'
 chalk.level = 3
 
-const rootPath = path.join(__dirname, '..')
 const isDev = process.env.ROLLUP_WATCH
 const defaultPlugins = [
   resolve(),
@@ -51,7 +50,6 @@ const defaultPlugins = [
     ),
     __VERSION__: config.version,
   }),
-  myPlugin(),
 ]
 
 const generateEntry = ({ name, sourcemap = 'inline', outputName, plugins = defaultPlugins }) => {
@@ -89,29 +87,3 @@ export default [
       plugins: [...defaultPlugins, terser()],
     }),
 ].filter(Boolean)
-
-let count = 0
-
-function myPlugin() {
-  return {
-    name: 'dev-plugin',
-    options(options) {
-      // console.log(options.input, options.output[0].file)
-    },
-    buildEnd() {
-      if (!isDev) return
-      // rollup 和 pack nodemon 一起启动，监听 framework/dist 有问题，暂时没其他办法
-      const _dev = path.join(rootPath, 'pack/_dev.ts')
-
-      !fs.existsSync(_dev) && fs.createFile(_dev)
-      if (count++ !== 0) {
-        fs.writeFileSync(_dev, `update: ${count}`, { encoding: 'utf-8' })
-      } else {
-        count++
-      }
-    },
-    outputOptions(options) {
-      // console.log(options.file)
-    },
-  }
-}

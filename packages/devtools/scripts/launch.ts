@@ -1,20 +1,40 @@
 #!/usr/bin/env ts-node-script
 
-import nodemon from 'nodemon'
+process.env.DEVTOOLS_ENV = 'develop'
 
-// https://github.com/remy/nodemon/pull/1077. Why you didn't merge
-process.env.NODEMON_PROCESS_STAGE = '1'
-// with nodemon.json
-nodemon({
-  exec: 'ts-node index.launch.ts',
-}).once('restart', () => {
-  process.env.NODEMON_PROCESS_STAGE = '2'
-})
+import chokidar from 'chokidar'
+import path from 'path'
+import onExit from 'signal-exit'
+import launcher from '../server/launch'
 
-process.once('SIGINT', () => {
-  console.log('\nprocess receive: SIGINT')
+start()
 
-  // https://github.com/remy/nodemon/blob/master/lib/monitor/run.js#L465
-  nodemon.emit('quit', 130)
-  process.exit()
-})
+async function start() {
+  let onStop: (() => any) | null = null
+
+  const watcher = chokidar.watch(
+    [path.join(__dirname, '../server'), path.join(__dirname, '../*.ts')],
+    { interval: 300 },
+  )
+  watcher
+    .on('ready', async () => {
+      const { stopAll } = await launcher()
+      onStop = stopAll
+    })
+    .on('change', async _pathname => {
+      // console.log('change', pathname)
+      if (onStop) {
+        await onStop()
+        // 动态加载更新后的文件
+        delete require.cache[require.resolve('../server/launch')]
+        const { default: nextLauncher } = await import('../server/launch')
+        onStop = (await nextLauncher()).stopAll
+      }
+    })
+
+  onExit((_code, signal) => {
+    console.log(`\nprocess receive: ${signal}`)
+    watcher.close()
+    onStop && onStop()
+  })
+}

@@ -1,15 +1,32 @@
 #!/usr/bin/env ts-node-script
 
-import nodemon from 'nodemon'
+process.env.MINI_ENV = 'dev'
 
-// with nodemon.json
-// lerna 并发启动退出有问题
-nodemon({})
+import chokidar from 'chokidar'
+import path from 'path'
+import onExit from 'signal-exit'
+import pack from '../src'
 
-process.once('SIGINT', () => {
-  console.log('\nprocess receive: SIGINT')
+const watcher = chokidar.watch(
+  [
+    path.join(__dirname, '../src'),
+    path.join(__dirname, '../templates'),
+    path.join(__dirname, '../../framework/dist'),
+  ],
+  {
+    interval: 300,
+  },
+)
+watcher
+  .on('ready', () => {
+    pack()
+  })
+  .on('change', pathname => {
+    console.log('change', pathname)
+    pack()
+  })
 
-  // https://github.com/remy/nodemon/blob/master/lib/monitor/run.js#L465
-  nodemon.emit('quit', 130)
-  process.exit()
+onExit((_code, signal) => {
+  console.log(`\nprocess receive: ${signal}`)
+  watcher.close()
 })

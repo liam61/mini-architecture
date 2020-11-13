@@ -26,6 +26,5 @@ dist
 !packages/mini/dist
 
 packages/pack/_temp
-packages/pack/_dev.ts
 
 packages/devtools/frontend

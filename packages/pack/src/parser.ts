@@ -157,8 +157,3 @@ function getShortPath(path: string) {
   const idx = arr.findIndex(dir => dir === 'mini')
   return arr.slice(idx).join('/')
 }
-
-// parse({
-//   fullPath: path.join(rootPath, 'mini/dist/pages/index/index.html'),
-//   page: 'pages/index/index',
-// })

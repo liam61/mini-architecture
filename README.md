@@ -1,6 +1,6 @@
 # mini-architecture
 
-a full mini app architecture demo
+a full mini app architecture
 
 ## Packages
 
@@ -24,9 +24,11 @@ a full mini app architecture demo
 
 2. [Java](https://www.oracle.com/cn/java/technologies/javase/javase-jdk8-downloads.html)
 
-3. [Android](https://developer.android.com/studio/releases/platform-tools), you can also use [Android Studio](https://developer.android.com/studio/?hl=zh-cn) to download
+3. [Android](https://developer.android.com/studio/releases/platform-tools), you can also download from [Android Studio](https://developer.android.com/studio/?hl=zh-cn)
 
 4. [ADB](https://developer.android.com/studio/command-line/adb?hl=zh-cn)
+
+5. [Chrome](https://www.google.com/intl/zh-CN/chrome/) when using devtools
 
 ### 2. 🔥quick start
 
@@ -70,13 +72,31 @@ Page({
 
 ### 4. dev
 
-1. `git clone git@github.com:lawler61/mini-architecture.git && cd mini-architecture`
+1. clone
 
-2. `yarn`
+- `git clone git@github.com:lawler61/mini-architecture.git && cd mini-architecture`
 
-3. `yarn bootstrap` for all packages
+2. install dependences
 
-4. `yarn dev / build` for dev or build
+- `yarn`
+
+do not use `lerna bootstrap` cause the dependences are managed by yarn workspace
+
+3. develop
+
+- pack: `yarn dev:pack`
+
+- devtools client: `yarn dev:dt:client`
+
+- devtools launcher: `yarn dev:dt:launch`
+
+- cli: `yarn dev:cli`
+
+4. add dependence
+
+- for workspace: `yarn add <dependence> -D -W`
+
+- for a package: `yarn lerna add <dependence> --scope <package>`
 
 ### 5. quick install
 
@@ -109,6 +129,8 @@ install form [built apk](./mini-demo.apk)
 - [x] devtools
 
 - [ ] custom devtools front end
+
+- [ ] other page api in android
 
 - [ ] worker service in devtools
 

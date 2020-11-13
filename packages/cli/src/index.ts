@@ -1,9 +1,10 @@
 import path from 'path'
 import { homedir } from 'os'
-import nodemon from 'nodemon'
+import chokidar from 'chokidar'
+import onExit from 'signal-exit'
 import { directories } from 'ignore-by-default'
-import { includes, validate, Deferred } from './utils'
 import { StaticServer } from '@mini-architecture/devtools'
+import { includes, validate, Deferred } from './utils'
 
 // global add cli 和 mini、pack 在同一级目录
 const maPath = path.join(__dirname, '../..')
@@ -76,49 +77,52 @@ export default async function bootstrap(type = 'pack', options: Options) {
   if (JSON.parse(process.env.MINI_WATCH!)) {
     const ignoreRoot = directories()
     const isDevtools = options.platform === 'devtools'
-    let staticServer: StaticServer | Deferred | null = isDevtools ? new Deferred() : null
+    const packDefer: Deferred | null = isDevtools ? new Deferred() : null
+    let staticServer: StaticServer | null = null
 
-    nodemon({
-      script: require.resolve('./pack'),
-      // https://github.com/remy/nodemon/blob/master/lib/config/defaults.js#L15
-      ignoreRoot: ignoreRoot.map(_ => `**/${_}/**`).filter(_ => !_.includes('node_modules')),
-      watch: [
+    // 不用 nodemon 是因为使用 api 不好操作
+    const watcher = chokidar.watch(
+      [
         process.env.MINI_ENTRY,
         options.platform !== 'devtools' && process.env.MINI_FRAMEWORK,
       ].filter(Boolean) as string[],
-      ext: '*',
-      delay: 200,
-    })
-      .on('restart', () => {})
-      .on('message', ev => {
-        const { type, event } = ev || {}
-        if (isDevtools && type === 'pack' && event === 'packed') {
-          if (staticServer instanceof Deferred) {
-            staticServer.resolve()
-          } else {
-            staticServer && staticServer.send({ type: 'reload' })
-          }
-        }
+      {
+        interval: isDevtools ? 0 : 200,
+        ignored: ignoreRoot.map(_ => `**/${_}/**`).filter(_ => !_.includes('node_modules')),
+      },
+    )
+    watcher
+      .on('ready', async () => {
+        // 设置完 env 再第一次执行
+        ;(await import('./pack')).default().then(() => {
+          packDefer && packDefer.resolve()
+        })
       })
+      .on('change', async pathname => {
+        console.log('change', pathname)
+        ;(await import('./pack')).default().then(() => {
+          staticServer && staticServer.send({ type: 'reload' })
+        })
+      })
+
     // 设置完 env 再引入
     if (isDevtools) {
       const { default: launcher } = await import('@mini-architecture/devtools')
 
       // wait until packed
-      if (staticServer && staticServer.promise) {
-        await staticServer!.promise
+      if (packDefer) {
+        await packDefer.promise
       }
       const { server, cdp } = await launcher()
       staticServer = server
     }
 
-    process.once('SIGINT', () => {
-      console.log('\nprocess receive: SIGINT')
-
-      // https://github.com/remy/nodemon/blob/master/lib/monitor/run.js#L465
-      nodemon.emit('quit', 130)
+    onExit((_code, signal) => {
+      console.log(`\nprocess receive: ${signal}`)
+      watcher.close()
+      staticServer && staticServer.close()
     })
   } else {
-    import('./pack')
+    ;(await import('./pack')).default()
   }
 }
