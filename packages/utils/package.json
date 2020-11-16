@@ -1,0 +1,20 @@
+{
+  "name": "@mini-architecture/utils",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "rm -rf dist && tsc -p . -w",
+    "build": "rm -rf dist && tsc -p .",
+    "lint": "tsc --noEmit --skipLibCheck -p tsconfig.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "author": "lawler61",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lawler61/mini-architecture.git"
+  }
+}

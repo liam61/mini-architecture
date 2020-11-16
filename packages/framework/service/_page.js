@@ -1,5 +1,5 @@
 import { serviceApi } from './api'
-import { nextTick, noop } from '../common/utils'
+import { nextTick, noop } from '@mini-architecture/utils'
 
 let isBatching = false
 

@@ -6,15 +6,17 @@ import image from '@rollup/plugin-image'
 import replace from '@rollup/plugin-replace'
 import { terser } from 'rollup-plugin-terser'
 // import analyzer from "rollup-plugin-analyzer";
-import path from 'path'
 import config from './package.json'
 import fs from 'fs-extra'
-import chalk from 'chalk'
-chalk.level = 3
 
 const isDev = process.env.ROLLUP_WATCH
 const defaultPlugins = [
-  resolve(),
+  resolve({
+    customResolveOptions: {
+      // https://github.com/browserify/resolve#resolveid-opts-cb
+      paths: ['node_modules', '../../node_modules'],
+    },
+  }),
   json(),
   image(),
   commonjs(),

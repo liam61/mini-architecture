@@ -1,5 +1,5 @@
 import jsBridge from '../common/bridge'
-import { noop } from '../common/utils'
+import { noop } from '@mini-architecture/utils'
 
 export const appRouteCallbacks = []
 export const callbackMap = {}

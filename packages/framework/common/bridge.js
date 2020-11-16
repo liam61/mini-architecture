@@ -1,5 +1,5 @@
 import _global from './global'
-import { safeExec, noop } from './utils'
+import { safeExec, noop } from '@mini-architecture/utils'
 
 const isIOS = _global.webkit
 const EVENT_PREFIX = 'custom_event_'

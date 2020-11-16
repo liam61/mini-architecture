@@ -4,14 +4,13 @@
   "description": "",
   "scripts": {
     "postinstall": "yarn build",
-    "build": "lerna run build --parallel --ignore @mini-architecture/cli && lerna run build --scope @mini-architecture/cli",
+    "build": "lerna run build --include-dependencies --stream",
     "dev:pack": "lerna run dev --parallel --scope @mini-architecture/framework --scope @mini-architecture/pack",
     "dev:dt:client": "lerna run client --scope @mini-architecture/devtools --stream",
     "dev:dt:launch": "lerna run launch --scope @mini-architecture/devtools --stream",
     "dev:cli": "lerna run dev --scope @mini-architecture/cli --stream",
-    "release": "yarn build && lerna version --conventional-commits --no-push",
-    "release:pre": "lerna version --conventional-commits --conventional-prerelease=@mini-architecture/xxx --preid beta --no-push",
-    "rcnext": "lerna publish from-git",
+    "release": "yarn build && lerna version --conventional-commits --no-push --preid beta --conventional-prerelease",
+    "push": "lerna publish from-git",
     "lint": "lerna run lint --parallel && eslint && prettier --write ."
   },
   "author": "lawler61",

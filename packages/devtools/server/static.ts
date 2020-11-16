@@ -5,7 +5,7 @@ import getPort from 'get-port'
 import glob from 'glob'
 import ejs from 'ejs'
 import expressWs from 'express-ws'
-import { normalizePath } from '../utils'
+import { normalizePath } from '@mini-architecture/utils'
 
 export interface ServerOptions {
   /**

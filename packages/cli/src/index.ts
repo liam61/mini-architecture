@@ -1,10 +1,11 @@
 import path from 'path'
 import { homedir } from 'os'
 import chokidar from 'chokidar'
+import chalk from 'chalk'
 import onExit from 'signal-exit'
 import { directories } from 'ignore-by-default'
 import { StaticServer } from '@mini-architecture/devtools'
-import { includes, validate, Deferred } from './utils'
+import { includes, validate, Deferred } from '@mini-architecture/utils'
 
 // global add cli 和 mini、pack 在同一级目录
 const maPath = path.join(__dirname, '../..')
@@ -35,14 +36,16 @@ function initEnv(options: Options) {
   } = options
   const watch = typeof _watch === 'boolean' ? _watch : process.env.NODE_ENV === 'development'
 
-  if (
-    !validate('entry', entry, 'string') ||
-    !includes('mode', mode, modes) ||
-    !includes('platform', platform, platforms) ||
-    !validate('framework', framework, 'string') ||
-    !validate('install', install, ['string', 'boolean']) ||
-    !validate('output', output, 'string')
-  ) {
+  const err =
+    validate('entry', entry, 'string') ||
+    includes('mode', mode, modes) ||
+    includes('platform', platform, platforms) ||
+    validate('framework', framework, 'string') ||
+    validate('install', install, ['string', 'boolean']) ||
+    validate('output', output, 'string')
+
+  if (err) {
+    console.log(chalk.red(err))
     return
   }
 

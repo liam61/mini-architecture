@@ -1,24 +1,20 @@
-import chalk from 'chalk'
-
 export function validate(key: string, value: any, types: string | string[]) {
   types = Array.isArray(types) ? types : [types]
 
   const vType = typeof value
   if (!types.includes(vType)) {
-    console.log(chalk.red(`option '${key}' should be ${types.join('/')} but received ${vType}...`))
-    return false
+    return `option '${key}' should be ${types.join('/')} but received ${vType}...`
   }
-  return true
+  return null
 }
 
 export function includes(key: string, value: any, types: any) {
   types = Array.isArray(types) ? types : [types]
 
   if (!types.includes(value)) {
-    console.log(chalk.red(`option '${key}' should be ${types.join('/')} but received ${value}...`))
-    return false
+    return `option '${key}' should be ${types.join('/')} but received ${value}...`
   }
-  return true
+  return null
 }
 
 export function wait(delay = 500, data?: any) {
@@ -57,5 +53,39 @@ export class Deferred<T = any> {
       this.resolve = noop
       this.reject = noop
     }
+  }
+}
+
+export function normalizePath(envName: string, localPath: string) {
+  const envPath = process.env[envName]
+  return typeof envPath === 'string' ? envPath : localPath
+}
+
+export function normalizeBoolean(envName: string, localBool: boolean): boolean {
+  const envBool = process.env[envName]
+  // 'true' | 'stringEnv'
+  return typeof envBool === 'string'
+    ? ['true', 'false'].includes(envBool)
+      ? JSON.parse(envBool)
+      : !!envBool
+    : localBool
+}
+
+export function safeExec(fn: Function) {
+  try {
+    fn()
+  } catch (err) {
+    console.log(fn.name, err)
+  }
+}
+
+// may run in webview or worker
+export function nextTick(callback: Function, ...args: any[]) {
+  if (typeof Promise !== 'undefined' && typeof Promise.resolve === 'function') {
+    return Promise.resolve().then(() => callback(...args))
+  } else if (typeof setTimeout !== 'undefined') {
+    setTimeout(() => callback(...args))
+  } else {
+    callback(...args)
   }
 }

@@ -21,6 +21,7 @@
   "dependencies": {
     "@babel/core": "^7.11.6",
     "@babel/preset-env": "^7.11.5",
+    "@mini-architecture/utils": "^0.0.1",
     "archiver": "^4.0.1",
     "babel-preset-minify": "^0.5.1",
     "concat-with-sourcemaps": "^1.1.0",

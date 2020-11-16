@@ -2,7 +2,7 @@ import path from 'path'
 import fs from 'fs-extra'
 import archiver from 'archiver'
 import builder from './build'
-import { normalizePath, normalizeBoolean } from './utils'
+import { normalizePath, normalizeBoolean } from '@mini-architecture/utils'
 
 const rootPath = path.join(__dirname, '../..')
 const miniPath = normalizePath('MINI_ENTRY', path.join(rootPath, 'mini/dist'))
