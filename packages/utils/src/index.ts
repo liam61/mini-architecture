@@ -17,7 +17,7 @@ export function includes(key: string, value: any, types: any) {
   return null
 }
 
-export function wait(delay = 500, data?: any) {
+export function wait<T = any>(delay = 500, data?: T): Promise<T> {
   return new Promise(resolve => setTimeout(() => resolve(data), delay))
 }
 

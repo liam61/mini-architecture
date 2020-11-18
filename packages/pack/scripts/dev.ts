@@ -17,12 +17,22 @@ const watcher = chokidar.watch(
     interval: 300,
   },
 )
+
+let frameworkBuilt = 0
+
 watcher
-  .on('ready', () => {
-    pack()
+  .on('ready', () => {})
+  .on('add', pathname => {
+    pathname.includes('framework/dist') && frameworkBuilt++
+    if (frameworkBuilt === 2) {
+      setTimeout(() => {
+        pack()
+        frameworkBuilt = 0
+      }, 50)
+    }
   })
-  .on('change', pathname => {
-    console.log('change', pathname)
+  .on('change', _pathname => {
+    // console.log('change', pathname)
     pack()
   })
 

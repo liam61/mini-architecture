@@ -45,10 +45,11 @@ function initEnv(options: Options) {
     validate('output', output, 'string')
 
   if (err) {
-    console.log(chalk.red(err))
+    console.log(chalk.red(`\n[ma-cli]: ${err}...`))
     return
   }
 
+  process.env.MINI_BY_CLI = 'true'
   process.env.MINI_ENV = mode
   process.env.MINI_ENTRY = entry !== '@mini' ? entry : path.join(maPath, 'mini/dist')
   process.env.MINI_PLATFORM = platform
@@ -97,15 +98,15 @@ export default async function bootstrap(type = 'pack', options: Options) {
     watcher
       .on('ready', async () => {
         // 设置完 env 再第一次执行
-        ;(await import('./pack')).default().then(() => {
-          packDefer && packDefer.resolve()
-        })
+        await (await import('./pack')).default()
+        packDefer && packDefer.resolve()
+        console.log(`${chalk.green('\n[ma-cli]: ')}waiting for changes...`)
       })
-      .on('change', async pathname => {
-        console.log('change', pathname)
-        ;(await import('./pack')).default().then(() => {
-          staticServer && staticServer.send({ type: 'reload' })
-        })
+      .on('change', async _pathname => {
+        // console.log('change', pathname)
+        await (await import('./pack')).default()
+        staticServer && staticServer.send({ type: 'reload' })
+        console.log(`${chalk.green('\n[ma-cli]: ')}waiting for changes...`)
       })
 
     // 设置完 env 再引入
@@ -121,7 +122,7 @@ export default async function bootstrap(type = 'pack', options: Options) {
     }
 
     onExit((_code, signal) => {
-      console.log(`\nprocess receive: ${signal}`)
+      console.log(`\n[ma-cli]: process receive: ${signal}`)
       watcher.close()
       staticServer && staticServer.close()
     })

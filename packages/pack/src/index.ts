@@ -1,29 +1,27 @@
 import path from 'path'
 import fs from 'fs-extra'
 import archiver from 'archiver'
+import chalk from 'chalk'
 import builder from './build'
 import { normalizePath, normalizeBoolean } from '@mini-architecture/utils'
 
-const rootPath = path.join(__dirname, '../..')
-const miniPath = normalizePath('MINI_ENTRY', path.join(rootPath, 'mini/dist'))
-const frameworkPath = normalizePath('MINI_FRAMEWORK', path.join(rootPath, 'framework/dist'))
-const outputPath = normalizePath('MINI_OUTPUT', path.join(rootPath, 'android/app/src/main/assets'))
+const maPath = path.join(__dirname, '../..')
+const miniPath = normalizePath('MINI_ENTRY', path.join(maPath, 'mini/dist'))
+const frameworkPath = normalizePath('MINI_FRAMEWORK', path.join(maPath, 'framework/dist'))
+const outputPath = normalizePath('MINI_OUTPUT', path.join(maPath, 'android/app/src/main/assets'))
+const isCli = normalizeBoolean('MINI_BY_CLI', false)
 const isZip = normalizeBoolean('MINI_ZIP', true)
-const isDev = process.env.MINI_ENV !== 'build'
 
 export default async function pack() {
   try {
     await packFramework()
     await packMini()
-    // running in a child process
-    if (process.send) {
-      process.send!({ type: 'pack', event: 'packed' })
-    }
   } catch (err) {
-    if (isDev && typeof err !== 'string') {
-      throw err
+    if (typeof err === 'string') {
+      console.log(err)
+      return
     }
-    console.log(err)
+    throw err
   }
 }
 
@@ -55,7 +53,7 @@ async function packFramework() {
 
 async function packMini() {
   const name = `miniDemo${isZip ? '.zip' : ''}`
-  const temp = path.join(rootPath, 'pack/_temp')
+  const temp = path.join(maPath, 'pack/_temp')
   const to = path.join(outputPath, process.env.MINI_PLATFORM === 'devtools' ? 'apps' : '', name)
   const miniConfig = JSON.parse(fs.readFileSync(path.join(miniPath, 'app.json'), 'utf-8'))
 
@@ -64,7 +62,7 @@ async function packMini() {
   builder.transform({
     miniPath,
     frameworkPath,
-    templatePath: path.join(rootPath, 'pack/templates'),
+    templatePath: path.join(maPath, 'pack/templates'),
     output: temp,
     miniConfig,
   })
@@ -105,7 +103,9 @@ function zipFiles(sourcePath: string, name: string): Promise<string> {
 
     stream.on('close', () => {
       const size = archive.pointer()
-      console.log(`\nsuccess zip ${name}, ${(size / 1024).toFixed(3)} kb...`)
+      console.log(
+        `${isCli ? chalk.blue('\n[ma-cli]: ') : ''}zip ${name}, ${(size / 1024).toFixed(3)} kb...`,
+      )
       resolve(output)
     })
 
@@ -136,7 +136,7 @@ async function handleFiles(config: {
   fs.existsSync(to) && fs.removeSync(to)
 
   return fs[copy ? 'copy' : 'move'](from, to).then(() => {
-    console.log(`\nsuccess create ${to}...`)
+    console.log(`${isCli ? chalk.blue('\n[ma-cli]: ') : ''}create ${to}...`)
     return { from, to }
   })
 }

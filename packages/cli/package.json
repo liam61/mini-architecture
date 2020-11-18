@@ -25,7 +25,7 @@
     "@mini-architecture/framework": "^0.0.5",
     "@mini-architecture/mini": "^0.0.4",
     "@mini-architecture/pack": "^0.0.7-beta.1",
-    "@mini-architecture/utils": "^0.0.1",
+    "@mini-architecture/utils": "^0.0.0",
     "chalk": "^4.1.0",
     "commander": "^6.1.0",
     "fs-extra": "^9.0.1",

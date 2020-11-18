@@ -3,9 +3,10 @@ import path from 'path'
 import fs from 'fs'
 import getPort from 'get-port'
 import glob from 'glob'
+import chalk from 'chalk'
 import ejs from 'ejs'
 import expressWs from 'express-ws'
-import { normalizePath } from '@mini-architecture/utils'
+import { normalizeBoolean, normalizePath } from '@mini-architecture/utils'
 
 export interface ServerOptions {
   /**
@@ -23,7 +24,8 @@ export interface StaticServer extends Express {
   close(): Promise<Error | null>
 }
 
-const rootPath = path.join(__dirname, '../..')
+const maPath = path.join(__dirname, '../..')
+const isCli = normalizeBoolean('MINI_BY_CLI', false)
 const isDev = process.env.DEVTOOLS_ENV === 'develop'
 
 let app: StaticServer
@@ -34,7 +36,7 @@ const clientMap = new Map()
 
 export default async function startServer(options?: ServerOptions) {
   const {
-    miniPath = normalizePath('MINI_OUTPUT', path.join(rootPath, 'devtools/dist/mini')),
+    miniPath = normalizePath('MINI_OUTPUT', path.join(maPath, 'devtools/dist/mini')),
     port: preferredPort,
   } = options || {}
 
@@ -42,7 +44,7 @@ export default async function startServer(options?: ServerOptions) {
     port = +preferredPort
   }
 
-  if (process.env.DEVTOOLS_ENV !== 'develop') {
+  if (!isDev) {
     port = await getPort({ port })
   }
 
@@ -53,7 +55,7 @@ export default async function startServer(options?: ServerOptions) {
 
   expressWs(app)
   ;(app as any).ws(wsPath, (ws, _req) => {
-    console.log('[staticServer]: a client connected')
+    console.log(`${isCli ? '\n[ma-cli]: ' : ''}a client connected`)
     ws._id = Math.random().toString(36).slice(-8)
     clientMap.set(ws._id, ws)
 
@@ -65,7 +67,7 @@ export default async function startServer(options?: ServerOptions) {
     ws.on('close', code => {
       ws.terminate()
       clientMap.delete(ws._id)
-      console.log(`[staticServer]: a client disconnected, code: ${code}\n`)
+      console.log(`${isCli ? '\n[ma-cli]: ' : ''}a client disconnected, code: ${code}`)
     })
   })
 
@@ -76,7 +78,7 @@ export default async function startServer(options?: ServerOptions) {
     })
   }
 
-  const clientDir = path.join(rootPath, 'devtools/dist/client')
+  const clientDir = path.join(maPath, 'devtools/dist/client')
   allFiles = glob.sync(`${clientDir}/*`, { ignore: ['**/*.map'] })
 
   // client static
@@ -103,12 +105,15 @@ export default async function startServer(options?: ServerOptions) {
   // http://localhost:3000/mini/apps/miniDemo/pages/index
   // http://localhost:3000/mini/apps/miniDemo/service.html
   const httpServer = app.listen(port, () => {
-    console.log(`\nstatic server is running at http://localhost:${port}`)
+    console.log(
+      `${
+        isCli ? chalk.cyan('\n[ma-cli]: ') : ''
+      }static server is running at http://localhost:${port}`,
+    )
   })
 
   app.close = () => {
     return new Promise(resolve => {
-      console.log('static server close')
       httpServer.close(resolve)
     })
   }

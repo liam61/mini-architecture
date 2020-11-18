@@ -16,6 +16,8 @@ a full mini app architecture
 
 - [devtools](https://github.com/lawler61/mini-architecture/tree/master/devtools) 🔥 a tool for developing, like [weixin devtools](https://developers.weixin.qq.com/miniprogram/dev/devtools/devtools.html)
 
+- [utils](https://github.com/lawler61/mini-architecture/tree/master/utils) ma project utils
+
 ## Start
 
 ### 1. required environment
@@ -40,7 +42,7 @@ before you run, don't forget to connect mobile to you computer. It may be slow f
 
 **find more at** [@mini-architecture/cli](https://github.com/lawler61/mini-architecture/tree/master/packages/cli)
 
-### 3. mini example
+### 3. example
 
 ```js
 // index.html
@@ -152,8 +154,10 @@ install form [built apk](./mini-demo.apk)
 
 4. [Polymer](https://polymer-library.polymer-project.org/3.0/docs/about_30)
 
-5. [Chrome DevTools Frontend 运行原理浅析](https://zhaomenghuan.js.org/blog/chrome-devtools-frontend-analysis-of-principle.html)
+5. [深入理解 Chrome DevTools](https://zhaomenghuan.js.org/blog/chrome-devtools.html)
 
-6. [Getting Started with Headless Chrome](https://developers.google.com/web/updates/2017/04/headless-chrome)
+6. [Chrome DevTools Frontend 运行原理浅析](https://zhaomenghuan.js.org/blog/chrome-devtools-frontend-analysis-of-principle.html)
 
-7. [Chrome DevTools Protocol](https://chromedevtools.github.io/devtools-protocol/)
+7. [Getting Started with Headless Chrome](https://developers.google.com/web/updates/2017/04/headless-chrome)
+
+8. [Chrome DevTools Protocol](https://chromedevtools.github.io/devtools-protocol/)

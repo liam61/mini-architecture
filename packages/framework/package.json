@@ -17,7 +17,7 @@
     "url": "git+https://github.com/lawler61/mini-architecture.git"
   },
   "dependencies": {
-    "@mini-architecture/utils": "^0.0.1",
+    "@mini-architecture/utils": "^0.0.0",
     "@polymer/polymer": "^3.4.1",
     "core-js": "^3.6.5",
     "hammerjs": "^2.0.8",

@@ -30,7 +30,7 @@ a lower-layer framework for mini apps
 
 ### 2. Page
 
-- Page({ data: object })
+- Page({ data: object, ... })
 
 - this.setData(Object object)
 

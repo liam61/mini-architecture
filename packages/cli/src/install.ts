@@ -11,10 +11,10 @@ export default function installApp() {
   const device = words[0]
 
   if (words[1] !== 'device') {
-    console.log(chalk.red('\nno device found...'))
+    console.log(chalk.red('\n[ma-cli]: no device found...'))
     return
   }
-  console.log(`\nsuccess get device ${device}...`)
+  console.log(`${chalk.magenta('\n[ma-cli]: ')}get device ${device}...`)
 
   if (!fs.existsSync('local.properties')) {
     const escapePath = text => {
@@ -22,19 +22,19 @@ export default function installApp() {
     }
     fs.writeFileSync('local.properties', `sdk.dir=${escapePath(process.env.ANDROID_HOME)}`)
   }
+  console.log(`${chalk.magenta('\n[ma-cli]: ')}start building app...`)
   const cmd = process.platform === 'win32' ? 'gradlew.bat' : './gradlew'
   spawnSync(cmd, ['clean', 'assemble'], { encoding: 'utf-8', shell: true })
-  console.log('\nsuccess build app...')
+  console.log(`${chalk.magenta('\n[ma-cli]: ')}build app...`)
 
   const apkName = 'app/build/outputs/apk/debug/app-debug.apk'
   const manifestFile = 'app/src/main/AndroidManifest.xml'
   const mainActivity = 'MainActivity'
   execSync(`adb -s ${device} install -t -r ${apkName}`, { encoding: 'utf-8' })
-  console.log('\nsuccess install app...')
+  console.log(`${chalk.magenta('\n[ma-cli]: ')}install app...`)
 
   const packageName = fs.readFileSync(manifestFile, 'utf-8').match(/package="(.+?)"/)[1]
   execSync(`adb -s ${device} shell am start -n ${packageName}/.${mainActivity} -e debug true`, {
     encoding: 'utf-8',
   })
-  console.log('\nsuccess start app...')
 }

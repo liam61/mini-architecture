@@ -5,12 +5,12 @@
   "scripts": {
     "postinstall": "yarn build",
     "build": "lerna run build --include-dependencies --stream",
-    "dev:pack": "lerna run dev --parallel --scope @mini-architecture/framework --scope @mini-architecture/pack",
+    "dev:pack": "lerna run dev --parallel --scope @mini-architecture/framework --scope @mini-architecture/pack --stream",
     "dev:dt:client": "lerna run client --scope @mini-architecture/devtools --stream",
     "dev:dt:launch": "lerna run launch --scope @mini-architecture/devtools --stream",
     "dev:cli": "lerna run dev --scope @mini-architecture/cli --stream",
-    "release": "yarn build && lerna version --conventional-commits --no-push --preid beta --conventional-prerelease",
-    "push": "lerna publish from-git",
+    "release": "lerna version --conventional-commits --no-push --preid beta --conventional-prerelease",
+    "dump": "lerna publish from-git",
     "lint": "lerna run lint --parallel && eslint && prettier --write ."
   },
   "author": "lawler61",
@@ -26,9 +26,9 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn build && lint-staged",
+      "pre-commit": "lint-staged",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-publish": "yarn aa"
+      "pre-publish": "yarn build"
     }
   },
   "lint-staged": {

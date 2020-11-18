@@ -50,8 +50,8 @@ async function start() {
         app: appNames[process.platform],
       }).then(_child => {})
     })
-    .on('change', async pathname => {
-      console.log('change', pathname)
+    .on('change', async _pathname => {
+      // console.log('change', pathname)
       if (staticServer) {
         await staticServer.close()
         // 动态加载更新后的文件

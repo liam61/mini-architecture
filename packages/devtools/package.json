@@ -2,9 +2,9 @@
   "name": "@mini-architecture/devtools",
   "version": "0.0.2-beta.1",
   "description": "",
-  "main": "dist/server/launch.js",
+  "main": "dist/launch.js",
   "scripts": {
-    "pack:mini": "rm -rf dist/mini && ma-cli pack -e @mini -p devtools -o dist/mini",
+    "pack:mini": "rm -rf dist/mini && ../cli/bin/index.js pack -e @mini -p devtools -o dist/mini",
     "client": "yarn pack:mini && rm -rf dist/client && scripts/client.ts",
     "launch": "yarn pack:mini && yarn build:client && scripts/launch.ts",
     "build:server": "rm -rf dist && tsc -p tsconfig.build.json",
@@ -22,7 +22,8 @@
     "url": "git+https://github.com/lawler61/mini-architecture.git"
   },
   "dependencies": {
-    "@mini-architecture/utils": "^0.0.1",
+    "@mini-architecture/utils": "^0.0.0",
+    "chalk": "^4.1.0",
     "chrome-launcher": "^0.13.4",
     "chrome-remote-interface": "^0.28.2",
     "ejs": "^3.1.3",
