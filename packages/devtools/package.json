@@ -1,6 +1,6 @@
 {
   "name": "@mini-architecture/devtools",
-  "version": "0.0.2-beta.1",
+  "version": "0.0.2-beta.2",
   "description": "",
   "main": "dist/launch.js",
   "scripts": {
@@ -22,7 +22,7 @@
     "url": "git+https://github.com/lawler61/mini-architecture.git"
   },
   "dependencies": {
-    "@mini-architecture/utils": "^0.0.0",
+    "@mini-architecture/utils": "^0.0.1",
     "chalk": "^4.1.0",
     "chrome-launcher": "^0.13.4",
     "chrome-remote-interface": "^0.28.2",
