@@ -47,6 +47,7 @@ const defaultPlugins = [
     // ],
   }),
   replace({
+    preventAssignment: true,
     __INSERT_TEXT__: JSON.stringify(
       fs.readFileSync(__dirname + '/webview/components/reset.css', 'utf-8'),
     ),

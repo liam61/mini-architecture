@@ -4,9 +4,9 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "rm -rf dist && tsc -p . -w",
-    "build": "rm -rf dist && tsc -p .",
-    "lint": "tsc --noEmit --skipLibCheck -p tsconfig.json"
+    "dev": "rm -rf dist && tsc -w",
+    "build": "rm -rf dist && tsc",
+    "lint": "tsc --noEmit --skipLibCheck"
   },
   "files": [
     "dist"
@@ -14,8 +14,7 @@
   "author": "lawler61",
   "license": "ISC",
   "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org"
+    "access": "public"
   },
   "repository": {
     "type": "git",

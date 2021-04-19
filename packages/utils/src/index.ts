@@ -18,7 +18,7 @@ export function includes(key: string, value: any, types: any) {
 }
 
 export function wait<T = any>(delay = 500, data?: T): Promise<T> {
-  return new Promise(resolve => setTimeout(() => resolve(data), delay))
+  return new Promise(resolve => setTimeout(() => resolve(data!), delay))
 }
 
 export function noop() {}

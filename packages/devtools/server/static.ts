@@ -114,7 +114,7 @@ export default async function startServer(options?: ServerOptions) {
 
   app.close = () => {
     return new Promise(resolve => {
-      httpServer.close(resolve)
+      httpServer.close(err => resolve(err || null))
     })
   }
 

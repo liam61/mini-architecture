@@ -9,8 +9,8 @@
     "dev:dt:client": "lerna run client --scope @mini-architecture/devtools --stream",
     "dev:dt:launch": "lerna run launch --scope @mini-architecture/devtools --stream",
     "dev:cli": "lerna run dev --scope @mini-architecture/cli --stream",
-    "release": "lerna version --conventional-commits --no-push --preid beta --conventional-prerelease",
-    "dump": "lerna publish from-git",
+    "release": "lerna version --conventional-commits --no-push",
+    "dump": "yarn build && lerna publish from-git",
     "lint": "lerna run lint --parallel && eslint && prettier --write ."
   },
   "author": "lawler61",
@@ -27,8 +27,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-publish": "yarn build"
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
   "lint-staged": {
@@ -40,30 +39,30 @@
     ]
   },
   "devDependencies": {
-    "@commitlint/cli": "^11.0.0",
-    "@commitlint/config-conventional": "^11.0.0",
-    "@commitlint/config-lerna-scopes": "^11.0.0",
-    "@types/express": "^4.17.8",
+    "@commitlint/cli": "^12.1.1",
+    "@commitlint/config-conventional": "^12.1.1",
+    "@commitlint/config-lerna-scopes": "^12.1.1",
+    "@types/express": "^4.17.11",
     "@types/node": "^14.14.6",
-    "@types/parcel-bundler": "^1.12.1",
-    "@types/react-modal": "^3.10.6",
-    "@typescript-eslint/eslint-plugin": "^4.6.1",
-    "@typescript-eslint/parser": "^4.6.1",
+    "@types/parcel-bundler": "^1.12.3",
+    "@types/react-modal": "^3.12.0",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
     "chalk": "^4.1.0",
-    "chokidar": "^3.4.3",
-    "cross-env": "^7.0.2",
-    "eslint": "^7.9.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-prettier": "^3.1.4",
-    "eslint-plugin-react": "^7.21.4",
+    "chokidar": "^3.5.1",
+    "cross-env": "^7.0.3",
+    "eslint": "^7.24.0",
+    "eslint-config-prettier": "^8.2.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.23.2",
     "eslint-plugin-standard": "^4.0.1",
-    "fs-extra": "^9.0.1",
-    "husky": "^4.2.5",
+    "fs-extra": "^9.1.0",
+    "husky": "^4.3.8",
     "lerna": "^3.22.1",
-    "lint-staged": "^10.2.11",
-    "prettier": "^2.0.5",
+    "lint-staged": "^10.5.4",
+    "prettier": "^2.2.1",
     "signal-exit": "^3.0.3",
-    "ts-node": "^9.0.0",
-    "typescript": "^4.0.3"
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.4"
   }
 }

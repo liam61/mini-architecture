@@ -16,7 +16,6 @@
     "resolveJsonModule": true,
     "removeComments": true,
     "sourceMap": false,
-    "esModuleInterop": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true
   },
