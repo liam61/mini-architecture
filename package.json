@@ -9,7 +9,7 @@
     "dev:dt:client": "lerna run client --scope @mini-architecture/devtools --stream",
     "dev:dt:launch": "lerna run launch --scope @mini-architecture/devtools --stream",
     "dev:cli": "lerna run dev --scope @mini-architecture/cli --stream",
-    "release": "lerna version --conventional-commits --no-push",
+    "release": "lerna version --conventional-commits --no-push patch --force-git-tag",
     "dump": "yarn build && lerna publish from-git",
     "lint": "lerna run lint --parallel && eslint && prettier --write ."
   },

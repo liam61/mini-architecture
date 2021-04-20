@@ -25,6 +25,8 @@ build
 dist
 !packages/mini/dist
 
+packages/cli/android
+
 packages/pack/_temp
 
 packages/devtools/frontend

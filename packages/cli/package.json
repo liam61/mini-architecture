@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "dev": "rm -rf dist && tsc -w",
-    "build": "rm -rf dist && tsc",
+    "build": "rm -rf dist && tsc && yarn copy",
+    "copy": "cp -R ../android ./android && rm -rf ./android/.gradle ./android/app/build",
     "lint": "tsc --noEmit --skipLibCheck"
   },
   "bin": {
