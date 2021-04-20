@@ -70,14 +70,6 @@ public class MiniPage extends LinearLayout implements IBridge {
         return mWebView != null ? mWebView.getViewId() : 0;
     }
 
-    public boolean onLaunchHome(String url) {
-        return loadUrl(url, "appLaunch");
-    }
-
-    public boolean onNavigateTo(String url) {
-        return loadUrl(url, "navigateTo");
-    }
-
     /**
      * 导航回到此界面
      */
@@ -86,20 +78,12 @@ public class MiniPage extends LinearLayout implements IBridge {
         return onDomContentLoaded();
     }
 
-    public boolean onRedirectTo(String url) {
-        return false;
-    }
-
-    public boolean onReLaunch(String url) {
-        return false;
-    }
-
     public void setNavigationBarTitle(String title) {
         // 调用原生的 Toolbar setTitle
         mNavBar.setTitle(title);
     }
 
-    private boolean loadUrl(String url, String openType) {
+    public boolean loadUrl(String url, String openType) {
         if (TextUtils.isEmpty(url) || mWebView == null) {
             return false;
         }
@@ -127,7 +111,7 @@ public class MiniPage extends LinearLayout implements IBridge {
     }
 
     public void setEventListener(OnEventListener listener) {
-        this.mListener = listener;
+        mListener = listener;
     }
 
     /**

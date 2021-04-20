@@ -11,6 +11,9 @@ Page({
       success() {
         console.log('success navigateTo demo page')
       },
+      fail() {
+        ma.alert('fail navigateBack index page')
+      },
     })
   },
   getSystemInfo() {

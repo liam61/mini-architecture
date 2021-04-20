@@ -25,14 +25,6 @@ public class AppConfig {
         mUserId = userId;
     }
 
-    public String getAppId() {
-        return mAppId;
-    }
-
-    public String getUserId() {
-        return mUserId;
-    }
-
     /**
      * @param config json 字符串
      */

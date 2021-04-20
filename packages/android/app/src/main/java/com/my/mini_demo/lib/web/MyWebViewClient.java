@@ -31,9 +31,6 @@ public class MyWebViewClient extends WebViewClient {
      * 拦截 Image, Upload， Download 等 api 放置的临时文件
      */
     private WebResourceResponse interceptResource(Context context, String url) {
-        if (TextUtils.isEmpty(url)) {
-            return null;
-        }
         return null;
 
 //        String resName = url.substring("someScheme://".length());

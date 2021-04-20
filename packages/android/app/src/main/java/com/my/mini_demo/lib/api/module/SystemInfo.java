@@ -12,7 +12,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class SystemInfo implements IApi {
-    public Context mContext;
+
+    private Context mContext;
 
     private String model;
     private float pixelRatio;

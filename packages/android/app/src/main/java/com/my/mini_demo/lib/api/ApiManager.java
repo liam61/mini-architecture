@@ -1,8 +1,6 @@
 package com.my.mini_demo.lib.api;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -136,17 +134,6 @@ public class ApiManager {
             if (bridge != null) {
                 bridge.callback(event.getCallbackId(),
                         assembleResult(null, event.getName(), "cancel"));
-            }
-        }
-
-        @Override
-        public void startActivityForResult(Intent intent, int requestCode) {
-            PackageManager pm = mActivity.getPackageManager();
-
-            if (intent.resolveActivity(pm) != null) {
-                mActivity.startActivityForResult(intent, requestCode);
-            } else {
-                onFail();
             }
         }
 

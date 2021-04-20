@@ -51,18 +51,18 @@ public class PageManager {
         return (MiniPage) mContainer.getChildAt(count - 1);
     }
 
-    public boolean launchHomePage(String url) {
+    public boolean launchHomePage(String url, String openType) {
         mContainer.removeAllViews();
         MiniPage page = createPage(url);
-        return page.onLaunchHome(url);
+        return page.loadUrl(url, openType);
     }
 
     private boolean navigateToPage(String url) {
         MiniPage page = createPage(url);
-        return page.onNavigateTo(url);
+        return page.loadUrl(url, "navigateTo");
     }
 
-    private boolean navigateBackPage(int delta) {
+    public boolean navigateBackPage(int delta) {
         if (!removePages(delta)) {
             return false;
         }
@@ -76,11 +76,11 @@ public class PageManager {
     }
 
     private boolean redirectToPage(String url) {
-        return false;
-    }
-
-    private boolean reLaunchPage(String url) {
-        return false;
+        MiniPage page = getTopPage();
+        if (page == null) {
+            return false;
+        }
+        return page.loadUrl(url, "redirectTo");
     }
 
     private boolean setNavigationBarTitle(String title) {
@@ -105,20 +105,22 @@ public class PageManager {
         if ("navigateTo".equals(event)) {
             String path = JsonUtil.getStringValue(params, "url", "");
             return navigateToPage(path + ".html");
+
         } else if ("navigateBack".equals(event)) {
             return navigateBackPage(JsonUtil.getIntValue(params, "delta", 1));
+
         } else if ("redirectTo".equals(event)) {
-            return false;
+            String path = JsonUtil.getStringValue(params, "url", "");
+            return redirectToPage(path + ".html");
+
         } else if ("reLaunch".equals(event)) {
-            return false;
+            String path = JsonUtil.getStringValue(params, "url", "");
+            return launchHomePage(path + ".html", event);
+
         } else if ("setNavigationBarTitle".equals(event)) {
             return setNavigationBarTitle(JsonUtil.getStringValue(params, "title", ""));
         }
         return false;
-    }
-
-    public boolean goBack() {
-        return navigateBackPage(1);
     }
 
     private boolean removePages(int delta) {

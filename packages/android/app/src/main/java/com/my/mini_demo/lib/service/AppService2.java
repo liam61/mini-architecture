@@ -104,7 +104,11 @@ public class AppService2 implements IBridge, JavaCallback {
     }
 
     public void onDestroy() {
-        mServiceWorker.release(false);
+        try {
+            mServiceWorker.release(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

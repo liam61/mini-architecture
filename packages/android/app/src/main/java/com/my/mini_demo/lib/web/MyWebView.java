@@ -30,7 +30,6 @@ public class MyWebView extends WebView {
         settings.setAllowContentAccess(true);
         settings.setSupportZoom(false);
         settings.setBuiltInZoomControls(false);
-        settings.setSavePassword(false);
         settings.setPluginState(WebSettings.PluginState.ON);
         settings.setAppCacheEnabled(false);
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
@@ -51,7 +50,7 @@ public class MyWebView extends WebView {
         setHorizontalScrollBarEnabled(false);
     }
 
-    public void setJsBridge(JsBridge jsBridge) {
+    private void setJsBridge(JsBridge jsBridge) {
         addJavascriptInterface(jsBridge, "jsCore");
     }
 

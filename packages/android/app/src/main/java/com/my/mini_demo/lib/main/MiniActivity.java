@@ -12,7 +12,7 @@ import com.my.mini_demo.R;
 import com.my.mini_demo.lib.api.ApiManager;
 import com.my.mini_demo.lib.config.AppConfig;
 import com.my.mini_demo.lib.interfaces.OnEventListener;
-import com.my.mini_demo.lib.service.AppService;
+//import com.my.mini_demo.lib.service.AppService;
 import com.my.mini_demo.lib.service.AppService2;
 import com.my.mini_demo.lib.utils.FileUtil;
 
@@ -78,7 +78,7 @@ public class MiniActivity extends AppCompatActivity implements OnEventListener {
     // service publish serviceReady
     @Override
     public void onServiceReady() {
-        mPageManager.launchHomePage(mAppConfig.getRootPath());
+        mPageManager.launchHomePage(mAppConfig.getRootPath(), "appLaunch");
     }
 
     @Override
@@ -105,7 +105,7 @@ public class MiniActivity extends AppCompatActivity implements OnEventListener {
 
     @Override
     public void onBackPressed() {
-        if (mPageManager != null && mPageManager.goBack()) {
+        if (mPageManager != null && mPageManager.navigateBackPage(1)) {
             return;
         }
         super.onBackPressed();

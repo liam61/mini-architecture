@@ -141,12 +141,12 @@ public class FileUtil {
         private LoadFileCallback mCallback;
 
         private LoadFileTask(Context context) {
-            this.mContext = context;
+            mContext = context;
         }
 
         private LoadFileTask(Context context, LoadFileCallback callback) {
-            this.mContext = context;
-            this.mCallback = callback;
+            mContext = context;
+            mCallback = callback;
         }
 
         @Override

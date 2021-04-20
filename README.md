@@ -132,7 +132,7 @@ install form [built apk](./mini-demo.apk)
 
 - [ ] custom devtools front end
 
-- [ ] other page api in android
+- [x] other page api in android
 
 - [ ] worker service in devtools
 

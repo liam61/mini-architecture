@@ -1,7 +1,5 @@
 package com.my.mini_demo.lib.interfaces;
 
-import android.content.Intent;
-
 import org.json.JSONObject;
 
 public interface ICallback {
@@ -11,6 +9,4 @@ public interface ICallback {
     void onFail();
 
     void onCancel();
-
-    void startActivityForResult(Intent intent, int requestCode);
 }
