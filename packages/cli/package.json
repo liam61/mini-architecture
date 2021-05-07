@@ -1,19 +1,20 @@
 {
   "name": "@mini-architecture/cli",
-  "version": "0.0.7",
+  "version": "0.0.10",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
     "dev": "rm -rf dist && tsc -w",
-    "build": "rm -rf dist && tsc && yarn copy",
-    "copy": "cp -R ../android ./android && rm -rf ./android/.gradle ./android/app/build",
+    "build": "rm -rf dist android && tsc && yarn copy",
+    "copy": "cp -R ../android . && rm -rf ./android/.gradle ./android/app/build ./android/app/src/main/assets/*",
     "lint": "tsc --noEmit --skipLibCheck"
   },
   "bin": {
     "ma-cli": "bin/index.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "android"
   ],
   "author": "lawler61",
   "license": "ISC",
@@ -31,8 +32,10 @@
     "@mini-architecture/pack": "^0.0.7",
     "@mini-architecture/utils": "^0.0.2",
     "chalk": "^4.1.0",
+    "chokidar": "^3.5.1",
     "commander": "^6.2.1",
     "fs-extra": "^9.1.0",
-    "ignore-by-default": "^2.0.0"
+    "ignore-by-default": "^2.0.0",
+    "signal-exit": "^3.0.3"
   }
 }

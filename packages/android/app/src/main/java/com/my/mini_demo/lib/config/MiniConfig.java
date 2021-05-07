@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class MiniConfig {
 
-    public static final String VERSION = "0.0.5-beta2";
+    public static final String VERSION = "0.0.5";
 
     private Builder mBuilder;
 
